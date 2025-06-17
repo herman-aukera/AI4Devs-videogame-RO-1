@@ -19,14 +19,19 @@ def create_index_html(base_path):
         file.write('        <h1>Selecciona tu juego</h1>\n')
         file.write('        <ul>\n')
 
-        # Obtener y ordenar todas las carpetas por nombre alfabéticamente
-        directories = sorted([item for item in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, item))])
+        # Obtener y filtrar solo las carpetas de juegos (que contienen un guión y no empiezan con punto)
+        all_items = os.listdir(base_path)
+        directories = [item for item in all_items if os.path.isdir(os.path.join(base_path, item))]
+        # Filtrar solo carpetas que contengan guión y NO empiecen con punto
+        game_directories = sorted([item for item in directories if '-' in item and not item.startswith('.')])
 
-        # Listar todas las carpetas y crear un enlace para cada juego
-        for item in directories:
+        # Listar todas las carpetas de juegos y crear un enlace para cada juego
+        for item in game_directories:
             # Extrae el nombre del juego separándolo de las iniciales del nombre
             game_name = item.split('-')[0]
-            file.write(f'            <li><a href="{item}/index.html">{game_name}</a></li>\n')
+            author_initials = item.split('-')[1] if len(item.split('-')) > 1 else ''
+            display_name = f"{game_name} ({author_initials})" if author_initials else game_name
+            file.write(f'            <li><a href="{item}/index.html">{display_name}</a></li>\n')
 
         file.write('        </ul>\n')
         file.write('    </div>\n')

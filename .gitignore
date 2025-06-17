@@ -4,3 +4,6 @@
 **/.env.example
 **/node_modules
 **/prompts_master.md
+.SpecStory
+.github
+.vscode
