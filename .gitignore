@@ -1,1 +1,9 @@
-breakout-GG/
+# Ignore in all directories
+**/.DS_Store
+**/.env
+**/.env.example
+**/node_modules
+**/prompts_master.md
+.SpecStory
+.github
+.vscode

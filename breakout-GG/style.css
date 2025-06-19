@@ -1,0 +1,867 @@
+/* ===================================================================
+   🧱 BREAKOUT RETRO - GG EDITION
+   ===================================================================
+   
+   Archivo: style.css
+   Desarrollador: GG
+   Proyecto: AI4Devs Video Game Project
+   
+   Descripción:
+   Estilos CSS3 modernos con diseño retro-futurista para el juego Breakout.
+   Implementa diseño responsive, efectos visuales arcade, y variables CSS
+   para fácil mantenimiento y personalización.
+   
+   Estructura:
+   1. Variables CSS & Reset
+   2. Layout Principal & Grid
+   3. Header & Branding
+   4. Game Area & Canvas
+   5. UI Components & Stats
+   6. Controls & Instructions
+   7. Overlay & Game States
+   8. Footer & Credits
+   9. Animations & Effects
+   10. Media Queries & Responsive
+   
+================================================================== */
+
+/* ===================================================================
+   1. VARIABLES CSS & CONFIGURACIÓN GLOBAL
+================================================================== */
+
+:root {
+    /* === Paleta de Colores Retro-Neón === */
+    --primary-cyan: #00FFFF;
+    --primary-orange: #FF6600;
+    --primary-magenta: #FF00FF;
+    --accent-yellow: #FFFF00;
+    --accent-green: #00FF00;
+    --accent-red: #FF0040;
+    
+    /* === Colores de Fondo === */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #1a1a2e;
+    --bg-tertiary: #16213e;
+    --bg-glass: rgba(0, 255, 255, 0.05);
+    --bg-overlay: rgba(0, 0, 0, 0.8);
+    
+    /* === Gradientes === */
+    --gradient-primary: linear-gradient(135deg, var(--primary-cyan), var(--primary-magenta));
+    --gradient-secondary: linear-gradient(45deg, var(--primary-orange), var(--accent-yellow));
+    --gradient-background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+    
+    /* === Tipografía === */
+    --font-primary: 'Orbitron', 'Courier New', monospace;
+    --font-secondary: 'Courier New', monospace;
+    
+    /* === Tamaños de Fuente === */
+    --font-xs: 0.75rem;    /* 12px */
+    --font-sm: 0.875rem;   /* 14px */
+    --font-base: 1rem;     /* 16px */
+    --font-lg: 1.125rem;   /* 18px */
+    --font-xl: 1.25rem;    /* 20px */
+    --font-2xl: 1.5rem;    /* 24px */
+    --font-3xl: 1.875rem;  /* 30px */
+    --font-4xl: 2.25rem;   /* 36px */
+    
+    /* === Espaciado === */
+    --spacing-xs: 0.25rem; /* 4px */
+    --spacing-sm: 0.5rem;  /* 8px */
+    --spacing-md: 1rem;    /* 16px */
+    --spacing-lg: 1.5rem;  /* 24px */
+    --spacing-xl: 2rem;    /* 32px */
+    --spacing-2xl: 3rem;   /* 48px */
+    
+    /* === Efectos de Sombra === */
+    --shadow-glow-sm: 0 0 5px currentColor;
+    --shadow-glow-md: 0 0 10px currentColor, 0 0 20px currentColor;
+    --shadow-glow-lg: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+    --shadow-depth: 0 4px 6px rgba(0, 0, 0, 0.3);
+    
+    /* === Bordes y Radios === */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-width: 2px;
+    
+    /* === Transiciones === */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* === Z-Index Management === */
+    --z-background: -1;
+    --z-content: 1;
+    --z-overlay: 100;
+    --z-modal: 200;
+}
+
+/* ===================================================================
+   2. RESET & BASE STYLES
+================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-base);
+    line-height: 1.6;
+    color: var(--primary-cyan);
+    background: var(--gradient-background);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+    
+    /* Prevenir selección de texto durante el juego */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Fondo animado con partículas */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 0, 255, 0.05) 0%, transparent 50%);
+    animation: backgroundFloat 20s ease-in-out infinite alternate;
+    z-index: var(--z-background);
+}
+
+/* ===================================================================
+   3. LAYOUT PRINCIPAL & GRID
+================================================================== */
+
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr auto 300px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "info info controls"
+        "game game controls";
+    gap: var(--spacing-lg);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: calc(100vh - 200px);
+}
+
+/* ===================================================================
+   4. HEADER & BRANDING
+================================================================== */
+
+.game-header {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    background: var(--bg-glass);
+    border: var(--border-width) solid var(--primary-cyan);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, var(--primary-cyan), transparent);
+    animation: headerRotate 10s linear infinite;
+    opacity: 0.1;
+    z-index: var(--z-background);
+}
+
+.header-content {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+.game-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-4xl);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary-cyan);
+    text-shadow: var(--shadow-glow-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.title-icon {
+    font-size: var(--font-3xl);
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+.title-text {
+    background: var(--gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+}
+
+.title-subtitle {
+    font-size: var(--font-2xl);
+    color: var(--primary-orange);
+    font-weight: 400;
+}
+
+.developer-tag {
+    font-size: var(--font-lg);
+    color: var(--accent-yellow);
+    background: var(--bg-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--accent-yellow);
+    animation: tagGlow 3s ease-in-out infinite alternate;
+}
+
+.game-tagline {
+    font-size: var(--font-lg);
+    color: var(--primary-magenta);
+    font-weight: 400;
+    opacity: 0.9;
+    animation: fadeInOut 4s ease-in-out infinite;
+}
+
+/* ===================================================================
+   5. GAME INFO & STATS PANEL
+================================================================== */
+
+.game-info {
+    grid-area: info;
+    background: var(--bg-glass);
+    border: var(--border-width) solid var(--primary-orange);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-depth);
+}
+
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--primary-cyan);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-normal);
+}
+
+.stat-item:hover {
+    border-color: var(--primary-orange);
+    box-shadow: var(--shadow-glow-sm);
+    transform: translateY(-2px);
+}
+
+.stat-label {
+    font-size: var(--font-sm);
+    color: var(--primary-orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+    font-size: var(--font-3xl);
+    color: var(--primary-cyan);
+    font-weight: 900;
+    text-shadow: var(--shadow-glow-sm);
+    font-family: var(--font-secondary);
+}
+
+/* ===================================================================
+   6. GAME AREA & CANVAS
+================================================================== */
+
+.game-area {
+    grid-area: game;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas-container {
+    position: relative;
+    border: var(--border-width) solid var(--primary-cyan);
+    border-radius: var(--border-radius-lg);
+    background: var(--bg-primary);
+    box-shadow: 
+        var(--shadow-depth),
+        inset 0 0 50px rgba(0, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+#gameCanvas {
+    display: block;
+    background: transparent;
+    border-radius: var(--border-radius-md);
+}
+
+.canvas-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 800px;
+    height: 600px;
+    color: var(--primary-orange);
+    font-size: var(--font-lg);
+    text-align: center;
+    background: var(--bg-secondary);
+}
+
+/* ===================================================================
+   7. GAME OVERLAY & STATES
+================================================================== */
+
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: opacity var(--transition-slow);
+    z-index: var(--z-overlay);
+}
+
+.game-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+    max-width: 500px;
+    padding: var(--spacing-2xl);
+    background: var(--bg-glass);
+    border: var(--border-width) solid var(--primary-cyan);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-glow-lg);
+}
+
+.overlay-title {
+    font-size: var(--font-3xl);
+    color: var(--primary-cyan);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: var(--spacing-lg);
+    text-shadow: var(--shadow-glow-md);
+}
+
+.overlay-message {
+    font-size: var(--font-lg);
+    color: var(--primary-orange);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.5;
+}
+
+.overlay-message strong {
+    color: var(--accent-yellow);
+    font-weight: 700;
+}
+
+.overlay-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.control-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.control-keys {
+    font-size: var(--font-sm);
+    color: var(--accent-yellow);
+    background: var(--bg-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--accent-yellow);
+    font-family: var(--font-secondary);
+    font-weight: 700;
+}
+
+.control-description {
+    font-size: var(--font-xs);
+    color: var(--primary-magenta);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ===================================================================
+   8. CONTROLS PANEL & INSTRUCTIONS
+================================================================== */
+
+.controls-panel {
+    grid-area: controls;
+    background: var(--bg-glass);
+    border: var(--border-width) solid var(--primary-magenta);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-depth);
+    max-height: fit-content;
+}
+
+.controls-title {
+    font-size: var(--font-xl);
+    color: var(--primary-magenta);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    text-shadow: var(--shadow-glow-sm);
+}
+
+.control-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.control-item {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.control-item:hover {
+    border-color: var(--primary-cyan);
+    box-shadow: var(--shadow-glow-sm);
+}
+
+.key {
+    background: var(--bg-primary);
+    color: var(--accent-yellow);
+    font-family: var(--font-secondary);
+    font-size: var(--font-sm);
+    font-weight: 700;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--accent-yellow);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 
+        0 2px 0 var(--accent-yellow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    min-width: 2.5rem;
+    text-align: center;
+}
+
+.control-desc {
+    font-size: var(--font-sm);
+    color: var(--primary-cyan);
+    margin-left: var(--spacing-sm);
+}
+
+/* ===================================================================
+   9. GAME TIPS & HELP
+================================================================== */
+
+.game-tips {
+    border-top: 1px solid var(--primary-orange);
+    padding-top: var(--spacing-lg);
+}
+
+.tips-title {
+    font-size: var(--font-lg);
+    color: var(--primary-orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.tips-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.tips-list li {
+    font-size: var(--font-sm);
+    color: var(--primary-cyan);
+    padding: var(--spacing-sm);
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--primary-orange);
+    border-radius: var(--border-radius-sm);
+    position: relative;
+    opacity: 0.9;
+    transition: opacity var(--transition-fast);
+}
+
+.tips-list li:hover {
+    opacity: 1;
+}
+
+.tips-list li::before {
+    content: "▶";
+    color: var(--primary-orange);
+    font-size: var(--font-xs);
+    margin-right: var(--spacing-sm);
+}
+
+/* ===================================================================
+   10. FOOTER & CREDITS
+================================================================== */
+
+.game-footer {
+    background: var(--bg-glass);
+    border-top: var(--border-width) solid var(--primary-cyan);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    align-items: center;
+    text-align: center;
+}
+
+.developer-info,
+.tech-stack,
+.version-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.developer-label,
+.tech-label {
+    font-size: var(--font-sm);
+    color: var(--primary-orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.developer-name {
+    font-size: var(--font-xl);
+    color: var(--accent-yellow);
+    font-weight: 900;
+    text-shadow: var(--shadow-glow-sm);
+}
+
+.project-info {
+    font-size: var(--font-sm);
+    color: var(--primary-cyan);
+    opacity: 0.8;
+}
+
+.tech-item {
+    display: inline-block;
+    font-size: var(--font-sm);
+    color: var(--primary-cyan);
+    background: var(--bg-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin: var(--spacing-xs);
+    border: 1px solid var(--primary-cyan);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.tech-item:hover {
+    color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    box-shadow: var(--shadow-glow-sm);
+}
+
+.version,
+.build-date {
+    font-size: var(--font-sm);
+    color: var(--primary-magenta);
+    font-family: var(--font-secondary);
+}
+
+/* ===================================================================
+   11. ANIMATIONS & EFFECTS
+================================================================== */
+
+@keyframes backgroundFloat {
+    0% { transform: translateX(-10px) translateY(-10px); }
+    100% { transform: translateX(10px) translateY(10px); }
+}
+
+@keyframes headerRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes tagGlow {
+    0% { box-shadow: 0 0 5px var(--accent-yellow); }
+    100% { box-shadow: 0 0 20px var(--accent-yellow), 0 0 30px var(--accent-yellow); }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Animación de entrada para elementos */
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efectos de hover globales */
+.glow-on-hover {
+    transition: all var(--transition-normal);
+}
+
+.glow-on-hover:hover {
+    text-shadow: var(--shadow-glow-md);
+    transform: translateY(-2px);
+}
+
+/* ===================================================================
+   12. MEDIA QUERIES & RESPONSIVE DESIGN
+================================================================== */
+
+/* Tablet Landscape (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "info"
+            "game"
+            "controls";
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+    
+    .stats-panel {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .controls-panel {
+        max-height: none;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+}
+
+/* Tablet Portrait (481px - 768px) */
+@media screen and (max-width: 768px) {
+    :root {
+        --font-4xl: 1.75rem;
+        --font-3xl: 1.5rem;
+        --font-2xl: 1.25rem;
+        --spacing-lg: 1rem;
+        --spacing-xl: 1.5rem;
+        --spacing-2xl: 2rem;
+    }
+    
+    .game-header {
+        padding: var(--spacing-lg);
+    }
+    
+    .game-title {
+        font-size: var(--font-3xl);
+        flex-wrap: wrap;
+    }
+    
+    .canvas-container {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    #gameCanvas {
+        width: 100%;
+        height: auto;
+        max-width: 600px;
+        max-height: 450px;
+    }
+    
+    .overlay-content {
+        margin: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+    
+    .control-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile (320px - 480px) */
+@media screen and (max-width: 480px) {
+    :root {
+        --font-4xl: 1.5rem;
+        --font-3xl: 1.25rem;
+        --font-2xl: 1.125rem;
+        --font-xl: 1.125rem;
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+        --spacing-xl: 1.25rem;
+    }
+    
+    .game-container {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .game-header {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .stats-panel {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-item {
+        padding: var(--spacing-sm);
+    }
+    
+    .stat-value {
+        font-size: var(--font-2xl);
+    }
+    
+    #gameCanvas {
+        max-width: 320px;
+        max-height: 240px;
+    }
+    
+    .overlay-content {
+        padding: var(--spacing-md);
+    }
+    
+    .overlay-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--spacing-xs);
+    }
+    
+    .tips-list li {
+        font-size: var(--font-xs);
+        padding: var(--spacing-xs);
+    }
+}
+
+/* Ultra-wide screens (> 1400px) */
+@media screen and (min-width: 1400px) {
+    .game-container {
+        grid-template-columns: 350px 1fr 350px;
+    }
+    
+    .canvas-container {
+        transform: scale(1.1);
+        margin: var(--spacing-xl);
+    }
+}
+
+/* High DPI / Retina displays */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+    #gameCanvas {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast preference */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-cyan: #ffffff;
+        --primary-orange: #ffff00;
+        --primary-magenta: #ff00ff;
+        --bg-primary: #000000;
+        --bg-secondary: #333333;
+    }
+}
+
+/* ===================================================================
+   13. PRINT STYLES (Opcional)
+================================================================== */
+
+@media print {
+    .game-container,
+    .game-footer {
+        display: none;
+    }
+    
+    .game-header {
+        color: black;
+        background: white;
+        border: 2px solid black;
+    }
+}
