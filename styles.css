@@ -118,12 +118,31 @@ html {
 
 body {
   font-family: var(--font-main);
-  background: var(--gradient-main);
-  color: white;
+  /* Safari fallback - ensure dark background always renders */
+  background-color: #0a0a0f !important;
+  background: var(--bg-primary);
+  background: -webkit-linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+  background: -moz-linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+  color: #ffffff !important;
   min-height: 100vh;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  /* Force color-scheme for better browser compatibility */
+  color-scheme: dark;
 }
 
 /* ===================================================================
@@ -194,10 +213,30 @@ body {
 .title-line-1,
 .title-line-2 {
   display: block;
-  background: var(--gradient-neon);
+  /* Safari fallback colors */
+  color: var(--primary-cyan);
+  /* Gradient text with better browser support */
+  background: var(--primary-cyan);
+  background: -webkit-linear-gradient(
+    45deg,
+    var(--primary-cyan),
+    var(--primary-magenta)
+  );
+  background: -moz-linear-gradient(
+    45deg,
+    var(--primary-cyan),
+    var(--primary-magenta)
+  );
+  background: linear-gradient(
+    45deg,
+    var(--primary-cyan),
+    var(--primary-magenta)
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
   text-shadow: 0 0 30px var(--primary-cyan);
   line-height: 0.9;
 }
@@ -238,10 +277,13 @@ body {
 
 .game-card {
   position: relative;
+  /* Safari fallback */
+  background-color: rgba(26, 26, 46, 0.9) !important;
   background: var(--bg-card);
   border-radius: 16px;
   padding: var(--space-8);
   backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
   border: 2px solid transparent;
   transition: all var(--transition-normal);
   cursor: pointer;

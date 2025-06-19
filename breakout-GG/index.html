@@ -1,185 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Breakout Retro - Juego clásico de arcade desarrollado con HTML5, CSS3 y JavaScript ES6+. Experiencia nostálgica con efectos modernos.">
-    <meta name="keywords" content="breakout, arcade, retro, game, html5, canvas, javascript, brick breaker">
-    <meta name="author" content="GG - AI4Devs Video Game Project">
-    <meta name="theme-color" content="#00FFFF">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Breakout Retro - Juego clásico de arcade desarrollado con HTML5, CSS3 y JavaScript ES6+. Experiencia nostálgica con efectos modernos."
+    />
+    <meta
+      name="keywords"
+      content="breakout, arcade, retro, game, html5, canvas, javascript, brick breaker"
+    />
+    <meta name="author" content="GG - AI4Devs Video Game Project" />
+    <meta name="theme-color" content="#00FFFF" />
+
     <!-- Open Graph Meta Tags para redes sociales -->
-    <meta property="og:title" content="Breakout Retro GG - Arcade Clásico">
-    <meta property="og:description" content="Destruye ladrillos en este clásico juego de arcade con estética retro y mecánicas modernas.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="./assets/breakout-preview.png">
-    
+    <meta property="og:title" content="Breakout Retro GG - Arcade Clásico" />
+    <meta
+      property="og:description"
+      content="Destruye ladrillos en este clásico juego de arcade con estética retro y mecánicas modernas."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/breakout-preview.png" />
+
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Breakout Retro GG">
-    <meta name="twitter:description" content="Juego clásico de Breakout con diseño retro-futurista">
-    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Breakout Retro GG" />
+    <meta
+      name="twitter:description"
+      content="Juego clásico de Breakout con diseño retro-futurista"
+    />
+
     <!-- Favicon y iconos -->
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
-    
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/apple-touch-icon.png"
+    />
+
     <!-- Preload de recursos críticos -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" as="style">
-    <link rel="preload" href="./style.css" as="style">
-    <link rel="preload" href="./script.js" as="script">
-    
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap"
+      as="style"
+    />
+    <link rel="preload" href="./style.css" as="style" />
+    <link rel="preload" href="./script.js" as="script" />
+
     <!-- Estilos -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+
     <title>🧱 Breakout Retro - GG Edition | Classic Arcade Game</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header con información del juego -->
     <header class="game-header">
-        <div class="header-content">
-            <h1 class="game-title">
-                <span class="title-icon">🧱</span>
-                <span class="title-text">BREAKOUT</span>
-                <span class="title-subtitle">RETRO</span>
-                <span class="developer-tag">GG</span>
-            </h1>
-            <p class="game-tagline">Destruye todos los ladrillos • Experiencia Arcade Clásica</p>
-        </div>
+      <!-- Navigation Back to Index -->
+      <nav class="game-navigation">
+        <a
+          href="../index.html"
+          class="back-button"
+          title="Volver al índice de juegos"
+        >
+          <span class="back-icon">⬅</span>
+          <span class="back-text">VOLVER AL ÍNDICE</span>
+        </a>
+      </nav>
+
+      <div class="header-content">
+        <h1 class="game-title">
+          <span class="title-icon">🧱</span>
+          <span class="title-text">BREAKOUT</span>
+          <span class="title-subtitle">RETRO</span>
+          <span class="developer-tag">GG</span>
+        </h1>
+        <p class="game-tagline">
+          Destruye todos los ladrillos • Experiencia Arcade Clásica
+        </p>
+      </div>
     </header>
 
     <!-- Contenedor principal del juego -->
     <main class="game-container">
-        <!-- Panel de información del juego -->
-        <section class="game-info">
-            <div class="stats-panel">
-                <div class="stat-item">
-                    <span class="stat-label">PUNTUACIÓN</span>
-                    <span class="stat-value" id="scoreDisplay">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">VIDAS</span>
-                    <span class="stat-value" id="livesDisplay">3</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">NIVEL</span>
-                    <span class="stat-value" id="levelDisplay">1</span>
-                </div>
-            </div>
-        </section>
+      <!-- Panel de información del juego -->
+      <section class="game-info">
+        <div class="stats-panel">
+          <div class="stat-item">
+            <span class="stat-label">PUNTUACIÓN</span>
+            <span class="stat-value" id="scoreDisplay">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">VIDAS</span>
+            <span class="stat-value" id="livesDisplay">3</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">NIVEL</span>
+            <span class="stat-value" id="levelDisplay">1</span>
+          </div>
+        </div>
+      </section>
 
-        <!-- Área del canvas de juego -->
-        <section class="game-area">
-            <div class="canvas-container">
-                <canvas id="gameCanvas" width="800" height="600" 
-                        aria-label="Área de juego de Breakout. Usa las teclas de flecha para mover la paleta.">
-                    <p class="canvas-fallback">
-                        Tu navegador no soporta Canvas HTML5. 
-                        Por favor, actualiza a una versión más reciente para jugar.
-                    </p>
-                </canvas>
-                
-                <!-- Overlay de mensajes del juego -->
-                <div class="game-overlay" id="gameOverlay">
-                    <div class="overlay-content">
-                        <h2 class="overlay-title" id="overlayTitle">LISTO PARA JUGAR</h2>
-                        <p class="overlay-message" id="overlayMessage">
-                            Presiona <strong>ENTER</strong> para comenzar
-                        </p>
-                        <div class="overlay-controls">
-                            <div class="control-hint">
-                                <span class="control-keys">← →</span>
-                                <span class="control-description">Mover paleta</span>
-                            </div>
-                            <div class="control-hint">
-                                <span class="control-keys">ESPACIO</span>
-                                <span class="control-description">Pausar</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <!-- Área del canvas de juego -->
+      <section class="game-area">
+        <div class="canvas-container">
+          <canvas
+            id="gameCanvas"
+            width="800"
+            height="600"
+            aria-label="Área de juego de Breakout. Usa las teclas de flecha para mover la paleta."
+          >
+            <p class="canvas-fallback">
+              Tu navegador no soporta Canvas HTML5. Por favor, actualiza a una
+              versión más reciente para jugar.
+            </p>
+          </canvas>
 
-        <!-- Panel de controles e instrucciones -->
-        <aside class="controls-panel">
-            <h3 class="controls-title">CONTROLES</h3>
-            <div class="control-list">
-                <div class="control-item">
-                    <kbd class="key">←</kbd>
-                    <kbd class="key">→</kbd>
-                    <span class="control-desc">Mover paleta</span>
+          <!-- Overlay de mensajes del juego -->
+          <div class="game-overlay" id="gameOverlay">
+            <div class="overlay-content">
+              <h2 class="overlay-title" id="overlayTitle">LISTO PARA JUGAR</h2>
+              <p class="overlay-message" id="overlayMessage">
+                Presiona <strong>ENTER</strong> para comenzar
+              </p>
+              <div class="overlay-controls">
+                <div class="control-hint">
+                  <span class="control-keys">← →</span>
+                  <span class="control-description">Mover paleta</span>
                 </div>
-                <div class="control-item">
-                    <kbd class="key">A</kbd>
-                    <kbd class="key">D</kbd>
-                    <span class="control-desc">Alternativo</span>
+                <div class="control-hint">
+                  <span class="control-keys">ESPACIO</span>
+                  <span class="control-description">Pausar</span>
                 </div>
-                <div class="control-item">
-                    <kbd class="key">ESPACIO</kbd>
-                    <span class="control-desc">Pausar/Reanudar</span>
-                </div>
-                <div class="control-item">
-                    <kbd class="key">ENTER</kbd>
-                    <span class="control-desc">Iniciar/Reiniciar</span>
-                </div>
+              </div>
             </div>
-            
-            <div class="game-tips">
-                <h4 class="tips-title">CONSEJOS</h4>
-                <ul class="tips-list">
-                    <li>Ladrillos superiores dan más puntos</li>
-                    <li>El ángulo de rebote cambia según donde golpees</li>
-                    <li>La velocidad aumenta cada nivel</li>
-                    <li>Mantén la pelota en movimiento</li>
-                </ul>
-            </div>
-        </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel de controles e instrucciones -->
+      <aside class="controls-panel">
+        <h3 class="controls-title">CONTROLES</h3>
+        <div class="control-list">
+          <div class="control-item">
+            <kbd class="key">←</kbd>
+            <kbd class="key">→</kbd>
+            <span class="control-desc">Mover paleta</span>
+          </div>
+          <div class="control-item">
+            <kbd class="key">A</kbd>
+            <kbd class="key">D</kbd>
+            <span class="control-desc">Alternativo</span>
+          </div>
+          <div class="control-item">
+            <kbd class="key">ESPACIO</kbd>
+            <span class="control-desc">Pausar/Reanudar</span>
+          </div>
+          <div class="control-item">
+            <kbd class="key">ENTER</kbd>
+            <span class="control-desc">Iniciar/Reiniciar</span>
+          </div>
+        </div>
+
+        <div class="game-tips">
+          <h4 class="tips-title">CONSEJOS</h4>
+          <ul class="tips-list">
+            <li>Ladrillos superiores dan más puntos</li>
+            <li>El ángulo de rebote cambia según donde golpees</li>
+            <li>La velocidad aumenta cada nivel</li>
+            <li>Mantén la pelota en movimiento</li>
+          </ul>
+        </div>
+      </aside>
     </main>
 
     <!-- Footer con información del desarrollador -->
     <footer class="game-footer">
-        <div class="footer-content">
-            <div class="developer-info">
-                <span class="developer-label">Desarrollado por:</span>
-                <span class="developer-name">GG</span>
-                <span class="project-info">AI4Devs Video Game Project</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-label">Tecnologías:</span>
-                <span class="tech-item">HTML5</span>
-                <span class="tech-item">CSS3</span>
-                <span class="tech-item">JavaScript ES6+</span>
-                <span class="tech-item">Canvas API</span>
-            </div>
-            <div class="version-info">
-                <span class="version">v1.0.0</span>
-                <span class="build-date">Junio 2025</span>
-            </div>
+      <div class="footer-content">
+        <div class="developer-info">
+          <span class="developer-label">Desarrollado por:</span>
+          <span class="developer-name">GG</span>
+          <span class="project-info">AI4Devs Video Game Project</span>
         </div>
+        <div class="tech-stack">
+          <span class="tech-label">Tecnologías:</span>
+          <span class="tech-item">HTML5</span>
+          <span class="tech-item">CSS3</span>
+          <span class="tech-item">JavaScript ES6+</span>
+          <span class="tech-item">Canvas API</span>
+        </div>
+        <div class="version-info">
+          <span class="version">v1.0.0</span>
+          <span class="build-date">Junio 2025</span>
+        </div>
+      </div>
     </footer>
 
     <!-- Script principal del juego -->
     <script src="./script.js"></script>
-    
+
     <!-- Analytics y tracking (opcional) -->
     <script>
-        // Configuración de analytics básica para tracking de juego
-        if (typeof gtag !== 'undefined') {
-            gtag('config', 'GA_MEASUREMENT_ID', {
-                page_title: 'Breakout Retro GG',
-                page_location: window.location.href
-            });
-        }
-        
-        // Service Worker para cache (futuras mejoras)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => console.log('SW registered'))
-                    .catch(error => console.log('SW registration failed'));
-            });
-        }
+      // Configuración de analytics básica para tracking de juego
+      if (typeof gtag !== 'undefined') {
+        gtag('config', 'GA_MEASUREMENT_ID', {
+          page_title: 'Breakout Retro GG',
+          page_location: window.location.href,
+        });
+      }
+
+      // Service Worker para cache (futuras mejoras)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('./sw.js')
+            .then((registration) => console.log('SW registered'))
+            .catch((error) => console.log('SW registration failed'));
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
