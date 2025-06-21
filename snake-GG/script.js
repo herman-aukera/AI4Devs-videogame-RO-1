@@ -497,7 +497,8 @@ class SnakeGame {
         // Task 7: Language Consistency  
         const htmlElement = document.documentElement;
         const isSpanish = htmlElement.getAttribute('lang') === 'es';
-        results.push({ name: 'Language Consistency', pass: isSpanish, details: `HTML lang="${htmlElement.getAttribute('lang')}"` });
+        const hasCorrectNavigation = document.body.textContent.includes('INICIO');
+        results.push({ name: 'Language Consistency', pass: isSpanish && hasCorrectNavigation, details: `HTML lang="${htmlElement.getAttribute('lang')}", Navigation: ${hasCorrectNavigation ? 'INICIO' : 'Missing'}` });
         
         // Task 7: Game State Validation
         const validStates = ['isRunning', 'isPaused', 'score', 'level', 'speed'];
