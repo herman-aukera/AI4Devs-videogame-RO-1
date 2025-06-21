@@ -94,6 +94,49 @@
         <button id="pauseBtn" class="pause-btn hidden">⏸️ Pausar</button>
       </div>
 
+      <!-- Panel de instrucciones -->
+      <section class="instructions-panel" aria-label="Instrucciones del juego">
+        <details class="instructions-details">
+          <summary class="instructions-summary">
+            <span class="summary-icon">❓</span>
+            <span class="summary-text">¿Cómo jugar?</span>
+          </summary>
+          <div class="instructions-content">
+            <div class="instruction-group">
+              <h3 class="instruction-title">🎯 Objetivo</h3>
+              <p>
+                Controla la serpiente para comer la comida roja y crecer. ¡Evita chocar contra las paredes o tu propio cuerpo!
+              </p>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">🕹️ Controles</h3>
+              <div class="controls-grid">
+                <div class="control-item">
+                  <strong>Movimiento:</strong>
+                  <span>Flechas ↑ ↓ ← →</span>
+                </div>
+                <div class="control-item">
+                  <strong>Pausa:</strong>
+                  <span>Barra Espaciadora</span>
+                </div>
+                <div class="control-item">
+                  <strong>Reiniciar:</strong>
+                  <span>Botón "Reiniciar" tras Game Over</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">📈 Puntuación</h3>
+              <p>
+                Ganas 10 puntos por cada comida. El nivel aumenta cada 50 puntos y la velocidad se incrementa.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+
       <!-- Footer -->
       <footer class="game-footer">
         <p>Desarrollado por <strong>GG</strong> • Snake Retro © 2025</p>

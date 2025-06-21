@@ -80,27 +80,47 @@
         </div>
       </section>
 
-      <!-- Instrucciones -->
-      <section class="game-instructions">
-        <h3>CONTROLS</h3>
-        <div class="instructions-grid">
-          <div class="instruction-item">
-            <span class="instruction-key">ARROWS / WASD</span>
-            <span class="instruction-desc">Move</span>
+      <!-- Panel de instrucciones -->
+      <section class="instructions-panel" aria-label="Instrucciones del juego">
+        <details class="instructions-details">
+          <summary class="instructions-summary">
+            <span class="summary-icon">❓</span>
+            <span class="summary-text">¿Cómo jugar?</span>
+          </summary>
+          <div class="instructions-content">
+            <div class="instruction-group">
+              <h3 class="instruction-title">🎯 Objetivo</h3>
+              <p>
+                Recoge todas las píldoras evitando a los fantasmas. ⚠️ <strong>Solo el fantasma rojo (Blinky) está funcional</strong> - Los otros fantasmas están en desarrollo.
+              </p>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">🕹️ Controles</h3>
+              <div class="controls-grid">
+                <div class="control-item">
+                  <strong>Movimiento:</strong>
+                  <span>Flechas ↑ ↓ ← → o WASD</span>
+                </div>
+                <div class="control-item">
+                  <strong>Inicio:</strong>
+                  <span>ENTER para comenzar</span>
+                </div>
+                <div class="control-item">
+                  <strong>Pausa:</strong>
+                  <span>Barra Espaciadora</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">📈 Estado del Juego</h3>
+              <p>
+                🚧 <strong>Trabajo en Progreso:</strong> Este juego está en desarrollo activo. Solo el fantasma rojo funciona correctamente.
+              </p>
+            </div>
           </div>
-          <div class="instruction-item">
-            <span class="instruction-key">ENTER</span>
-            <span class="instruction-desc">Start Game</span>
-          </div>
-          <div class="instruction-item">
-            <span class="instruction-key">SPACE</span>
-            <span class="instruction-desc">Pause/Resume</span>
-          </div>
-          <div class="instruction-item">
-            <span class="instruction-key">R</span>
-            <span class="instruction-desc">Restart</span>
-          </div>
-        </div>
+        </details>
       </section>
     </main>
 
