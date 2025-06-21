@@ -398,6 +398,15 @@ body {
   );
 }
 
+.fruit-catcher-theme .game-title {
+  color: var(--accent-red);
+  text-shadow: 0 0 15px var(--accent-red);
+}
+
+.fruit-catcher-theme .card-glow {
+  background: radial-gradient(circle, var(--accent-red) 0%, transparent 70%);
+}
+
 /* ===================================================================
    9. BOTONES DE JUEGO
 ================================================================== */

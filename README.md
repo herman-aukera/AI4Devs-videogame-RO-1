@@ -36,9 +36,18 @@ Colección de juegos arcade retro desarrollados por estudiantes de AI4Devs como 
 
 ### 🍎 Fruit Catcher - GG Edition
 
-**Estado**: 🚧 Próximamente  
-**Carpeta**: `fruit-catcher-GG/` (pendiente)  
-**Descripción**: Juego de captura de frutas con física de caída y desafío de tiempo.
+**Estado**: ✅ Completo  
+**Carpeta**: `fruit-catcher-GG/`  
+**Descripción**: Juego de captura de frutas con física de caída, dificultad progresiva y efectos visuales avanzados.
+
+**Características**:
+
+- Sistema de física realista para frutas cayendo
+- Dificultad progresiva con aumento de velocidad
+- Controles responsivos (teclado + touch)
+- Sistema de partículas y efectos visuales
+- High score persistente con localStorage
+- Diseño retro-arcade con animaciones fluidas
 
 ## 🛠️ Arquitectura y Estándares Técnicos
 

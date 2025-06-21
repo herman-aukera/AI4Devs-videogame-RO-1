@@ -1,0 +1,276 @@
+<!-- © GG, MIT License -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="GG" />
+    <meta
+      name="description"
+      content="Fruit Catcher - Juego retro-arcade de atrapar frutas. Desarrolla tus reflejos y alcanza la puntuación más alta."
+    />
+    <meta
+      name="keywords"
+      content="juego, arcade, retro, frutas, HTML5, canvas, JavaScript"
+    />
+    <meta name="author" content="AI4Devs Retro Web Games" />
+
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="Fruit Catcher - Retro Arcade Game" />
+    <meta
+      property="og:description"
+      content="¡Atrapa las frutas que caen y alcanza la puntuación más alta!"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Safari/Apple tema -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#1a1a2e" />
+
+    <title>Fruit Catcher - AI4Devs Retro Games</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Preconnect para fonts de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navegación superior -->
+    <nav
+      class="nav-container"
+      role="navigation"
+      aria-label="Navegación principal"
+    >
+      <a
+        href="../index.html"
+        class="nav-home-btn"
+        aria-label="Volver al índice principal"
+      >
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Inicio</span>
+      </a>
+    </nav>
+
+    <!-- Contenedor principal del juego -->
+    <main class="game-container" role="main">
+      <!-- Header del juego -->
+      <header class="game-header">
+        <h1 class="game-title">
+          <span class="title-icon">🍎</span>
+          Fruit Catcher
+        </h1>
+        <p class="game-subtitle">¡Atrapa las frutas y bate tu récord!</p>
+      </header>
+
+      <!-- Área de información del juego -->
+      <section class="game-info" aria-label="Información del juego">
+        <div class="info-panel">
+          <div class="score-display">
+            <span class="score-label">Score:</span>
+            <span id="current-score" class="score-value">0</span>
+          </div>
+          <div class="high-score-display">
+            <span class="high-score-label">Best:</span>
+            <span id="high-score" class="high-score-value">0</span>
+          </div>
+          <div class="level-display">
+            <span class="level-label">Level:</span>
+            <span id="current-level" class="level-value">1</span>
+          </div>
+          <div class="lives-display">
+            <span class="lives-label">Lives:</span>
+            <span id="current-lives" class="lives-value">3</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Canvas del juego -->
+      <section class="game-canvas-container" aria-label="Área de juego">
+        <canvas
+          id="gameCanvas"
+          width="800"
+          height="600"
+          aria-label="Canvas del juego Fruit Catcher"
+          role="img"
+        >
+          Tu navegador no soporta el elemento Canvas. Por favor, actualiza tu
+          navegador para jugar.
+        </canvas>
+
+        <!-- Overlay para controles táctiles -->
+        <div
+          class="touch-controls"
+          id="touchControls"
+          aria-label="Controles táctiles"
+        >
+          <button
+            class="touch-btn touch-left"
+            id="touchLeft"
+            aria-label="Mover izquierda"
+          >
+            <span class="touch-icon">←</span>
+          </button>
+          <button
+            class="touch-btn touch-right"
+            id="touchRight"
+            aria-label="Mover derecha"
+          >
+            <span class="touch-icon">→</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Controles del juego -->
+      <section class="game-controls" aria-label="Controles del juego">
+        <div class="controls-panel">
+          <button
+            id="playPauseBtn"
+            class="control-btn primary"
+            aria-label="Iniciar o pausar juego"
+          >
+            <span class="btn-icon">▶️</span>
+            <span class="btn-text">Jugar</span>
+          </button>
+          <button
+            id="restartBtn"
+            class="control-btn secondary"
+            aria-label="Reiniciar juego"
+          >
+            <span class="btn-icon">🔄</span>
+            <span class="btn-text">Nuevo Juego</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Panel de instrucciones -->
+      <section class="instructions-panel" aria-label="Instrucciones del juego">
+        <details class="instructions-details">
+          <summary class="instructions-summary">
+            <span class="summary-icon">❓</span>
+            <span class="summary-text">¿Cómo jugar?</span>
+          </summary>
+          <div class="instructions-content">
+            <div class="instruction-group">
+              <h3 class="instruction-title">🎯 Objetivo</h3>
+              <p>
+                Atrapa tantas frutas como puedas con tu cesta. ¡El juego se
+                vuelve más rápido con el tiempo!
+              </p>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">🕹️ Controles</h3>
+              <div class="controls-grid">
+                <div class="control-item">
+                  <strong>Desktop:</strong>
+                  <span>Flechas ← → o teclas A/D</span>
+                </div>
+                <div class="control-item">
+                  <strong>Móvil:</strong>
+                  <span>Tocar los botones ← →</span>
+                </div>
+                <div class="control-item">
+                  <strong>Pausa:</strong>
+                  <span>Spacebar o botón Pausa</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="instruction-group">
+              <h3 class="instruction-title">📈 Puntuación</h3>
+              <p>
+                Cada fruta atrapada suma puntos. Tu mejor puntuación se guarda
+                automáticamente.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Modal de Game Over -->
+      <div
+        id="gameOverModal"
+        class="modal hidden"
+        role="dialog"
+        aria-labelledby="gameOverTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-content">
+          <h2 id="gameOverTitle" class="modal-title">¡Game Over!</h2>
+          <div class="game-over-stats">
+            <div class="stat-item">
+              <span class="stat-label">Puntuación Final:</span>
+              <span id="finalScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Mejor Puntuación:</span>
+              <span id="modalHighScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Nivel Alcanzado:</span>
+              <span id="finalLevel" class="stat-value">1</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button
+              id="playAgainBtn"
+              class="modal-btn primary"
+              aria-label="Jugar de nuevo"
+            >
+              <span class="btn-icon">🎮</span>
+              <span class="btn-text">Jugar de Nuevo</span>
+            </button>
+            <button
+              id="shareScoreBtn"
+              class="modal-btn secondary"
+              aria-label="Compartir puntuación"
+            >
+              <span class="btn-icon">📤</span>
+              <span class="btn-text">Compartir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay de pausa -->
+      <div
+        id="pauseOverlay"
+        class="pause-overlay hidden"
+        aria-label="Juego pausado"
+      >
+        <div class="pause-content">
+          <h2 class="pause-title">⏸️ Pausado</h2>
+          <p class="pause-text">Presiona Spacebar o el botón para continuar</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer con información adicional -->
+    <footer class="game-footer" role="contentinfo">
+      <div class="footer-content">
+        <p class="footer-text">
+          Parte de la colección
+          <a href="../index.html" class="footer-link"
+            >AI4Devs Retro Web Games</a
+          >
+        </p>
+        <div class="footer-tech">
+          <span class="tech-badge">HTML5</span>
+          <span class="tech-badge">CSS3</span>
+          <span class="tech-badge">ES6+</span>
+          <span class="tech-badge">Canvas</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Sistema de partículas para efectos visuales -->
+    <div id="particleSystem" class="particle-system" aria-hidden="true"></div>
+
+    <!-- Script principal del juego -->
+    <script src="script.js"></script>
+  </body>
+</html>
