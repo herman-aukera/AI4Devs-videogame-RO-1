@@ -1,3 +1,4 @@
+/* © GG, MIT License */
 /* ===================================================================
    🧱 BREAKOUT RETRO - GG EDITION
    ===================================================================
@@ -754,6 +755,79 @@ class BreakoutGame {
         this.ctx.fillText(`Partículas: ${this.particleSystem.particles.length}`, 10, 50);
         this.ctx.fillText(`Velocidad pelota: ${Math.sqrt(this.ball.vx ** 2 + this.ball.vy ** 2).toFixed(2)}`, 10, 65);
     }
+
+    /**
+     * Sistema de auditoría TDD
+     */
+    runAuditTasks() {
+        console.log('🔍 Ejecutando auditoría TDD de Breakout Retro...');
+        const results = [];
+        
+        // Task 1: Canvas Size Validation
+        const canvasValid = this.canvas.width === GAME_CONFIG.CANVAS_WIDTH && 
+                           this.canvas.height === GAME_CONFIG.CANVAS_HEIGHT;
+        results.push({ name: 'Canvas Size', pass: canvasValid, details: `Canvas is ${this.canvas.width}x${this.canvas.height}` });
+        
+        // Task 2: Paddle Properties
+        const paddleValid = this.paddle && 
+                           this.paddle.width === GAME_CONFIG.PADDLE_WIDTH &&
+                           this.paddle.height === GAME_CONFIG.PADDLE_HEIGHT;
+        results.push({ name: 'Paddle Properties', pass: paddleValid, details: `Paddle ${this.paddle.width}x${this.paddle.height}` });
+        
+        // Task 3: Ball Properties
+        const ballValid = this.ball && 
+                         this.ball.radius === GAME_CONFIG.BALL_RADIUS;
+        results.push({ name: 'Ball Properties', pass: ballValid, details: `Ball radius: ${this.ball.radius}` });
+        
+        // Task 4: Bricks Count and Grid
+        const expectedBricks = GAME_CONFIG.BRICK_ROWS * GAME_CONFIG.BRICK_COLS;
+        const bricksValid = this.bricks && this.bricks.length === expectedBricks;
+        results.push({ name: 'Bricks Grid', pass: bricksValid, details: `${this.bricks.length}/${expectedBricks} bricks` });
+        
+        // Task 5: Game States Validation
+        const validStates = Object.values(GAME_STATES);
+        const stateValid = validStates.includes(this.gameState);
+        results.push({ name: 'Game State', pass: stateValid, details: `Current state: ${this.gameState}` });
+        
+        // Task 6: Ball Physics
+        const ballPhysicsValid = this.ball && 
+                                typeof this.ball.vx === 'number' && 
+                                typeof this.ball.vy === 'number';
+        results.push({ name: 'Ball Physics', pass: ballPhysicsValid, details: `Ball velocity: (${this.ball.vx}, ${this.ball.vy})` });
+        
+        // Task 7: Navigation Link
+        const backLink = document.querySelector('a[href*="../index.html"]');
+        results.push({ name: 'Navigation Link', pass: !!backLink, details: 'Back to index navigation present' });
+        
+        // Task 8: License Header
+        const hasLicense = document.head.innerHTML.includes('© GG, MIT License');
+        results.push({ name: 'License Header', pass: hasLicense, details: 'MIT license header in HTML' });
+        
+        // Task 9: Audio System
+        const audioValid = this.audioSystem && typeof this.audioSystem.playSound === 'function';
+        results.push({ name: 'Audio System', pass: audioValid, details: 'Audio system initialized' });
+        
+        // Task 10: Particle System
+        const particlesValid = this.particleSystem && Array.isArray(this.particleSystem.particles);
+        results.push({ name: 'Particle System', pass: particlesValid, details: `${this.particleSystem.particles.length} particles` });
+        
+        // Display results
+        console.table(results);
+        
+        const passCount = results.filter(r => r.pass).length;
+        const totalTests = results.length;
+        const auditPassed = passCount === totalTests;
+        
+        console.log(`🎯 Auditoría Breakout: ${passCount}/${totalTests} tests PASSED`);
+        
+        if (auditPassed) {
+            console.log('✅ Breakout Retro - AUDITORÍA COMPLETA EXITOSA');
+        } else {
+            console.warn('⚠️ Breakout Retro - AUDITORÍA FALLÓ - Revisar tests marcados como FAIL');
+        }
+        
+        return { passed: auditPassed, results, score: `${passCount}/${totalTests}` };
+    }
 }
 
 /* ===================================================================
@@ -1249,6 +1323,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Exponer al scope global para debugging
         window.game = game;
+        
+        // Ejecutar auditoría en modo desarrollo
+        if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+            console.log('🔍 Modo desarrollo detectado - ejecutando auditoría...');
+            window.runAudit = game.runAuditTasks.bind(game);
+            setTimeout(() => game.runAuditTasks(), 1000);
+        }
         
     } catch (error) {
         console.error('❌ Error al inicializar el juego:', error);

@@ -1,53 +1,287 @@
-# 🎯 AI4Devs Retro Games - Technical Development Guide
+# 🎯 AI4Devs Retro Games - General Technical Guide
 
-## 📋 Resumen Técnico Completo
+## 📋 Overview
 
-Esta guía técnica documenta todos los principios, patrones y estándares establecidos en la colección **AI4Devs Retro Web Games** para asegurar consistencia y calidad en futuros desarrollos.
+This guide provides the general technical standards and patterns for the **AI4Devs Retro Web Games** collection. For game-specific implementation details, see the individual technical guides in each game folder.
 
-**⚠️ IMPORTANTE**: Siempre ejecuta el checklist de QA antes de crear un Pull Request. Todas las verificaciones deben mostrar ✅ PASS.
+**⚠️ IMPORTANT**: All games must pass the QA audit checklist before being marked as production-ready.
 
 ---
 
-## 🛡️ QA & Audit Guidelines - ALWAYS RUN BEFORE PR
+## 🛡️ QA & Audit Framework (MANDATORY)
 
 ### Pre-Development Setup
-1. **Clone QA framework** from `.github/copilot-instructions.md`
-2. **Implement `runAuditTasks()`** method in main game class
-3. **Expose `window.runAudit()`** for console testing
-4. **Auto-run audits** on localhost initialization
+1. **Implement `runAuditTasks()`** method in main game class
+2. **Expose `window.runAudit()`** for console testing
+3. **Auto-run audits** on localhost initialization
+4. **Follow TDD principles** - test early and often
+
+### Universal Audit Checklist
+Every game must pass these checks:
+- [ ] MIT license headers in all files (`© GG, MIT License`)
+- [ ] Single render call per frame (no duplicate draws)
+- [ ] Grid-aligned movement (pixel-perfect positioning)
+- [ ] Responsive canvas dimensions
+- [ ] Navigation link to `/index.html` present
+- [ ] No console errors during gameplay
+- [ ] Game state transitions handled properly
+- [ ] Cross-browser compatibility (Chrome, Firefox, Safari, Edge)
+- [ ] Language consistency (`lang` attribute matches UI text)
+- [ ] Mobile-responsive touch controls
 
 ### Development Workflow
-1. **Code**: Implement feature following architectural patterns
-2. **Test**: Run `window.runAudit()` in browser console
-3. **Fix**: Address any ❌ FAIL results before proceeding
-4. **Verify**: Ensure all checks show ✅ PASS status
+1. **Plan**: Define game mechanics and architecture
+2. **Code**: Implement following ES6+ patterns
+3. **Test**: Run `window.runAudit()` frequently
+4. **Fix**: Address ❌ FAIL results immediately
 5. **Document**: Update prompts.md with changes
-
-### Pre-PR Checklist
-- [ ] All QA audit tasks return ✅ PASS
-- [ ] No console errors during gameplay
-- [ ] Cross-browser testing completed
-- [ ] Mobile responsiveness verified
-- [ ] MIT license headers present in all files
-- [ ] Navigation links functional
-- [ ] Performance targets met (60fps)
+6. **Verify**: Ensure ✅ PASS on all checks
 
 ---
 
-## 🏗️ General Guidelines
-
-### 1. Estructura de Archivos Estándar
+## 🏗️ Standard File Structure
 
 ```
-<nombre-juego>-GG/
-├── index.html      # Punto de entrada HTML5 semántico
-├── style.css       # Estilos retro con variables CSS
-├── script.js       # Lógica del juego modular ES6+
-├── prompts.md      # Documentación del proceso de desarrollo
-├── README.md       # Descripción específica del juego
-└── assets/         # Recursos multimedia (opcional)
-    ├── images/     # Sprites, iconos, backgrounds
-    ├── sounds/     # Efectos de sonido (opcional)
+<game-name>-GG/
+├── index.html              # Main game entry point
+├── style.css               # Game-specific styling
+├── script.js               # Complete game logic
+├── prompts.md              # Development chronology
+├── README.md               # Game documentation
+├── TECHNICAL_GUIDE_<game>.md # Game-specific implementation details
+└── assets/                 # Multimedia resources (optional)
+    ├── images/             # Sprites, icons, backgrounds
+    ├── sounds/             # Audio effects
+    └── fonts/              # Custom typography
+```
+
+## 💻 JavaScript ES6+ Architecture Standards
+
+### Core Game Class Pattern
+```javascript
+class GameEngine {
+  constructor() {
+    this.canvas = document.getElementById('gameCanvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.gameState = 'MENU'; // MENU, PLAYING, PAUSED, GAME_OVER
+    this.score = 0;
+    this.lastFrameTime = 0;
+    
+    this.initialize();
+  }
+
+  async initialize() {
+    await this.loadAssets();
+    this.setupEventListeners();
+    
+    // QA Audit Setup
+    if (window.location.hostname === 'localhost') {
+      window.runAudit = this.runAuditTasks.bind(this);
+      setTimeout(() => this.runAuditTasks(), 1000);
+    }
+    
+    this.gameLoop();
+  }
+
+  gameLoop() {
+    const now = performance.now();
+    const deltaTime = now - this.lastFrameTime;
+    
+    this.update(deltaTime);
+    this.render();
+    
+    this.lastFrameTime = now;
+    requestAnimationFrame(this.gameLoop.bind(this));
+  }
+
+  update(deltaTime) {
+    if (this.gameState !== 'PLAYING') return;
+    // Game logic updates
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // Rendering logic - SINGLE render call per frame
+  }
+
+  runAuditTasks() {
+    // Implement QA checklist validation
+    // Return true if all checks pass
+  }
+}
+```
+
+### Modular Architecture
+- **Separation of Concerns**: Game logic, rendering, input, audio in separate classes
+- **State Management**: Clear game state transitions
+- **Performance**: 60fps target with efficient algorithms
+- **Error Handling**: Graceful degradation and input validation
+
+## 🎨 CSS3 Design System
+
+### Color Palette (CSS Variables)
+```css
+:root {
+  --primary-cyan: #00ffff;
+  --primary-magenta: #ff00ff;
+  --primary-yellow: #ffff00;
+  --accent-green: #00ff00;
+  --accent-red: #ff0040;
+  --accent-orange: #ff6600;
+  
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #1a1a2e;
+  --bg-tertiary: #16213e;
+}
+```
+
+### Responsive Design Principles
+- **Mobile-First**: Start with mobile, scale up
+- **CSS Grid/Flexbox**: Modern layout techniques
+- **Touch-Friendly**: 44px minimum touch targets
+- **Performance**: Hardware-accelerated animations
+
+## 📱 HTML5 Standards
+
+### Semantic Structure
+```html
+<!DOCTYPE html>
+<html lang="es"> <!-- or "en" - be consistent -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Title - AI4Devs Retro Games</title>
+  <!-- Required meta tags for SEO and social sharing -->
+</head>
+<body>
+  <main class="game-container">
+    <nav class="back-navigation">
+      <a href="../index.html">← Volver al índice</a>
+    </nav>
+    
+    <section class="game-area">
+      <canvas id="gameCanvas"></canvas>
+    </section>
+    
+    <aside class="game-ui">
+      <!-- Score, lives, controls -->
+    </aside>
+  </main>
+</body>
+</html>
+```
+
+## 🎮 Common Game Patterns
+
+### Input Management
+```javascript
+class InputManager {
+  constructor() {
+    this.keys = new Set();
+    this.touchStart = null;
+    this.setupEventListeners();
+  }
+  
+  setupEventListeners() {
+    document.addEventListener('keydown', (e) => this.keys.add(e.code));
+    document.addEventListener('keyup', (e) => this.keys.delete(e.code));
+    
+    // Touch support for mobile
+    canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+    canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
+  }
+}
+```
+
+### Collision Detection
+```javascript
+class CollisionSystem {
+  static rectRect(a, b) {
+    return a.x < b.x + b.width &&
+           a.x + a.width > b.x &&
+           a.y < b.y + b.height &&
+           a.y + a.height > b.y;
+  }
+  
+  static circleRect(circle, rect) {
+    // Implementation for circle-rectangle collision
+  }
+}
+```
+
+## 🚀 Performance Optimization
+
+### Canvas Best Practices
+- **Single render call** per frame
+- **Batch drawing operations** to minimize state changes
+- **Use requestAnimationFrame** for smooth 60fps
+- **Clear only necessary areas** when possible
+
+### Memory Management
+- **Clean up event listeners** on game destruction
+- **Reuse objects** instead of creating new ones each frame
+- **Optimize asset loading** and caching
+
+## 🌐 Cross-Browser Compatibility
+
+### Supported Browsers
+- Chrome 51+ (ES6 support)
+- Firefox 54+
+- Safari 10+
+- Edge 15+
+
+### Feature Detection
+```javascript
+// Example: Web Audio API with fallback
+const audioSupported = !!(window.AudioContext || window.webkitAudioContext);
+if (audioSupported) {
+  // Use Web Audio API
+} else {
+  // Fallback to HTML5 Audio
+}
+```
+
+## 📝 Documentation Standards
+
+### Code Comments
+- **Function documentation**: JSDoc format for complex functions
+- **Inline comments**: Explain complex algorithms or game-specific logic
+- **Language**: Spanish or English, but be consistent within each file
+
+### File Headers
+All source files must include:
+```javascript
+/* © GG, MIT License */
+/**
+ * Game Title - Brief Description
+ * Implementation details and architecture notes
+ * 
+ * @author GG
+ * @version 1.0.0
+ * @date 2025
+ */
+```
+
+---
+
+## 🔮 Future Game Development
+
+This technical foundation supports adding new games like:
+- **Tetris**: Block-based puzzle with rotation mechanics
+- **Asteroids**: Vector-based space shooter with physics
+- **Bomberman**: Grid-based strategy with destructible terrain
+- **Pong**: Simple physics-based paddle game
+- **Frogger**: Obstacle avoidance with timed movement
+
+Each new game should follow these patterns while implementing game-specific mechanics in their dedicated technical guide.
+
+---
+
+**For game-specific implementation details, see:**
+- `snake-GG/TECHNICAL_GUIDE_snake.md`
+- `breakout-GG/TECHNICAL_GUIDE_breakout.md` 
+- `fruit-catcher-GG/TECHNICAL_GUIDE_fruit-catcher.md`
+- `pacman-GG/TECHNICAL_GUIDE_pacman.md`
     └── fonts/      # Fuentes personalizadas (opcional)
 ```
 

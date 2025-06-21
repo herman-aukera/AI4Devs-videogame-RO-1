@@ -1,3 +1,4 @@
+<!-- © GG, MIT License -->
 # 🐍 Snake Retro - Edición GG
 
 ## 📋 Descripción

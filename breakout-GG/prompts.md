@@ -1,3 +1,4 @@
+<!-- © GG, MIT License -->
 # 🧱 Breakout Retro - GG Edition | Prompts de Desarrollo
 
 ## 📋 Registro de Desarrollo

@@ -733,6 +733,75 @@ class FruitCatcherGame {
       console.warn('No se pudo guardar el high score:', error);
     }
   }
+
+  /**
+   * Sistema de auditoría TDD
+   */
+  runAuditTasks() {
+    console.log('🔍 Ejecutando auditoría TDD de Fruit Catcher...');
+    const results = [];
+    
+    // Task 1: Canvas Size Validation
+    const canvasValid = this.canvas.width === GAME_CONFIG.canvas.width && 
+                       this.canvas.height === GAME_CONFIG.canvas.height;
+    results.push({ name: 'Canvas Size', pass: canvasValid, details: `Canvas is ${this.canvas.width}x${this.canvas.height}` });
+    
+    // Task 2: Player Properties
+    const playerValid = this.player && 
+                       this.player.width === GAME_CONFIG.player.width &&
+                       this.player.height === GAME_CONFIG.player.height;
+    results.push({ name: 'Player Properties', pass: playerValid, details: `Player ${this.player?.width}x${this.player?.height}` });
+    
+    // Task 3: Fruits Array
+    const fruitsValid = Array.isArray(this.fruits);
+    results.push({ name: 'Fruits Array', pass: fruitsValid, details: `${this.fruits.length} fruits active` });
+    
+    // Task 4: Game State Validation
+    const validStates = ['menu', 'playing', 'paused', 'gameOver'];
+    const stateValid = validStates.includes(this.gameState);
+    results.push({ name: 'Game State', pass: stateValid, details: `Current state: ${this.gameState}` });
+    
+    // Task 5: Score System
+    const scoreValid = typeof this.score === 'number' && typeof this.highScore === 'number';
+    results.push({ name: 'Score System', pass: scoreValid, details: `Score: ${this.score}, High: ${this.highScore}` });
+    
+    // Task 6: Level Progression
+    const levelValid = typeof this.level === 'number' && this.level >= 1;
+    results.push({ name: 'Level System', pass: levelValid, details: `Current level: ${this.level}` });
+    
+    // Task 7: Particle System
+    const particlesValid = Array.isArray(this.particles);
+    results.push({ name: 'Particle System', pass: particlesValid, details: `${this.particles.length} particles active` });
+    
+    // Task 8: Navigation Link
+    const backLink = document.querySelector('a[href*="../index.html"]');
+    results.push({ name: 'Navigation Link', pass: !!backLink, details: 'Back to index navigation present' });
+    
+    // Task 9: License Header
+    const hasLicense = document.head.innerHTML.includes('© GG, MIT License');
+    results.push({ name: 'License Header', pass: hasLicense, details: 'MIT license header in HTML' });
+    
+    // Task 10: Frame Rate Control
+    const frameRateValid = typeof this.lastTime === 'number';
+    results.push({ name: 'Frame Rate Control', pass: frameRateValid, details: 'Delta time tracking active' });
+    
+    // Display results
+    console.table(results);
+    
+    const passCount = results.filter(r => r.pass).length;
+    const totalTests = results.length;
+    const auditPassed = passCount === totalTests;
+    
+    console.log(`🎯 Auditoría Fruit Catcher: ${passCount}/${totalTests} tests PASSED`);
+    
+    if (auditPassed) {
+      console.log('✅ Fruit Catcher - AUDITORÍA COMPLETA EXITOSA');
+    } else {
+      console.warn('⚠️ Fruit Catcher - AUDITORÍA FALLÓ - Revisar tests marcados como FAIL');
+    }
+    
+    return { passed: auditPassed, results, score: `${passCount}/${totalTests}` };
+  }
 }
 
 /**
@@ -1071,6 +1140,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Exponer el juego globalmente para debugging
     window.fruitCatcherGame = game;
+
+    // Ejecutar auditoría en modo desarrollo
+    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+      console.log('🔍 Modo desarrollo detectado - ejecutando auditoría...');
+      window.runAudit = game.runAuditTasks.bind(game);
+      setTimeout(() => game.runAuditTasks(), 1000);
+    }
 
     console.log('🚀 Fruit Catcher cargado exitosamente');
   } catch (error) {

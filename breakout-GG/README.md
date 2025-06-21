@@ -1,3 +1,4 @@
+<!-- © GG, MIT License -->
 # 🧱 Breakout Retro - Edición GG
 
 ## 📋 Descripción

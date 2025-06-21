@@ -1,3 +1,4 @@
+/* © GG, MIT License */
 /**
  * SNAKE RETRO - EDICIÓN GG
  * Juego clásico de Snake desarrollado en JavaScript ES6+
@@ -454,6 +455,78 @@ class SnakeGame {
     hidePauseButton() {
         this.pauseBtn.classList.add('hidden');
     }
+
+    // ===== SISTEMA DE AUDITORÍA TDD =====
+    runAuditTasks() {
+        console.log('🔍 Ejecutando auditoría TDD de Snake Retro...');
+        const results = [];
+        
+        // Task 1: Grid Alignment
+        const gridAligned = this.snake.body.every(segment => {
+            return Number.isInteger(segment.x) && Number.isInteger(segment.y);
+        }) && Number.isInteger(this.food.x) && Number.isInteger(this.food.y);
+        results.push({ name: 'Grid Alignment', pass: gridAligned, details: 'Snake segments and food on integer grid positions' });
+        
+        // Task 2: Canvas Size Validation
+        const canvasValid = this.canvas.width === GAME_CONFIG.CANVAS_SIZE && 
+                           this.canvas.height === GAME_CONFIG.CANVAS_SIZE;
+        results.push({ name: 'Canvas Size', pass: canvasValid, details: `Canvas is ${this.canvas.width}x${this.canvas.height}` });
+        
+        // Task 3: Snake Integrity
+        const snakeValid = this.snake.body.length >= 1 && 
+                          this.snake.direction && 
+                          this.snake.nextDirection;
+        results.push({ name: 'Snake Integrity', pass: snakeValid, details: `Snake has ${this.snake.body.length} segments` });
+        
+        // Task 4: Food Spawning
+        const foodValid = this.food && 
+                         this.food.x >= 0 && 
+                         this.food.x < (GAME_CONFIG.CANVAS_SIZE / GAME_CONFIG.CELL_SIZE) &&
+                         this.food.y >= 0 && 
+                         this.food.y < (GAME_CONFIG.CANVAS_SIZE / GAME_CONFIG.CELL_SIZE);
+        results.push({ name: 'Food Position', pass: foodValid, details: `Food at (${this.food.x}, ${this.food.y})` });
+        
+        // Task 5: Navigation Link
+        const backLink = document.querySelector('a[href*="../index.html"]');
+        results.push({ name: 'Navigation Link', pass: !!backLink, details: 'Back to index navigation present' });
+        
+        // Task 6: License Header
+        const hasLicense = document.head.innerHTML.includes('© GG, MIT License');
+        results.push({ name: 'License Header', pass: hasLicense, details: 'MIT license header in HTML' });
+        
+        // Task 7: Language Consistency  
+        const htmlElement = document.documentElement;
+        const isSpanish = htmlElement.getAttribute('lang') === 'es';
+        results.push({ name: 'Language Consistency', pass: isSpanish, details: `HTML lang="${htmlElement.getAttribute('lang')}"` });
+        
+        // Task 7: Game State Validation
+        const validStates = ['isRunning', 'isPaused', 'score', 'level', 'speed'];
+        const stateValid = validStates.every(state => Object.prototype.hasOwnProperty.call(this.gameState, state));
+        results.push({ name: 'Game State', pass: stateValid, details: 'All required game state properties present' });
+        
+        // Task 8: Event Listeners
+        const listenerCheck = document.querySelector('#startBtn') && 
+                             document.querySelector('#restartBtn') && 
+                             document.querySelector('#pauseBtn');
+        results.push({ name: 'UI Elements', pass: !!listenerCheck, details: 'All control buttons present' });
+        
+        // Display results
+        console.table(results);
+        
+        const passCount = results.filter(r => r.pass).length;
+        const totalTests = results.length;
+        const auditPassed = passCount === totalTests;
+        
+        console.log(`🎯 Auditoría Snake: ${passCount}/${totalTests} tests PASSED`);
+        
+        if (auditPassed) {
+            console.log('✅ Snake Retro - AUDITORÍA COMPLETA EXITOSA');
+        } else {
+            console.warn('⚠️ Snake Retro - AUDITORÍA FALLÓ - Revisar tests marcados como FAIL');
+        }
+        
+        return { passed: auditPassed, results, score: `${passCount}/${totalTests}` };
+    }
 }
 
 // ===== INICIALIZACIÓN GLOBAL =====
@@ -463,6 +536,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Hacer el juego accesible globalmente para debugging
     window.snakeGame = game;
+    
+    // Ejecutar auditoría en modo desarrollo
+    if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+        console.log('🔍 Modo desarrollo detectado - ejecutando auditoría...');
+        window.runAudit = game.runAuditTasks.bind(game);
+        setTimeout(() => game.runAuditTasks(), 1000);
+    }
     
     console.log('🐍 Snake Retro - Edición GG cargado exitosamente!');
     console.log('Desarrollado por GG - 2025');
@@ -498,13 +578,14 @@ class AchievementSystem {
         };
     }
 
-    checkAchievements(gameState, snakeLength) {
+    checkAchievements(/* gameState, snakeLength */) {
         // Implementar lógica de achievements aquí
         // Esta es una funcionalidad opcional para futuras mejoras
     }
 }
 
 // Exportar para uso en módulos (si es necesario)
+/* global module */
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { SnakeGame, GameUtils, AchievementSystem };
 }

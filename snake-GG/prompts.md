@@ -1,3 +1,4 @@
+<!-- © GG, MIT License -->
 # Snake Game - Prompts de Desarrollo (GG)
 
 ## 📝 Prompt Inicial

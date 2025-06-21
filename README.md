@@ -1,32 +1,136 @@
-# 🎮 AI4Devs Retro Web Games Collection
+# 🎮 AI4Devs Retro Web Games
 
-## 📋 Descripción del Proyecto
+> **Arcade Collection – Choose Your Adventure**
 
-Colección de juegos arcade retro desarrollados por estudiantes de AI4Devs como ejercicio final de introducción al desarrollo web. Cada juego está implementado con **HTML5**, **CSS3** y **JavaScript ES6+**, siguiendo principios de diseño moderno y estética retro-arcade.
+## 🎯 About This Collection
 
-## 🕹️ Juegos Disponibles
+AI4Devs Retro Web Games is a collection of classic arcade games reimagined with modern web technologies. Each game is built with **HTML5**, **CSS3**, and **JavaScript ES6+**, featuring pixel-perfect retro aesthetics combined with smooth 60fps gameplay and responsive design.
 
-### 🐍 Snake Retro - GG Edition
+## 🕹️ Game Library
 
-**Estado**: ✅ Completado  
-**Carpeta**: `snake-GG/`  
-**Descripción**: Implementación clásica del juego Snake con movimiento basado en grid, dificultad progresiva y efectos visuales retro.
+| Game | Status | Description | Key Features |
+|------|--------|-------------|--------------|
+| 🐍 **Snake** | ✅ Complete | Classic grid-based Snake with modern effects | Grid movement, progressive difficulty, neon effects |
+| 🧱 **Breakout** | ✅ Complete | Brick-breaking action with realistic physics | Ball physics, multiple levels, power-ups |
+| 🍎 **Fruit Catcher** | ✅ Complete | Fast-paced fruit catching with time pressure | Falling objects, score multipliers, increasing speed |
+| 🟡 **Pac-Man** | 🚧 WIP | Classic maze chase (partial implementation) | Maze navigation, basic AI (Blinky working) |
 
-**Características**:
+## � Quick Start
 
-- Movimiento en grid de 20x20px
-- Sistema de puntuación progresivo
-- Detección de colisiones (paredes y auto-colisión)
-- Velocidad incrementa con el nivel
-- Efectos de partículas y neón
+### Prerequisites
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Local development server (optional but recommended)
 
-### 🧱 Breakout Retro - GG Edition
+### Running the Games
 
-**Estado**: ✅ Completado  
-**Carpeta**: `breakout-GG/`  
-**Descripción**: Versión moderna del clásico Breakout con física realista de pelota, múltiples niveles y power-ups.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/AI4Devs-videogame-RO-1.git
+   cd AI4Devs-videogame-RO-1
+   ```
 
-**Características**:
+2. **Start a local server** (recommended):
+   ```bash
+   # Using Python 3
+   python3 -m http.server 8000
+   
+   # Using Node.js
+   npx http-server -p 8000
+   
+   # Using PHP
+   php -S localhost:8000
+   ```
+
+3. **Open in browser**: Navigate to `http://localhost:8000`
+
+4. **Or open directly**: Double-click `index.html` to run without a server
+
+## 🛠️ Adding New Games
+
+### File Structure
+Each game follows this standardized structure:
+```
+<game-name>-GG/
+├── index.html      # Main game entry point
+├── style.css       # Game-specific styling
+├── script.js       # Game logic and classes
+├── prompts.md      # Development history
+├── README.md       # Game documentation
+└── assets/         # Images, sounds, fonts
+```
+
+### Development Guidelines
+1. **ES6+ JavaScript**: Use modern syntax and modular architecture
+2. **Mobile-First CSS**: Responsive design with retro aesthetics  
+3. **Semantic HTML5**: Proper document structure and accessibility
+4. **60fps Performance**: Optimize for smooth gameplay
+5. **Cross-Browser**: Test on Chrome, Firefox, Safari, Edge
+
+## 🎨 Design System
+
+All games share a consistent visual identity:
+- **Color Palette**: Neon cyan, magenta, yellow with dark backgrounds
+- **Typography**: Monospace fonts for retro feel
+- **Animations**: CSS transforms and canvas effects
+- **Layout**: CSS Grid and Flexbox for responsive design
+
+## 📱 Compatibility
+
+- **Desktop**: Windows, macOS, Linux
+- **Mobile**: iOS Safari, Android Chrome
+- **Tablets**: iPad, Android tablets
+- **Minimum**: ES6 support (Chrome 51+, Firefox 54+, Safari 10+)
+
+## 🧪 Quality Assurance
+
+Each game includes automated QA checks:
+- License compliance (MIT headers)
+- Performance validation (60fps target)
+- Cross-browser compatibility
+- Mobile responsiveness
+- Accessibility standards
+
+Run QA audit: Open browser console and type `window.runAudit()`
+
+## � Contributing
+
+This collection is designed for educational purposes and future expansion:
+
+1. Fork the repository
+2. Create a new game folder following the standard structure
+3. Implement your game with the shared design system
+4. Add proper documentation and QA checks
+5. Submit a pull request
+
+## 📄 License
+
+MIT License © GG
+
+```
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+**Future Games Planned**: Tetris, Asteroids, Bomberman, Pong, Frogger, Space Invaders
 
 - Física de pelota con ángulos variables
 - Sistema de ladrillos destructibles
