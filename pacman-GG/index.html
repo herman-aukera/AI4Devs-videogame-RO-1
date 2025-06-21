@@ -1,0 +1,127 @@
+<!-- © GG, MIT License -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="GG" />
+    <title>Pacman - GG Edition</title>
+    <meta name="description" content="Pacman retro arcade game - AI4Devs collection" />
+    <meta name="keywords" content="game, retro, arcade, pacman, html5, canvas" />
+    <meta name="theme-color" content="#00FFFF" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pacman - GG Edition" />
+    <meta property="og:description" content="Pacman retro arcade game" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+    
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navegación de retorno -->
+    <nav class="game-navigation">
+      <a href="../index.html" class="back-button">
+        <span class="back-icon">⬅</span>
+        <span class="back-text">VOLVER AL ÍNDICE</span>
+      </a>
+    </nav>
+
+    <!-- Container principal del juego -->
+    <main class="game-container">
+      <header class="game-header">
+        <h1 class="game-title">PACMAN</h1>
+        <div class="game-subtitle">GG EDITION</div>
+      </header>
+
+      <!-- HUD del juego -->
+      <section class="game-hud">
+        <div class="hud-item">
+          <span class="hud-label">SCORE</span>
+          <span class="hud-value" id="score">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">LEVEL</span>
+          <span class="hud-value" id="level">1</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">HIGH SCORE</span>
+          <span class="hud-value" id="highScore">0</span>
+        </div>
+      </section>
+
+      <!-- Canvas del juego -->
+      <div class="game-canvas-container">
+        <canvas id="gameCanvas" width="380" height="420"></canvas>
+        
+        <!-- Overlay para estados del juego -->
+        <div class="game-overlay" id="gameOverlay">
+          <div class="overlay-content">
+            <h2 class="overlay-title" id="overlayTitle">GAME READY</h2>
+            <p class="overlay-message" id="overlayMessage">Press ENTER to start</p>
+            <button class="overlay-button" id="overlayButton">START GAME</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles móviles -->
+      <section class="mobile-controls" id="mobileControls">
+        <div class="control-dpad">
+          <button class="dpad-btn dpad-up" data-direction="up">↑</button>
+          <button class="dpad-btn dpad-left" data-direction="left">←</button>
+          <button class="dpad-btn dpad-right" data-direction="right">→</button>
+          <button class="dpad-btn dpad-down" data-direction="down">↓</button>
+        </div>
+        <div class="control-actions">
+          <button class="action-btn action-pause">⏸</button>
+          <button class="action-btn action-restart">↻</button>
+        </div>
+      </section>
+
+      <!-- Instrucciones -->
+      <section class="game-instructions">
+        <h3>CONTROLS</h3>
+        <div class="instructions-grid">
+          <div class="instruction-item">
+            <span class="instruction-key">ARROWS / WASD</span>
+            <span class="instruction-desc">Move</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-key">ENTER</span>
+            <span class="instruction-desc">Start Game</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-key">SPACE</span>
+            <span class="instruction-desc">Pause/Resume</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-key">R</span>
+            <span class="instruction-desc">Restart</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+      // Hacer que el botón START GAME funcione igual que Enter
+      document.addEventListener('DOMContentLoaded', function() {
+        const overlayButton = document.getElementById('overlayButton');
+        if (overlayButton) {
+          overlayButton.addEventListener('click', function() {
+            // Forzar el estado PLAYING y ocultar overlay si el método no lo hace
+            if (window.game && typeof window.game.startGame === 'function') {
+              window.game.startGame();
+              // Ocultar overlay por si acaso
+              const overlay = document.getElementById('gameOverlay');
+              if (overlay) overlay.style.display = 'none';
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

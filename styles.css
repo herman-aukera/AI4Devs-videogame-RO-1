@@ -407,6 +407,103 @@ body {
   background: radial-gradient(circle, var(--accent-red) 0%, transparent 70%);
 }
 
+.pacman-theme .game-title {
+  color: var(--primary-yellow);
+  text-shadow: 0 0 15px var(--primary-yellow);
+}
+
+.pacman-theme .card-glow {
+  background: radial-gradient(circle, var(--primary-yellow) 0%, transparent 70%);
+}
+
+/* ===================================================================
+   8.1. PATRONES DE TARJETAS
+================================================================== */
+
+.card-pattern {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.snake-pattern {
+  background: 
+    linear-gradient(45deg, transparent 40%, var(--accent-green) 50%, transparent 60%),
+    linear-gradient(-45deg, transparent 40%, var(--accent-green) 50%, transparent 60%);
+  background-size: 20px 20px;
+  animation: snake-crawl 2s linear infinite;
+}
+
+@keyframes snake-crawl {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 20px 20px, -20px 20px; }
+}
+
+.breakout-pattern {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      var(--accent-orange) 0px,
+      var(--accent-orange) 8px,
+      transparent 8px,
+      transparent 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--accent-orange) 0px,
+      var(--accent-orange) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+  animation: brick-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes brick-shimmer {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+}
+
+.fruit-pattern {
+  background: 
+    radial-gradient(circle at 25% 25%, var(--accent-red) 30%, transparent 30%),
+    radial-gradient(circle at 75% 25%, var(--accent-red) 20%, transparent 20%),
+    radial-gradient(circle at 25% 75%, var(--accent-red) 25%, transparent 25%),
+    radial-gradient(circle at 75% 75%, var(--accent-red) 35%, transparent 35%);
+  background-size: 30px 30px;
+  animation: fruit-bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes fruit-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.pacman-pattern {
+  background: 
+    radial-gradient(circle at 30% 30%, var(--primary-yellow) 15%, transparent 15%),
+    radial-gradient(circle at 70% 30%, var(--primary-yellow) 10%, transparent 10%),
+    radial-gradient(circle at 30% 70%, var(--primary-yellow) 12%, transparent 12%),
+    radial-gradient(circle at 70% 70%, var(--primary-yellow) 18%, transparent 18%);
+  background-size: 25px 25px;
+  animation: pellet-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes pellet-glow {
+  0%, 100% { 
+    opacity: 0.1;
+    filter: brightness(1);
+  }
+  50% { 
+    opacity: 0.2;
+    filter: brightness(1.5);
+  }
+}
+
 /* ===================================================================
    9. BOTONES DE JUEGO
 ================================================================== */
@@ -663,4 +760,49 @@ body {
     grid-template-columns: 1fr;
     gap: var(--space-3);
   }
+}
+
+/* ===================================================================
+   WIP (Work In Progress) Styling
+================================================================== */
+
+.wip-badge {
+  display: inline-block;
+  background: linear-gradient(45deg, #ff6600, #ff0040);
+  color: white;
+  font-size: 0.6em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  animation: wipPulse 2s ease-in-out infinite alternate;
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.wip-game {
+  opacity: 0.85;
+  position: relative;
+}
+
+.wip-game::before {
+  content: "⚠️ WORK IN PROGRESS";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 102, 0, 0.9);
+  color: white;
+  font-size: 0.7em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
+  font-weight: bold;
+}
+
+.wip-game .card-glow {
+  opacity: 0.6;
+}
+
+@keyframes wipPulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
 }

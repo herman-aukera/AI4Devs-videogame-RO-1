@@ -4,9 +4,37 @@
 
 Esta guía técnica documenta todos los principios, patrones y estándares establecidos en la colección **AI4Devs Retro Web Games** para asegurar consistencia y calidad en futuros desarrollos.
 
+**⚠️ IMPORTANTE**: Siempre ejecuta el checklist de QA antes de crear un Pull Request. Todas las verificaciones deben mostrar ✅ PASS.
+
 ---
 
-## 🏗️ Arquitectura de Código
+## 🛡️ QA & Audit Guidelines - ALWAYS RUN BEFORE PR
+
+### Pre-Development Setup
+1. **Clone QA framework** from `.github/copilot-instructions.md`
+2. **Implement `runAuditTasks()`** method in main game class
+3. **Expose `window.runAudit()`** for console testing
+4. **Auto-run audits** on localhost initialization
+
+### Development Workflow
+1. **Code**: Implement feature following architectural patterns
+2. **Test**: Run `window.runAudit()` in browser console
+3. **Fix**: Address any ❌ FAIL results before proceeding
+4. **Verify**: Ensure all checks show ✅ PASS status
+5. **Document**: Update prompts.md with changes
+
+### Pre-PR Checklist
+- [ ] All QA audit tasks return ✅ PASS
+- [ ] No console errors during gameplay
+- [ ] Cross-browser testing completed
+- [ ] Mobile responsiveness verified
+- [ ] MIT license headers present in all files
+- [ ] Navigation links functional
+- [ ] Performance targets met (60fps)
+
+---
+
+## 🏗️ General Guidelines
 
 ### 1. Estructura de Archivos Estándar
 
@@ -601,324 +629,298 @@ class InputManager {
 
 ---
 
-## 📱 Diseño Responsive y Móvil
+## � PAC-MAN: Implementación Avanzada de IA y Arquitectura
 
-### 1. Canvas Responsive
+### Introducción
+
+El juego Pac-Man representa la implementación más compleja del proyecto AI4Devs Retro Games, incluyendo:
+- **IA de fantasmas auténtica** con 4 personalidades distintas
+- **Algoritmo de búsqueda de caminos** A* para navegación inteligente
+- **Sistema de estados** complejo con múltiples modos de juego
+- **Optimización de rendimiento** para mantener 60fps constantes
+- **Audio procedural** con Web Audio API
+
+### 1. Arquitectura de Clases Principal
 
 ```javascript
-class ResponsiveCanvas {
+// Clase principal del motor de juego
+class GameEngine {
+  constructor() {
+    this.canvas = document.getElementById('gameCanvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.maze = new MazeManager();
+    this.player = new PacManPlayer(9, 15); // Posición inicial
+    this.ghosts = this.initializeGhosts();
+    this.audio = new AudioManager();
+    this.input = new InputManager();
+    this.ui = new GameUI();
+    this.gameState = 'MENU';
+  }
+}
+
+// Sistema de vectores 2D para posicionamiento preciso
+class Vector2D {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+  
+  add(other) { return new Vector2D(this.x + other.x, this.y + other.y); }
+  multiply(scalar) { return new Vector2D(this.x * scalar, this.y * scalar); }
+  distance(other) { 
+    return Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2); 
+  }
+}
+```
+
+### 2. Sistema de IA de Fantasmas
+
+#### Personalidades Únicas
+
+```javascript
+class GhostAI {
+  constructor(type, startPosition, maze) {
+    this.type = type; // 'BLINKY', 'PINKY', 'INKY', 'CLYDE'
+    this.position = startPosition;
+    this.mode = 'SCATTER'; // SCATTER, CHASE, FLEE, EATEN
+    this.pathfinder = new Pathfinder(maze);
+    this.modeTimer = 0;
+    this.cornerTarget = this.getCornerTarget(type);
+  }
+
+  // Cada fantasma tiene comportamiento único
+  calculateTarget(pacman, blinky = null) {
+    switch (this.type) {
+      case 'BLINKY': // Persecución directa
+        return this.mode === 'CHASE' ? pacman.position : this.cornerTarget;
+        
+      case 'PINKY': // Emboscada: 4 casillas adelante
+        const direction = pacman.direction;
+        const offset = direction.multiply(4);
+        return this.mode === 'CHASE' ? 
+          pacman.position.add(offset) : this.cornerTarget;
+          
+      case 'INKY': // Comportamiento complejo basado en Blinky
+        if (this.mode === 'CHASE' && blinky) {
+          const pacmanAhead = pacman.position.add(pacman.direction.multiply(2));
+          const vector = pacmanAhead.subtract(blinky.position);
+          return blinky.position.add(vector.multiply(2));
+        }
+        return this.cornerTarget;
+        
+      case 'CLYDE': // Patrullo/huida según distancia
+        const distance = this.position.distance(pacman.position);
+        return (this.mode === 'CHASE' && distance > 8) ? 
+          pacman.position : this.cornerTarget;
+    }
+  }
+}
+```
+
+#### Algoritmo de Búsqueda de Caminos (A*)
+
+```javascript
+class Pathfinder {
+  static findPath(start, goal, maze) {
+    const openSet = [start];
+    const closedSet = new Set();
+    const gScore = new Map();
+    const fScore = new Map();
+    const cameFrom = new Map();
+
+    gScore.set(start.toString(), 0);
+    fScore.set(start.toString(), this.heuristic(start, goal));
+
+    while (openSet.length > 0) {
+      // Nodo con menor fScore
+      const current = openSet.reduce((a, b) => 
+        fScore.get(a.toString()) < fScore.get(b.toString()) ? a : b
+      );
+
+      if (current.equals(goal)) {
+        return this.reconstructPath(cameFrom, current);
+      }
+
+      openSet.splice(openSet.indexOf(current), 1);
+      closedSet.add(current.toString());
+
+      // Procesar vecinos válidos
+      for (const neighbor of this.getValidNeighbors(current, maze)) {
+        if (closedSet.has(neighbor.toString())) continue;
+
+        const tentativeGScore = gScore.get(current.toString()) + 1;
+
+        if (!openSet.some(node => node.equals(neighbor))) {
+          openSet.push(neighbor);
+        } else if (tentativeGScore >= gScore.get(neighbor.toString())) {
+          continue;
+        }
+
+        cameFrom.set(neighbor.toString(), current);
+        gScore.set(neighbor.toString(), tentativeGScore);
+        fScore.set(neighbor.toString(), 
+          tentativeGScore + this.heuristic(neighbor, goal));
+      }
+    }
+
+    return []; // No se encontró camino
+  }
+
+  // Distancia Manhattan como heurística
+  static heuristic(a, b) {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  }
+}
+```
+
+### 3. Sistema de Audio Procedural
+
+```javascript
+class AudioManager {
+  constructor() {
+    this.audioContext = new (AudioContext || webkitAudioContext)();
+    this.masterVolume = 1.0;
+    this.sounds = new Map();
+    this.activeLoops = new Map();
+  }
+
+  // Generación procedural de sonidos retro
+  createRetroTone(frequency, duration, type = 'square') {
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+    
+    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, this.audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, 
+      this.audioContext.currentTime + duration);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + duration);
+    
+    return oscillator;
+  }
+
+  // Efectos específicos del juego
+  playPelletSound() {
+    this.createRetroTone(800, 0.1, 'sine');
+  }
+
+  playPowerPelletSound() {
+    this.createRetroTone(400, 0.2, 'sawtooth');
+  }
+
+  playGhostEatenSound() {
+    this.createRetroTone(1000, 0.3, 'square');
+  }
+}
+```
+
+### 4. Optimización de Rendimiento
+
+#### Object Pooling para Pellets
+
+```javascript
+class PelletPool {
+  constructor(size = 100) {
+    this.pool = [];
+    this.active = [];
+    
+    // Pre-poblar el pool
+    for (let i = 0; i < size; i++) {
+      this.pool.push(this.createPellet());
+    }
+  }
+
+  acquire(x, y, isPowerPellet = false) {
+    const pellet = this.pool.pop() || this.createPellet();
+    pellet.reset(x, y, isPowerPellet);
+    this.active.push(pellet);
+    return pellet;
+  }
+
+  release(pellet) {
+    const index = this.active.indexOf(pellet);
+    if (index > -1) {
+      this.active.splice(index, 1);
+      this.pool.push(pellet);
+    }
+  }
+}
+```
+
+#### Renderizado Optimizado
+
+```javascript
+class OptimizedRenderer {
   constructor(canvas) {
     this.canvas = canvas;
-    this.originalWidth = canvas.width;
-    this.originalHeight = canvas.height;
-    this.scale = 1;
-
-    this.setupResponsive();
-    window.addEventListener('resize', () => this.resize());
+    this.ctx = canvas.getContext('2d');
+    this.dirtyRegions = [];
+    
+    // Canvas off-screen para maze estático
+    this.staticCanvas = document.createElement('canvas');
+    this.staticCtx = this.staticCanvas.getContext('2d');
+    this.mazeRendered = false;
   }
 
-  setupResponsive() {
-    const container = this.canvas.parentElement;
-    const rect = container.getBoundingClientRect();
+  // Solo renderizar regiones que cambiaron
+  render(gameState) {
+    if (!this.mazeRendered) {
+      this.renderStaticMaze();
+      this.mazeRendered = true;
+    }
 
-    const scaleX = rect.width / this.originalWidth;
-    const scaleY = rect.height / this.originalHeight;
-    this.scale = Math.min(scaleX, scaleY, 1);
+    // Limpiar solo regiones sucias
+    this.dirtyRegions.forEach(region => {
+      this.ctx.clearRect(region.x, region.y, region.width, region.height);
+      this.ctx.drawImage(this.staticCanvas, 
+        region.x, region.y, region.width, region.height,
+        region.x, region.y, region.width, region.height);
+    });
 
-    this.canvas.style.width = this.originalWidth * this.scale + 'px';
-    this.canvas.style.height = this.originalHeight * this.scale + 'px';
-  }
-
-  resize() {
-    this.setupResponsive();
-  }
-
-  getMousePos(event) {
-    const rect = this.canvas.getBoundingClientRect();
-    return {
-      x: (event.clientX - rect.left) / this.scale,
-      y: (event.clientY - rect.top) / this.scale,
-    };
-  }
-}
-```
-
-### 2. Media Queries CSS
-
-```css
-/* ===================================================================
-   RESPONSIVE DESIGN
-================================================================== */
-
-/* Tablet */
-@media (max-width: 1024px) {
-  .game-container {
-    padding: var(--space-4);
-  }
-
-  .neon-title {
-    font-size: var(--text-3xl);
-  }
-
-  canvas {
-    max-width: 90vw;
-    height: auto;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .game-container {
-    padding: var(--space-2);
-  }
-
-  .game-header h1 {
-    font-size: var(--text-2xl);
-  }
-
-  .game-controls {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  /* Controles táctiles */
-  .touch-controls {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-2);
-    padding: var(--space-4);
-  }
-
-  .touch-button {
-    background: var(--bg-card);
-    border: 2px solid var(--primary-cyan);
-    color: var(--primary-cyan);
-    padding: var(--space-3);
-    border-radius: 8px;
-    font-size: var(--text-lg);
-    touch-action: manipulation;
-  }
-}
-
-/* Mobile Small */
-@media (max-width: 480px) {
-  .game-arcade {
-    padding: var(--space-2) var(--space-1);
-  }
-
-  canvas {
-    max-width: 95vw;
-  }
-
-  .back-button {
-    font-size: var(--text-sm);
-    padding: var(--space-2) var(--space-3);
+    this.renderDynamicElements(gameState);
+    this.dirtyRegions = [];
   }
 }
 ```
 
 ---
 
-## 🔧 Herramientas de Desarrollo
+## 🛡️ Always run the QA checklist before PR
 
-### 1. Configuración VS Code
+Antes de crear un Pull Request, ejecuta siempre el checklist de QA descrito en `/.github/copilot-instructions.md`. Todas las verificaciones deben mostrar ✅ PASS para garantizar la calidad y consistencia del proyecto.
 
-```json
-{
-  "github.copilot.enable": {
-    "*": true,
-    "html": true,
-    "css": true,
-    "javascript": true,
-    "markdown": true
-  },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "liveServer.settings.port": 5500,
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
-  }
-}
-```
-
-### 2. Debugging y Testing
-
+### Quick Audit Command
 ```javascript
-// Utilidades de debugging
-class Debug {
-  static enabled = true;
-
-  static log(message, category = 'INFO') {
-    if (this.enabled) {
-      console.log(`[${category}] ${message}`);
-    }
-  }
-
-  static drawBounds(ctx, entity) {
-    if (this.enabled) {
-      ctx.strokeStyle = '#FF0000';
-      ctx.strokeRect(entity.x, entity.y, entity.width, entity.height);
-    }
-  }
-
-  static showFPS(ctx, fps) {
-    if (this.enabled) {
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = '16px monospace';
-      ctx.fillText(`FPS: ${fps.toFixed(1)}`, 10, 30);
-    }
-  }
-}
-
-// Performance monitoring
-class Performance {
-  constructor() {
-    this.frameCount = 0;
-    this.lastFPSUpdate = 0;
-    this.fps = 0;
-  }
-
-  update(currentTime) {
-    this.frameCount++;
-
-    if (currentTime - this.lastFPSUpdate >= 1000) {
-      this.fps = this.frameCount;
-      this.frameCount = 0;
-      this.lastFPSUpdate = currentTime;
-    }
-  }
-
-  getFPS() {
-    return this.fps;
-  }
-}
+// In browser console on localhost
+window.runAudit()
 ```
 
----
+## 🎮 Game-Specific Guidelines
 
-## 📋 Checklist de Calidad
+Esta sección contiene notas técnicas, patrones y decisiones de arquitectura específicas para cada juego.
 
-### ✅ HTML5
+### Pac-Man GG
+- **IA de Fantasmas**: La IA se basa en un sistema de estados (SCATTER, CHASE, FLEE) con objetivos dinámicos. Blinky persigue directamente, Pinky anticipa el movimiento, Inky usa una lógica vectorial compleja y Clyde alterna entre perseguir y huir.
+- **Pathfinding**: El movimiento de los fantasmas se basa en una heurística de distancia simple en cada intersección para determinar la mejor ruta hacia su objetivo, evitando retroceder. No utiliza un algoritmo A* completo para mantener la lógica clásica.
+- **Renderizado**: El juego utiliza un único bucle `requestAnimationFrame` que llama a `game.update()` y `game.render()`. No hay llamadas de renderizado duplicadas, garantizando un rendimiento óptimo.
+- **Auditoría**: Ejecuta `window.runAudit()` en la consola para verificar el estado del juego en tiempo real.
+- **AI Timing**: SCATTER mode dura 7 segundos (420 frames), CHASE mode dura 20 segundos (1200 frames)
+- **Ghost Release**: Blinky sale inmediatamente (0s), Pinky (2s), Inky (4s), Clyde (6s)
+- **Start Control**: Solo ENTER inicia el juego, SPACE es únicamente para pausar/reanudar
 
-- [ ] DOCTYPE correcto
-- [ ] Meta tags completos (viewport, description, theme-color)
-- [ ] Elementos semánticos (main, section, nav, header)
-- [ ] Navegación de retorno al índice
-- [ ] Canvas con ID único
-- [ ] Atributos de accesibilidad
+### Snake GG
+- **Movimiento**: Basado en una grid estricta de 20x20px. La serpiente siempre se alinea a la grid.
+- **Dificultad**: La velocidad aumenta progresivamente según la puntuación, haciendo el juego más desafiante.
 
-### ✅ CSS3
+### Breakout GG
+- **Física**: La pelota tiene una física de rebote simple pero efectiva. El ángulo de rebote en la paleta depende del punto de impacto.
 
-- [ ] Variables CSS definidas
-- [ ] Fallbacks para Safari
-- [ ] Media queries responsive
-- [ ] Efectos neón implementados
-- [ ] Glassmorphism en cards
-- [ ] Animaciones smooth
-- [ ] Prefijos de navegador
-
-### ✅ JavaScript ES6+
-
-- [ ] Clases para entidades
-- [ ] requestAnimationFrame para game loop
-- [ ] Sistema de colisiones
-- [ ] Manejo de input unificado
-- [ ] Estados del juego
-- [ ] Control de performance
-- [ ] Comentarios en español
-
-### ✅ Experiencia de Usuario
-
-- [ ] Controles responsivos
-- [ ] Feedback visual inmediato
-- [ ] Efectos de partículas
-- [ ] Sistema de puntuación
-- [ ] Pause/resume funcional
-- [ ] Game over y restart
-- [ ] Compatible móvil
-
-### ✅ Documentación
-
-- [ ] prompts.md completo
-- [ ] README.md específico
-- [ ] Comentarios en código
-- [ ] Instrucciones de juego
-- [ ] Controles documentados
-
-### ✅ Testing Cross-Browser
-
-- [ ] Chrome (desktop/mobile)
-- [ ] Firefox (desktop/mobile)
-- [ ] Safari (desktop/mobile)
-- [ ] Edge (desktop)
-- [ ] Performance en dispositivos low-end
-
----
-
-## 🚀 Proceso de Desarrollo Recomendado
-
-### Fase 1: Planificación (30 min)
-
-1. Definir mecánicas core del juego
-2. Crear wireframes básicos
-3. Establecer sistema de puntuación
-4. Planificar estados del juego
-
-### Fase 2: Estructura Base (45 min)
-
-1. Crear archivo HTML semántico
-2. Configurar CSS con variables
-3. Implementar clase GameEngine básica
-4. Configurar canvas responsive
-
-### Fase 3: Mecánicas Core (90 min)
-
-1. Implementar entidades principales
-2. Sistema de colisiones
-3. Manejo de input
-4. Game loop básico
-
-### Fase 4: Polish y Efectos (60 min)
-
-1. Efectos visuales y partículas
-2. Sonidos (opcional)
-3. Animaciones smooth
-4. Feedback visual
-
-### Fase 5: Testing y Documentación (45 min)
-
-1. Testing cross-browser
-2. Optimización de performance
-3. Documentación completa
-4. Preparación para PR
-
----
-
-## 🎯 Siguientes Pasos para Fruit Catcher
-
-Aplicando todos estos principios, el próximo juego **Fruit Catcher** debería incluir:
-
-1. **Mecánicas específicas**:
-
-   - Frutas cayendo con física realista
-   - Cesta del jugador con movimiento horizontal
-   - Sistema de puntuación por tipo de fruta
-   - Power-ups especiales
-   - Incremento de dificultad temporal
-
-2. **Implementación técnica**:
-
-   - Clase `FruitCatcher` extendiendo `GameEngine`
-   - Clase `Fruit` con diferentes tipos y valores
-   - Clase `Basket` para el jugador
-   - Sistema de spawning aleatorio
-   - Detección de colisiones cesta-fruta
-
-3. **Estética visual**:
-   - Tema amarillo/rojo (--gradient-fruit)
-   - Efectos de captura con partículas
-   - Animaciones de caída suaves
-   - UI de tiempo y puntuación
-
-Este documento asegura que todos los futuros juegos mantengan la misma calidad, consistencia visual y arquitectura técnica establecida en la colección AI4Devs Retro Games. 🎮✨
+### Fruit Catcher GG
+- **Persistencia**: El high score se guarda en `localStorage` para persistir entre sesiones de juego.
