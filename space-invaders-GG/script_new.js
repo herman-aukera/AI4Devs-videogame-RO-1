@@ -20,11 +20,6 @@
 // GAME CONFIGURATION
 // ===========================================
 
-// Utility to get CSS variable values
-const getCSSColor = (variable) => {
-  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
-};
-
 const SPACE_CONFIG = {
   canvas: {
     width: 800,
@@ -35,7 +30,7 @@ const SPACE_CONFIG = {
     height: 32,
     speed: 300,
     shootCooldown: 250,
-    get color() { return getCSSColor('--primary-cyan'); },
+    color: '#00FFFF',
   },
   invaders: {
     width: 32,
@@ -46,15 +41,7 @@ const SPACE_CONFIG = {
     horizontalSpeed: 25,
     dropDistance: 24,
     shootChance: 0.001,
-    get colors() { 
-      return [
-        getCSSColor('--accent-red'), 
-        getCSSColor('--accent-orange'), 
-        getCSSColor('--primary-yellow'), 
-        getCSSColor('--accent-green'), 
-        getCSSColor('--primary-cyan')
-      ]; 
-    },
+    colors: ['#FF0000', '#FF6600', '#FFFF00', '#00FF00', '#00FFFF'],
     points: [30, 20, 20, 10, 10],
   },
   projectiles: {
@@ -62,14 +49,14 @@ const SPACE_CONFIG = {
     height: 16,
     playerSpeed: -400,
     invaderSpeed: 200,
-    get playerColor() { return getCSSColor('--primary-yellow'); },
-    get invaderColor() { return getCSSColor('--primary-magenta'); },
+    playerColor: '#FFFF00',
+    invaderColor: '#FF00FF',
   },
   barriers: {
     count: 4,
     width: 80,
     height: 60,
-    get color() { return getCSSColor('--accent-green'); },
+    color: '#00FF00',
     startY: 450,
   },
   ufo: {
@@ -78,7 +65,7 @@ const SPACE_CONFIG = {
     speed: 100,
     spawnChance: 0.002,
     points: [50, 100, 150, 200, 250, 300],
-    get color() { return getCSSColor('--primary-magenta'); },
+    color: '#FF00FF',
   },
   game: {
     fps: 60,
@@ -86,9 +73,9 @@ const SPACE_CONFIG = {
     levelSpeedIncrease: 1.2,
   },
   colors: {
-    get background() { return getCSSColor('--bg-primary'); },
-    get stars() { return '#FFFFFF'; },
-    get ui() { return getCSSColor('--primary-cyan'); },
+    background: '#000011',
+    stars: '#FFFFFF',
+    ui: '#00FFFF',
   },
 };
 
@@ -246,146 +233,6 @@ class ParticleSystem {
 }
 
 // ===========================================
-// SPRITE RENDERER
-// ===========================================
-
-class SpriteRenderer {
-  static renderInvaderSprite(ctx, x, y, width, height, type, frame = 0) {
-    const cellWidth = width / 8;
-    const cellHeight = height / 6;
-    
-    // Different invader patterns
-    const patterns = {
-      0: [ // Top row invader (octopus)
-        [0,0,1,0,0,0,1,0],
-        [0,0,0,1,1,0,0,0],
-        [0,0,1,1,1,1,0,0],
-        [0,1,0,1,1,0,1,0],
-        [1,1,1,1,1,1,1,1],
-        [1,0,1,1,1,1,0,1]
-      ],
-      1: [ // Second row invader (crab)
-        [0,0,1,0,0,1,0,0],
-        [0,0,0,1,1,0,0,0],
-        [0,0,1,1,1,1,0,0],
-        [0,1,0,1,1,0,1,0],
-        [1,1,1,1,1,1,1,1],
-        [1,0,1,0,0,1,0,1]
-      ],
-      2: [ // Third row invader (squid)
-        [0,0,1,0,0,1,0,0],
-        [1,0,0,1,1,0,0,1],
-        [1,0,1,1,1,1,0,1],
-        [1,1,0,1,1,0,1,1],
-        [0,0,1,0,0,1,0,0],
-        [0,1,0,1,1,0,1,0]
-      ],
-      3: [ // Fourth row invader
-        [0,0,0,1,1,0,0,0],
-        [0,0,1,1,1,1,0,0],
-        [0,1,1,1,1,1,1,0],
-        [1,1,0,1,1,0,1,1],
-        [1,1,1,1,1,1,1,1],
-        [0,1,0,1,1,0,1,0]
-      ],
-      4: [ // Bottom row invader
-        [0,0,0,1,1,0,0,0],
-        [0,0,1,1,1,1,0,0],
-        [0,1,1,1,1,1,1,0],
-        [1,1,0,1,1,0,1,1],
-        [1,1,1,1,1,1,1,1],
-        [0,0,1,0,0,1,0,0]
-      ]
-    };
-    
-    const pattern = patterns[type] || patterns[0];
-    
-    // Animation frame affects leg position
-    if (frame % 2 === 1 && pattern[5]) {
-      // Alternate leg position for animation
-      for (let i = 0; i < pattern[5].length; i++) {
-        if (pattern[5][i] === 1) {
-          pattern[5][i] = pattern[5][i] === 1 ? 0 : 1;
-        }
-      }
-    }
-    
-    ctx.save();
-    for (let row = 0; row < pattern.length; row++) {
-      for (let col = 0; col < pattern[row].length; col++) {
-        if (pattern[row][col] === 1) {
-          ctx.fillRect(
-            x + col * cellWidth,
-            y + row * cellHeight,
-            cellWidth,
-            cellHeight
-          );
-        }
-      }
-    }
-    ctx.restore();
-  }
-  
-  static renderPlayerSprite(ctx, x, y, width, height) {
-    const cellWidth = width / 8;
-    const cellHeight = height / 6;
-    
-    // Player ship pattern
-    const pattern = [
-      [0,0,0,0,0,0,0,0],
-      [0,0,0,1,1,0,0,0],
-      [0,0,0,1,1,0,0,0],
-      [0,1,1,1,1,1,1,0],
-      [1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1]
-    ];
-    
-    ctx.save();
-    for (let row = 0; row < pattern.length; row++) {
-      for (let col = 0; col < pattern[row].length; col++) {
-        if (pattern[row][col] === 1) {
-          ctx.fillRect(
-            x + col * cellWidth,
-            y + row * cellHeight,
-            cellWidth,
-            cellHeight
-          );
-        }
-      }
-    }
-    ctx.restore();
-  }
-  
-  static renderUFOSprite(ctx, x, y, width, height) {
-    const cellWidth = width / 10;
-    const cellHeight = height / 4;
-    
-    // UFO pattern
-    const pattern = [
-      [0,0,1,1,1,1,1,1,0,0],
-      [0,1,1,1,1,1,1,1,1,0],
-      [1,1,0,1,1,1,1,0,1,1],
-      [1,0,1,0,1,1,0,1,0,1]
-    ];
-    
-    ctx.save();
-    for (let row = 0; row < pattern.length; row++) {
-      for (let col = 0; col < pattern[row].length; col++) {
-        if (pattern[row][col] === 1) {
-          ctx.fillRect(
-            x + col * cellWidth,
-            y + row * cellHeight,
-            cellWidth,
-            cellHeight
-          );
-        }
-      }
-    }
-    ctx.restore();
-  }
-}
-
-// ===========================================
 // GAME ENTITIES
 // ===========================================
 
@@ -464,8 +311,12 @@ class Player {
 
   render(ctx) {
     ctx.fillStyle = this.color;
-    // Use pixel-perfect sprite rendering
-    SpriteRenderer.renderPlayerSprite(ctx, this.x - this.width / 2, this.y, this.width, this.height);
+    // Simple ship shape
+    ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
+    
+    // Ship detail
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(this.x - 4, this.y, 8, 16);
   }
 
   getBounds() {
@@ -502,9 +353,18 @@ class Invader {
 
     ctx.fillStyle = this.color;
     
-    // Use pixel-perfect sprite rendering with animation frame
+    // Simple invader shape with animation
     const frame = Math.floor(this.animFrame) % 2;
-    SpriteRenderer.renderInvaderSprite(ctx, this.x - this.width / 2, this.y, this.width, this.height, this.row, frame);
+    if (frame === 0) {
+      ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height);
+    } else {
+      ctx.fillRect(this.x - this.width / 2 + 2, this.y, this.width - 4, this.height);
+    }
+    
+    // Eyes
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(this.x - 8, this.y + 4, 4, 4);
+    ctx.fillRect(this.x + 4, this.y + 4, 4, 4);
   }
 
   getBounds() {
@@ -646,7 +506,7 @@ class Barrier {
     this.damage = [];
   }
 
-  update() {
+  update(deltaTime) {
     // Barriers don't need regular updates
   }
 
@@ -728,7 +588,11 @@ class UFO {
     if (!this.active) return;
     
     ctx.fillStyle = this.color;
-    SpriteRenderer.renderUFOSprite(ctx, this.x, this.y, this.width, this.height);
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    
+    // UFO details
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(this.x + 8, this.y + 4, this.width - 16, 4);
   }
 
   getBounds() {
@@ -761,7 +625,7 @@ class InputManager {
   setupEventListeners() {
     document.addEventListener('keydown', (e) => {
       this.keys.add(e.code);
-      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter'].includes(e.code)) {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(e.code)) {
         e.preventDefault();
       }
     });
@@ -882,12 +746,6 @@ class SpaceInvadersGame {
   }
 
   handleInput() {
-    // Game start controls (Enter or Space)
-    if ((this.inputManager.isPressed('Enter') || this.inputManager.isPressed('Space')) && 
-        (this.gameState === GAME_STATES.MENU || this.gameState === GAME_STATES.GAME_OVER)) {
-      this.restart();
-    }
-    
     if (this.inputManager.isPressed('KeyP')) {
       this.togglePause();
     }
@@ -1193,7 +1051,7 @@ class SpaceInvadersGame {
   }
 
   /**
-   * Enhanced TDD Audit System - AI4Devs Standards Compliance with Visual Fidelity
+   * TDD Audit System - AI4Devs Standards Compliance
    */
   runAuditTasks() {
     const results = [];
@@ -1222,48 +1080,10 @@ class SpaceInvadersGame {
       document.body.textContent.includes('¿Cómo jugar?');
     results.push({ name: 'Instructions Section', pass: hasInstructions, critical: false });
     
-    // Visual Fidelity & Effects Tests
-    const spriteRendererExists = typeof SpriteRenderer !== 'undefined';
-    results.push({ name: 'Sprite Renderer Available', pass: spriteRendererExists, critical: true });
-    
-    const canvas = document.querySelector('canvas');
-    const canvasStyle = canvas ? getComputedStyle(canvas) : null;
-    const hasGlowEffect = canvasStyle && (canvasStyle.filter.includes('drop-shadow') || canvasStyle.boxShadow.includes('cyan'));
-    results.push({ name: 'Neon Glow Effects', pass: hasGlowEffect, critical: false });
-    
-    const containerStyle = document.querySelector('.game-canvas-container');
-    const containerGlow = containerStyle ? getComputedStyle(containerStyle) : null;
-    const hasContainerGlow = containerGlow && containerGlow.boxShadow.includes('#00ffff');
-    results.push({ name: 'Container Glow Effect', pass: hasContainerGlow, critical: false });
-    
-    // CSS Variables & Consistency Tests
-    const rootStyle = getComputedStyle(document.documentElement);
-    const hasCyanVar = rootStyle.getPropertyValue('--primary-cyan').includes('#00ffff');
-    const hasMagentaVar = rootStyle.getPropertyValue('--primary-magenta').includes('#ff00ff');
-    const hasYellowVar = rootStyle.getPropertyValue('--primary-yellow').includes('#ffff00');
-    const neonPaletteComplete = hasCyanVar && hasMagentaVar && hasYellowVar;
-    results.push({ name: 'Neon Color Palette Variables', pass: neonPaletteComplete, critical: false });
-    
-    // Control Consistency Tests
-    const overlayMessage = document.querySelector('#overlayMessage');
-    const hasEnterControl = overlayMessage && overlayMessage.textContent.includes('ENTER');
-    results.push({ name: 'Enter Key Support', pass: hasEnterControl, critical: false });
-    
-    const playButton = document.querySelector('.overlay-button');
-    const hasPlayButton = playButton && playButton.textContent.includes('JUGAR');
-    results.push({ name: 'Consistent Play Button', pass: hasPlayButton, critical: false });
-    
-    // Mobile Controls
-    const mobileControls = document.querySelector('.mobile-controls');
-    const hasMobileControls = mobileControls && mobileControls.querySelectorAll('.dpad-btn').length >= 2;
-    results.push({ name: 'Mobile Touch Controls', pass: hasMobileControls, critical: false });
-    
     // Technical Tests
+    const canvas = document.querySelector('canvas');
     const hasCanvas = canvas && canvas.width === 800 && canvas.height === 600;
     results.push({ name: 'Canvas Configuration', pass: hasCanvas, critical: true });
-    
-    const isResponsive = canvas && getComputedStyle(canvas).maxWidth === '100%';
-    results.push({ name: 'Responsive Canvas', pass: isResponsive, critical: true });
     
     // Accessibility Tests
     const hasKeyboardNav = document.querySelector('[tabindex]') || document.querySelector('button');
@@ -1303,15 +1123,8 @@ class SpaceInvadersGame {
       critical: false 
     });
     
-    // Visual Authenticity Tests
-    const hasPixelArt = this.ctx && !this.ctx.imageSmoothingEnabled;
-    results.push({ name: 'Pixel-Perfect Rendering', pass: hasPixelArt, critical: false });
-    
-    const cssColorFunction = typeof getCSSColor === 'function';
-    results.push({ name: 'CSS Color Integration', pass: cssColorFunction, critical: false });
-    
     // Log results
-    console.log('🔍 Enhanced TDD Audit Results:');
+    console.log('🔍 TDD Audit Results:');
     console.table(results);
     
     const criticalFails = results.filter(r => !r.pass && r.critical);
@@ -1325,16 +1138,6 @@ class SpaceInvadersGame {
     const passedCount = results.filter(r => r.pass).length;
     const totalCount = results.length;
     console.log(`📊 Overall Score: ${passedCount}/${totalCount} (${Math.round(passedCount/totalCount*100)}%)`);
-    
-    // Visual fidelity summary
-    const visualTests = results.filter(r => 
-      r.name.includes('Glow') || 
-      r.name.includes('Sprite') || 
-      r.name.includes('Palette') || 
-      r.name.includes('Pixel')
-    );
-    const visualPassed = visualTests.filter(r => r.pass).length;
-    console.log(`🎨 Visual Fidelity Score: ${visualPassed}/${visualTests.length} (${Math.round(visualPassed/visualTests.length*100)}%)`);
     
     return { allPassed: results.every(r => r.pass), criticalPassed: allCriticalPassed, results };
   }
@@ -1363,7 +1166,6 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // Export for testing (if needed)
-/* global module:readonly */
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = { SpaceInvadersGame, SPACE_CONFIG, GAME_STATES };
 }

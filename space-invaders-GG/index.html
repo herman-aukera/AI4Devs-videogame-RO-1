@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- © GG, MIT License -->
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpaceInvaders - GG Edition</title>
-    <meta name="description" content="SpaceInvaders retro arcade game - AI4Devs collection" />
-    <meta name="keywords" content="game, retro, arcade, space-invaders, html5, canvas" />
+    <title>Space Invaders - GG Edition</title>
+    <meta name="description" content="Space Invaders juego retro arcade - Colección AI4Devs" />
+    <meta name="keywords" content="juego, retro, arcade, space-invaders, html5, canvas" />
     <meta name="theme-color" content="#00FFFF" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="SpaceInvaders - GG Edition" />
-    <meta property="og:description" content="SpaceInvaders retro arcade game" />
+    <meta property="og:title" content="Space Invaders - GG Edition" />
+    <meta property="og:description" content="Space Invaders juego retro arcade" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico" />
@@ -22,80 +23,110 @@
     <!-- Navegación de retorno -->
     <nav class="game-navigation">
       <a href="../index.html" class="back-button">
-        <span class="back-icon">⬅</span>
-        <span class="back-text">VOLVER AL ÍNDICE</span>
+        <span class="back-icon">←</span>
+        <span class="back-text">INICIO</span>
       </a>
     </nav>
 
     <!-- Container principal del juego -->
     <main class="game-container">
       <header class="game-header">
-        <h1 class="game-title">SPACEINVADERS</h1>
+        <h1 class="game-title">SPACE INVADERS</h1>
         <div class="game-subtitle">GG EDITION</div>
       </header>
 
       <!-- HUD del juego -->
       <section class="game-hud">
         <div class="hud-item">
-          <span class="hud-label">SCORE</span>
+          <span class="hud-label">PUNTUACIÓN</span>
           <span class="hud-value" id="score">0</span>
         </div>
         <div class="hud-item">
-          <span class="hud-label">LEVEL</span>
+          <span class="hud-label">NIVEL</span>
           <span class="hud-value" id="level">1</span>
         </div>
         <div class="hud-item">
-          <span class="hud-label">HIGH SCORE</span>
+          <span class="hud-label">VIDAS</span>
+          <span class="hud-value" id="lives">3</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">MEJOR PUNTUACIÓN</span>
           <span class="hud-value" id="highScore">0</span>
         </div>
       </section>
 
       <!-- Canvas del juego -->
       <div class="game-canvas-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <canvas id="gameCanvas" width="800" height="600" 
+                aria-label="Área de juego Space Invaders" 
+                role="img"></canvas>
+        
+        <!-- CRT Scanlines overlay -->
+        <div class="crt-scanlines"></div>
         
         <!-- Overlay para estados del juego -->
         <div class="game-overlay" id="gameOverlay">
           <div class="overlay-content">
-            <h2 class="overlay-title" id="overlayTitle">GAME READY</h2>
-            <p class="overlay-message" id="overlayMessage">Press SPACE to start</p>
-            <button class="overlay-button" id="overlayButton">START GAME</button>
+            <h2 class="overlay-title" id="overlayTitle">LISTO PARA JUGAR</h2>
+            <p class="overlay-message" id="overlayMessage">Presiona ENTER o ESPACIO para comenzar</p>
+            <button class="overlay-button" id="overlayButton" tabindex="0">JUGAR</button>
           </div>
         </div>
       </div>
 
       <!-- Controles móviles -->
-      <section class="mobile-controls" id="mobileControls">
+      <section class="mobile-controls" id="mobileControls" aria-label="Controles móviles">
         <div class="control-dpad">
-          <button class="dpad-btn dpad-up" data-direction="up">↑</button>
-          <button class="dpad-btn dpad-left" data-direction="left">←</button>
-          <button class="dpad-btn dpad-right" data-direction="right">→</button>
-          <button class="dpad-btn dpad-down" data-direction="down">↓</button>
+          <button class="dpad-btn dpad-left" data-direction="left" aria-label="Mover izquierda">←</button>
+          <button class="dpad-btn dpad-right" data-direction="right" aria-label="Mover derecha">→</button>
+          <button class="action-btn action-shoot" data-action="shoot" aria-label="Disparar">🚀</button>
         </div>
         <div class="control-actions">
-          <button class="action-btn action-pause">⏸</button>
-          <button class="action-btn action-restart">↻</button>
+          <button class="action-btn action-pause" aria-label="Pausa">⏸</button>
+          <button class="action-btn action-restart" aria-label="Reiniciar">↻</button>
         </div>
       </section>
 
       <!-- Instrucciones -->
-      <section class="game-instructions">
-        <h3>CONTROLS</h3>
-        <div class="instructions-grid">
-          <div class="instruction-item">
-            <span class="instruction-key">ARROWS / WASD</span>
-            <span class="instruction-desc">Move</span>
+      <details class="game-instructions">
+        <summary>¿Cómo jugar?</summary>
+        <div class="instructions-content">
+          <h3>CONTROLES</h3>
+          <div class="instructions-grid">
+            <div class="instruction-item">
+              <span class="instruction-key">← →</span>
+              <span class="instruction-desc">Mover nave</span>
+            </div>
+            <div class="instruction-item">
+              <span class="instruction-key">ENTER</span>
+              <span class="instruction-desc">Iniciar juego</span>
+            </div>
+            <div class="instruction-item">
+              <span class="instruction-key">ESPACIO</span>
+              <span class="instruction-desc">Disparar</span>
+            </div>
+            <div class="instruction-item">
+              <span class="instruction-key">P</span>
+              <span class="instruction-desc">Pausa</span>
+            </div>
+            <div class="instruction-item">
+              <span class="instruction-key">R</span>
+              <span class="instruction-desc">Reiniciar</span>
+            </div>
           </div>
-          <div class="instruction-item">
-            <span class="instruction-key">SPACE</span>
-            <span class="instruction-desc">Pause/Resume</span>
-          </div>
-          <div class="instruction-item">
-            <span class="instruction-key">R</span>
-            <span class="instruction-desc">Restart</span>
-          </div>
+          
+          <h3>OBJETIVO</h3>
+          <p>Destruye todos los invasores antes de que lleguen al suelo. Evita sus disparos y protégete tras las barreras.</p>
+          
+          <h3>PUNTUACIÓN</h3>
+          <ul>
+            <li>Invasor superior: 30 puntos</li>
+            <li>Invasor medio: 20 puntos</li>
+            <li>Invasor inferior: 10 puntos</li>
+            <li>UFO: 50-300 puntos</li>
+          </ul>
         </div>
-      </section>
+      </details>
     </main>
 
     <!-- Scripts -->

@@ -1,30 +1,33 @@
+/* © GG, MIT License */
 /* ==============================================
-   SpaceInvaders - GG Edition
-   Retro arcade styling with modern CSS3
+   Space Invaders - GG Edition
+   Retro arcade styling with AI4Devs standards
+   Neon color palette and pixel-perfect aesthetics
    ============================================== */
 
-/* Variables CSS retro */
+/* Variables CSS retro - AI4Devs Compliant */
 :root {
-  /* Colores principales */
-  --primary-cyan: #00ffff;
-  --primary-magenta: #ff00ff;
-  --primary-yellow: #ffff00;
-  --accent-green: #00ff00;
-  --accent-orange: #ff6600;
-  --accent-red: #ff0040;
+  /* AI4Devs Standard Neon Colors */
+  --primary-cyan: #00ffff;      /* Primary neon cyan */
+  --primary-magenta: #ff00ff;   /* Primary neon magenta */
+  --primary-yellow: #ffff00;    /* Primary neon yellow */
+  --accent-green: #00ff00;      /* Accent neon green */
+  --accent-orange: #ff6600;     /* Supporting orange */
+  --accent-red: #ff0040;        /* Supporting red */
   
-  /* Fondos */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #16213e;
+  /* Fondos retro */
+  --bg-primary: #0a0a0f;        /* Deep space black */
+  --bg-secondary: #1a1a2e;      /* Dark navy */
+  --bg-tertiary: #16213e;       /* Midnight blue */
   
-  /* Efectos */
+  /* Efectos neon */
   --glow-primary: 0 0 10px var(--primary-cyan);
   --glow-secondary: 0 0 15px var(--primary-magenta);
+  --glow-tertiary: 0 0 10px var(--primary-yellow);
   --shadow-depth: 0 4px 15px rgba(0, 255, 255, 0.3);
   
-  /* Tipografía */
-  --font-main: 'Courier New', 'Lucida Console', monospace;
+  /* Tipografía pixel/monospace */
+  --font-main: 'Courier New', 'Monaco', 'Lucida Console', monospace;
   --font-size-xl: 2.5rem;
   --font-size-lg: 1.8rem;
   --font-size-md: 1.2rem;
@@ -37,7 +40,7 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   
-  /* Transiciones */
+  /* Transiciones retro (rápidas) */
   --transition-fast: 0.15s ease-out;
   --transition-medium: 0.3s ease-out;
   --transition-slow: 0.5s ease-out;
@@ -180,14 +183,61 @@ body {
   display: inline-block;
   border: 3px solid var(--primary-cyan);
   border-radius: 12px;
-  box-shadow: var(--shadow-depth);
+  box-shadow: 
+    var(--shadow-depth),
+    0 0 20px var(--primary-cyan),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
   background: var(--bg-primary);
   overflow: hidden;
+  animation: containerGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes containerGlow {
+  from { 
+    box-shadow: 
+      var(--shadow-depth),
+      0 0 20px var(--primary-cyan),
+      inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+  to { 
+    box-shadow: 
+      var(--shadow-depth),
+      0 0 30px var(--primary-cyan),
+      0 0 40px var(--primary-cyan),
+      inset 0 0 30px rgba(0, 255, 255, 0.2);
+  }
 }
 
 #gameCanvas {
   display: block;
   background: linear-gradient(45deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  max-width: 100%;
+  height: auto;
+  /* CRT and neon effects */
+  filter: 
+    drop-shadow(0 0 15px var(--primary-cyan))
+    drop-shadow(0 0 30px var(--primary-cyan))
+    contrast(1.1)
+    brightness(1.05);
+}
+
+/* CRT Scanlines overlay */
+.crt-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 255, 0.03) 2px,
+    rgba(0, 255, 255, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
 }
 
 /* Overlay para estados del juego */
@@ -257,7 +307,7 @@ body {
   box-shadow: 0 6px 20px rgba(0, 255, 255, 0.5);
 }
 
-/* Controles móviles */
+/* Controles móviles - Space Invaders específicos */
 .mobile-controls {
   display: none;
   justify-content: space-between;
@@ -273,17 +323,16 @@ body {
 }
 
 .control-dpad {
-  position: relative;
-  width: 120px;
-  height: 120px;
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
 }
 
 .dpad-btn {
-  position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 44px;     /* AI4Devs minimum touch target */
+  height: 44px;    /* AI4Devs minimum touch target */
   background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
-  border: none;
+  border: 2px solid var(--primary-cyan);
   border-radius: 8px;
   color: var(--bg-primary);
   font-size: 1.2rem;
@@ -291,17 +340,35 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   touch-action: manipulation;
+  user-select: none;
 }
 
 .dpad-btn:active {
   transform: scale(0.95);
   box-shadow: 0 0 15px var(--primary-cyan);
+  background: linear-gradient(45deg, var(--primary-yellow), var(--primary-cyan));
 }
 
-.dpad-up { top: 0; left: 50%; transform: translateX(-50%); }
-.dpad-down { bottom: 0; left: 50%; transform: translateX(-50%); }
-.dpad-left { left: 0; top: 50%; transform: translateY(-50%); }
-.dpad-right { right: 0; top: 50%; transform: translateY(-50%); }
+/* Botón de disparo específico para Space Invaders */
+.action-shoot {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--primary-yellow), var(--accent-orange));
+  border: 2px solid var(--primary-yellow);
+  border-radius: 50%;
+  color: var(--bg-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  user-select: none;
+  margin: 0 var(--spacing-sm);
+}
+
+.action-shoot:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 20px var(--primary-yellow);
+}
 
 .control-actions {
   display: flex;
@@ -310,16 +377,17 @@ body {
 }
 
 .action-btn {
-  width: 50px;
-  height: 50px;
+  width: 44px;     /* AI4Devs minimum touch target */
+  height: 44px;    /* AI4Devs minimum touch target */
   background: linear-gradient(45deg, var(--accent-orange), var(--accent-red));
-  border: none;
-  border-radius: 50%;
+  border: 2px solid var(--accent-orange);
+  border-radius: 8px;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all var(--transition-fast);
   touch-action: manipulation;
+  user-select: none;
 }
 
 .action-btn:active {
@@ -327,30 +395,99 @@ body {
   box-shadow: 0 0 15px var(--accent-orange);
 }
 
-/* Instrucciones */
+/* Instrucciones expandibles - AI4Devs Standard */
 .game-instructions {
-  text-align: center;
   margin-top: var(--spacing-lg);
-  padding: var(--spacing-md);
+  max-width: 600px;
+}
+
+.game-instructions summary {
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  color: var(--primary-magenta);
+  text-shadow: var(--glow-secondary);
+  cursor: pointer;
+  padding: var(--spacing-sm) var(--spacing-md);
   background: rgba(26, 26, 46, 0.6);
   border: 2px solid var(--primary-magenta);
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  max-width: 600px;
+  list-style: none;
+  transition: all var(--transition-medium);
+  user-select: none;
+  letter-spacing: 0.1em;
 }
 
-.game-instructions h3 {
-  color: var(--primary-magenta);
+.game-instructions summary:hover {
+  box-shadow: var(--glow-secondary);
+  transform: translateY(-1px);
+}
+
+.game-instructions summary::-webkit-details-marker {
+  display: none;
+}
+
+.game-instructions summary::before {
+  content: '▶ ';
+  transition: transform var(--transition-fast);
+}
+
+.game-instructions[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.instructions-content {
+  padding: var(--spacing-md);
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid var(--primary-cyan);
+  border-radius: 12px;
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  backdrop-filter: blur(10px);
+  margin-top: -2px;
+}
+
+.instructions-content h3 {
+  color: var(--primary-cyan);
   font-size: var(--font-size-md);
   margin-bottom: var(--spacing-sm);
   letter-spacing: 0.1em;
-  text-shadow: var(--glow-secondary);
+  text-shadow: var(--glow-primary);
+}
+
+.instructions-content p {
+  color: var(--primary-yellow);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+.instructions-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.instructions-content li {
+  color: var(--accent-green);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+  padding-left: var(--spacing-sm);
+  position: relative;
+}
+
+.instructions-content li::before {
+  content: '◆';
+  color: var(--primary-cyan);
+  position: absolute;
+  left: 0;
 }
 
 .instructions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .instruction-item {
@@ -369,12 +506,15 @@ body {
   border: 1px solid var(--primary-yellow);
   border-radius: 4px;
   letter-spacing: 1px;
+  min-width: 44px; /* AI4Devs minimum touch target for mobile */
+  text-align: center;
 }
 
 .instruction-desc {
   font-size: var(--font-size-sm);
   color: var(--primary-cyan);
   opacity: 0.8;
+  text-align: center;
 }
 
 /* Responsive Design */
@@ -402,7 +542,7 @@ body {
 
   #gameCanvas {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     height: auto;
   }
 
