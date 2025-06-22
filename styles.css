@@ -416,6 +416,15 @@ body {
   background: radial-gradient(circle, var(--primary-yellow) 0%, transparent 70%);
 }
 
+.tetris-theme .game-title {
+  color: var(--primary-magenta);
+  text-shadow: 0 0 15px var(--primary-magenta);
+}
+
+.tetris-theme .card-glow {
+  background: radial-gradient(circle, var(--primary-magenta) 0%, transparent 70%);
+}
+
 /* ===================================================================
    8.1. PATRONES DE TARJETAS
 ================================================================== */
@@ -501,6 +510,28 @@ body {
   50% { 
     opacity: 0.2;
     filter: brightness(1.5);
+  }
+}
+
+.tetris-pattern {
+  background: 
+    linear-gradient(90deg, var(--primary-magenta) 20%, transparent 20%),
+    linear-gradient(0deg, var(--primary-magenta) 20%, transparent 20%);
+  background-size: 20px 20px;
+  animation: tetris-drop 2s linear infinite;
+}
+
+@keyframes tetris-drop {
+  0% { 
+    background-position: 0 0, 0 0;
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% { 
+    background-position: 0 20px, 20px 0;
+    opacity: 0.1;
   }
 }
 

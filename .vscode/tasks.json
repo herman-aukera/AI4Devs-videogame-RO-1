@@ -1,0 +1,253 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Development Server",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "8000"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "detail": "Start HTTP server for game development and testing"
+    },
+    {
+      "label": "Create New Game",
+      "type": "shell",
+      "command": "mkdir",
+      "args": ["${input:gameName}-GG"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "dependsOn": "Setup Game Structure",
+      "detail": "Create a new game folder with the standard structure"
+    },
+    {
+      "label": "Setup Game Structure",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "cd ${input:gameName}-GG && touch index.html style.css script.js prompts.md README.md && mkdir -p assets/{images,sounds,fonts}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Create the standard file structure for a new game"
+    },
+    {
+      "label": "Validate HTML5",
+      "type": "shell",
+      "command": "npx",
+      "args": ["html-validate", "**/*.html"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": {
+        "owner": "html-validate",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+)\\s+(error|warning|info)\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      },
+      "detail": "Validate HTML5 structure and semantics"
+    },
+    {
+      "label": "Validate CSS3",
+      "type": "shell",
+      "command": "npx",
+      "args": ["stylelint", "**/*.css", "--formatter", "compact"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": {
+        "owner": "stylelint",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.+?):\\s+(\\d+):(\\d+)\\s+(error|warning)\\s+(.+?)\\s+(.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        }
+      },
+      "detail": "Validate CSS3 syntax and best practices"
+    },
+    {
+      "label": "Lint JavaScript",
+      "type": "shell",
+      "command": "npx",
+      "args": ["eslint", "**/*.js", "--format", "compact"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": {
+        "owner": "eslint",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.+?):\\s+line\\s+(\\d+),\\s+col\\s+(\\d+),\\s+(Error|Warning|Info)\\s+-\\s+(.+?)\\s+\\((.+?)\\)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        }
+      },
+      "detail": "Lint JavaScript ES6+ code for errors and best practices"
+    },
+    {
+      "label": "Run All Validations",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Validate HTML5",
+        "Validate CSS3", 
+        "Lint JavaScript"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Run complete code quality validation suite"
+    },
+    {
+      "label": "Performance Benchmark",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/performance-test.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Run performance benchmarks for all games"
+    },
+    {
+      "label": "Mobile Testing Server",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "8080", "--bind", "0.0.0.0"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start server accessible from mobile devices on network"
+    },
+    {
+      "label": "Generate Game Template",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/generate-template.js", "${input:gameName}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Generate complete game template with boilerplate code"
+    },
+    {
+      "label": "Optimize Assets",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/optimize-assets.js"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Optimize images, audio, and other game assets"
+    },
+    {
+      "label": "Deploy to GitHub Pages",
+      "type": "shell",
+      "command": "git",
+      "args": ["subtree", "push", "--prefix", ".", "origin", "gh-pages"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "detail": "Deploy games to GitHub Pages"
+    },
+    {
+      "label": "Accessibility Check",
+      "type": "shell",
+      "command": "npx",
+      "args": ["axe-cli", "http://localhost:8000", "--include", "main", "--tags", "wcag2a,wcag2aa"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "dependsOn": "Start Development Server",
+      "detail": "Check accessibility compliance (WCAG 2.1 AA)"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "gameName",
+      "description": "Enter the game name (without -GG suffix)",
+      "default": "new-game",
+      "type": "promptString"
+    }
+  ]
+}

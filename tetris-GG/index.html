@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- © GG, MIT License -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧩 Tetris GG - AI4Devs Retro Games</title>
+  <meta name="description" content="Tetris clásico con efectos neón, controles táctiles y jugabilidad auténtica de arcade">
+  <meta name="keywords" content="tetris, retro, arcade, puzzle, HTML5, JavaScript, neon, responsive">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="🧩 Tetris GG - AI4Devs Retro Games">
+  <meta property="og:description" content="Tetris clásico con efectos neón, controles táctiles y jugabilidad auténtica de arcade">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="game-header">
+    <nav class="game-navigation">
+      <a href="../index.html" class="back-button neon-text">← INICIO</a>
+    </nav>
+    <h1 class="game-title neon-title">🧩 Tetris GG</h1>
+  </header>
+
+  <main class="game-container">
+    <section class="game-area">
+      <div class="game-board-container">
+        <canvas id="gameCanvas" class="game-canvas" role="img" aria-label="Tetris gameplay area"></canvas>
+        <canvas id="nextCanvas" class="next-canvas" role="img" aria-label="Next piece preview"></canvas>
+      </div>
+
+      <div class="game-ui">
+        <div class="score-panel">
+          <div class="stat-item">
+            <span class="label">Puntuación:</span>
+            <span id="scoreValue" class="value">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Nivel:</span>
+            <span id="levelValue" class="value">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Líneas:</span>
+            <span id="linesValue" class="value">0</span>
+          </div>
+        </div>
+
+        <div class="next-panel">
+          <h3>Siguiente:</h3>
+          <div id="nextPieceDisplay"></div>
+        </div>
+
+        <div class="game-controls">
+          <button type="button" id="pauseBtn" class="control-btn">PAUSA</button>
+          <button type="button" id="restartBtn" class="control-btn">REINICIAR</button>
+        </div>
+      </div>
+    </section>
+
+    <details class="game-instructions">
+      <summary class="instructions-title">¿Cómo jugar?</summary>
+      <div class="instructions-content">
+        <h3>Controles:</h3>
+        <ul>
+          <li><strong>Flechas ← →:</strong> Mover pieza</li>
+          <li><strong>Flecha ↓:</strong> Caída suave</li>
+          <li><strong>Flecha ↑ o W:</strong> Rotar pieza</li>
+          <li><strong>Espacio:</strong> Caída rápida</li>
+          <li><strong>P:</strong> Pausar/Reanudar</li>
+        </ul>
+
+        <h3>Objetivo:</h3>
+        <p>Completa líneas horizontales para eliminarlas. El juego termina cuando las piezas alcanzan la parte superior.</p>
+
+        <h3>Puntuación:</h3>
+        <ul>
+          <li><strong>1 línea:</strong> 100 puntos × nivel</li>
+          <li><strong>2 líneas:</strong> 300 puntos × nivel</li>
+          <li><strong>3 líneas:</strong> 500 puntos × nivel</li>
+          <li><strong>4 líneas (TETRIS):</strong> 800 puntos × nivel</li>
+        </ul>
+      </div>
+    </details>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

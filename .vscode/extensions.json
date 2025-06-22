@@ -1,0 +1,80 @@
+{
+  "recommendations": [
+    // Core Development Extensions
+    "ms-vscode.vscode-typescript-next",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag",
+    
+    // HTML & CSS Extensions  
+    "htmlhint.vscode-htmlhint",
+    "stylelint.vscode-stylelint",
+    "zignd.html-css-class-completion",
+    "ecmel.vscode-html-css",
+    "pranaygp.vscode-css-peek",
+    
+    // JavaScript & Node.js
+    "ms-vscode.vscode-json",
+    "christian-kohler.path-intellisense",
+    "visualstudioexptteam.vscodeintellicode",
+    "ms-vscode.vscode-js-profile-flame",
+    
+    // Game Development Specific
+    "ritwickdey.liveserver",
+    "ms-vscode.live-server",
+    "formulahendry.code-runner",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    
+    // Testing & Debugging
+    "ms-vscode.vscode-chrome-debug-core",
+    "msjsdiag.debugger-for-chrome",
+    "ms-playwright.playwright",
+    "hbenl.vscode-test-explorer",
+    
+    // Documentation & Markdown
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "bierner.markdown-mermaid",
+    "shd101wyy.markdown-preview-enhanced",
+    
+    // Git & Version Control
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+    "github.vscode-pull-request-github",
+    
+    // Accessibility & Performance
+    "deque-systems.vscode-axe-linter",
+    "webhint.vscode-webhint",
+    "ms-vscode.vscode-web-accessibility",
+    
+    // Productivity & UI
+    "pkief.material-icon-theme",
+    "github.github-vscode-theme",
+    "ms-vscode.vscode-json",
+    "alefragnani.bookmarks",
+    "aaron-bond.better-comments",
+    
+    // Mobile Development
+    "ms-vscode.vscode-cordova",
+    "msjsdiag.cordova-tools",
+    
+    // Code Quality & Metrics
+    "sonarsource.sonarlint-vscode",
+    "ms-vscode.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    
+    // AI & Copilot
+    "github.copilot",
+    "github.copilot-chat",
+    "github.copilot-labs"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript",
+    "hookyqr.beautify",
+    "ms-vscode.vscode-css-languageservice"
+  ]
+}

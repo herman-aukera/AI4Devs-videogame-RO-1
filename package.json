@@ -8,36 +8,26 @@
     "dev": "python3 -m http.server 8000 --bind localhost",
     "dev:mobile": "python3 -m http.server 8080 --bind 0.0.0.0",
     
+    "audit": "node scripts/comprehensive-audit.js",
+    "audit:single": "node scripts/comprehensive-audit.js --single",
+    "audit:performance": "node scripts/performance-test.js",
+    "audit:a11y": "npx axe-cli http://localhost:8000 --include main --tags wcag2a,wcag2aa",
+    
     "lint:html": "npx html-validate **/*-GG/*.html",
     "lint:css": "npx stylelint **/*-GG/*.css --formatter compact",
     "lint:js": "npx eslint **/*-GG/*.js --format compact",
-    "lint:all": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
     
-    "perf:games": "node scripts/performance-test.js",
-    "perf:mobile": "node scripts/performance-test.js --mobile",
-    "perf:memory": "node scripts/performance-test.js --memory",
-    
-    "test:browsers": "echo 'Cross-browser testing requires manual setup'",
-    "test:mobile": "echo 'Mobile testing requires device setup'",
-    "test:a11y": "npx axe-cli http://localhost:8000 --include main --tags wcag2a,wcag2aa",
+    "test": "npm run audit",
+    "validate": "npm run audit && npm run lint",
+    "quality": "npm run validate && npm run audit:a11y",
     
     "create:game": "node scripts/generate-template.js",
-    "create:template": "node scripts/generate-template.js",
+    "optimize:assets": "node scripts/optimize-assets.js",
     
-    "optimize:images": "node scripts/optimize-assets.js --images-only",
-    "optimize:audio": "node scripts/optimize-assets.js --audio-only",
-    "optimize:all": "node scripts/optimize-assets.js",
-    
-    "docs:api": "echo 'API documentation generation not implemented'",
-    "docs:games": "echo 'Game documentation is in individual README files'",
-    "docs:deploy": "echo 'Documentation deployment not configured'",
-    
-    "build": "npm run lint:all && npm run optimize:all",
-    "deploy": "echo 'Deployment to GitHub Pages requires git subtree setup'",
-    "release": "npm run build && npm run test:a11y",
-    
-    "validate": "npm run lint:all && npm run perf:games",
-    "quality": "npm run validate && npm run test:a11y"
+    "build": "npm run validate",
+    "deploy": "npm run validate && git subtree push --prefix . origin gh-pages",
+    "release": "npm run quality"
   },
   "keywords": [
     "games",

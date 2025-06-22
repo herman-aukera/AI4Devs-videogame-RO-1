@@ -1,0 +1,190 @@
+{
+  // === EDITOR CONFIGURATION ===
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": false,
+  "editor.lineNumbers": "on",
+  "editor.renderWhitespace": "boundary",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.suggestSelection": "first",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  
+  // === GAME DEVELOPMENT SPECIFIC ===
+  "editor.rulers": [80, 120],
+  "editor.showFoldingControls": "always",
+  "editor.foldingHighlight": true,
+  "editor.occurrencesHighlight": "singleFile",
+  "editor.selectionHighlight": true,
+  
+  // === FILE ASSOCIATIONS ===
+  "files.associations": {
+    "*.md": "markdown",
+    "*.js": "javascript",
+    "*.html": "html",
+    "*.css": "css",
+    "*.json": "jsonc",
+    "prompts.md": "markdown"
+  },
+  
+  // === EMMET CONFIGURATION ===
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "html": "html"
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.showExpandedAbbreviation": "always",
+  
+  // === LIVE SERVER CONFIGURATION ===
+  "liveServer.settings.port": 8000,
+  "liveServer.settings.root": "/",
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.NoBrowser": false,
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.host": "localhost",
+  "liveServer.settings.useLocalIp": false,
+  
+  // === GITHUB COPILOT OPTIMIZATION ===
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true,
+    "javascript": true,
+    "html": true,
+    "css": true,
+    "json": true,
+    "jsonc": true
+  },
+  
+  // === PRETTIER CONFIGURATION ===
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.trailingComma": "es5",
+  "prettier.bracketSpacing": true,
+  "prettier.arrowParens": "avoid",
+  
+  // === ESLINT CONFIGURATION ===
+  "eslint.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "html"
+  ],
+  "eslint.options": {
+    "extensions": [".js", ".html"]
+  },
+  
+  // === FILE EXCLUSIONS ===
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.git": false,
+    "**/validation-report-*.json": true,
+    "**/performance-report-*.json": true,
+    "**/*.log": true
+  },
+  
+  // === SEARCH CONFIGURATION ===
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/validation-report-*.json": true,
+    "**/performance-report-*.json": true
+  },
+  
+  // === LANGUAGE SPECIFIC SETTINGS ===
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.suggest.insertMode": "replace"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "css.validate": true,
+    "css.lint.duplicateProperties": "warning"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  
+  // === HTML VALIDATION ===
+  "html.validate.scripts": true,
+  "html.validate.styles": true,
+  "html.format.enable": true,
+  "html.format.preserveNewLines": true,
+  "html.format.maxPreserveNewLines": 2,
+  
+  // === CSS VALIDATION ===
+  "css.validate": true,
+  "css.lint.unknownProperties": "warning",
+  "css.lint.duplicateProperties": "warning",
+  "css.lint.emptyRules": "warning",
+  
+  // === JAVASCRIPT VALIDATION ===
+  "javascript.validate.enable": true,
+  "javascript.format.enable": true,
+  "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": true,
+  "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
+  
+  // === TERMINAL CONFIGURATION ===
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.fontSize": 14,
+  
+  // === DEBUGGING CONFIGURATION ===
+  "debug.console.fontSize": 14,
+  "debug.console.wordWrap": true,
+  "debug.openDebug": "openOnDebugBreak",
+  
+  // === WORKSPACE TRUST ===
+  "security.workspace.trust.untrustedFiles": "open",
+  
+  // === GAME DEVELOPMENT SNIPPETS ===
+  "editor.snippetSuggestions": "top",
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  
+  // === PERFORMANCE OPTIMIZATION ===
+  "extensions.ignoreRecommendations": false,
+  "telemetry.telemetryLevel": "error",
+  "update.mode": "manual",
+  
+  // === INTELLISENSE OPTIMIZATION ===
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always"
+}
