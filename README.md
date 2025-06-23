@@ -1,4 +1,12 @@
-# 🎮 AI4Devs Retro Web Games
+# 🎮 AI4De| Game | Status | Description | Key Features |
+|------|--------|-------------|--------------|
+| 🐍 **Snake** | ✅ Complete | Classic grid-based Snake with modern effects | Grid movement, progressive difficulty, neon effects |
+| 🧱 **Breakout** | ✅ Complete | Brick-breaking action with realistic physics | Ball physics, multiple levels, power-ups |
+| 🍎 **Fruit Catcher** | ✅ Complete | Fast-paced fruit catching with time pressure | Falling objects, score multipliers, increasing speed |
+| 🚀 **Asteroids** | ✅ Complete | Authentic vector graphics space combat with physics | Vector rendering, space physics, progressive waves, UFO encounters |
+| 👾 **Space Invaders** | ✅ Complete | Classic alien invasion defense with authentic sprites | Pixel-perfect graphics, destructible barriers, UFO bonus rounds |
+| 🟡 **Pac-Man** | 🚧 WIP | Classic maze chase (partial implementation) | Maze navigation, basic AI (Blinky working) |
+| 🧩 **Tetris** | ✅ Complete | Classic puzzle gameplay with authentic tetromino physics | Tetromino physics, line clearing, progressive speed | Web Games
 
 > **Arcade Collection – Choose Your Adventure**
 
@@ -13,7 +21,9 @@ AI4Devs Retro Web Games is a collection of classic arcade games reimagined with 
 | 🐍 **Snake** | ✅ Complete | Classic grid-based Snake with modern effects | Grid movement, progressive difficulty, neon effects |
 | 🧱 **Breakout** | ✅ Complete | Brick-breaking action with realistic physics | Ball physics, multiple levels, power-ups |
 | 🍎 **Fruit Catcher** | ✅ Complete | Fast-paced fruit catching with time pressure | Falling objects, score multipliers, increasing speed |
-| 🟡 **Pac-Man** | 🚧 WIP | Classic maze chase (partial implementation) | Maze navigation, basic AI (Blinky working) |
+| � **Asteroids** | ✅ Complete | Authentic vector graphics space combat with physics | Vector rendering, space physics, progressive waves, UFO encounters |
+| �🟡 **Pac-Man** | 🚧 WIP | Classic maze chase (partial implementation) | Maze navigation, basic AI (Blinky working) |
+| 🧩 **Tetris** | ✅ Complete | Classic puzzle gameplay with authentic tetromino physics | Tetromino physics, line clearing, progressive speed |
 
 ## � Quick Start
 
@@ -130,7 +140,7 @@ SOFTWARE.
 
 ---
 
-**Future Games Planned**: Tetris, Asteroids, Bomberman, Pong, Frogger, Space Invaders
+**Future Games Planned**: Space Invaders, Centipede, Missile Command, Frogger, Bomberman, Racing (Top-down), Platform (Mario/DK style)
 
 - Física de pelota con ángulos variables
 - Sistema de ladrillos destructibles

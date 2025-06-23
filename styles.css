@@ -407,6 +407,24 @@ body {
   background: radial-gradient(circle, var(--accent-red) 0%, transparent 70%);
 }
 
+.asteroids-theme .game-title {
+  color: var(--primary-cyan);
+  text-shadow: 0 0 15px var(--primary-cyan);
+}
+
+.asteroids-theme .card-glow {
+  background: radial-gradient(circle, var(--primary-cyan) 0%, transparent 70%);
+}
+
+.space-invaders-theme .game-title {
+  color: var(--primary-green);
+  text-shadow: 0 0 15px var(--primary-green);
+}
+
+.space-invaders-theme .card-glow {
+  background: radial-gradient(circle, var(--primary-green) 0%, transparent 70%);
+}
+
 .pacman-theme .game-title {
   color: var(--primary-yellow);
   text-shadow: 0 0 15px var(--primary-yellow);
@@ -490,6 +508,61 @@ body {
 @keyframes fruit-bounce {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+.asteroids-pattern {
+  background: 
+    linear-gradient(30deg, transparent 45%, var(--primary-cyan) 50%, transparent 55%),
+    linear-gradient(150deg, transparent 45%, var(--primary-cyan) 50%, transparent 55%),
+    linear-gradient(-30deg, transparent 45%, var(--primary-cyan) 50%, transparent 55%),
+    linear-gradient(-150deg, transparent 45%, var(--primary-cyan) 50%, transparent 55%);
+  background-size: 40px 40px, 35px 35px, 30px 30px, 25px 25px;
+  animation: asteroids-drift 4s linear infinite;
+}
+
+@keyframes asteroids-drift {
+  0% { 
+    transform: rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% { 
+    transform: rotate(360deg) scale(1.05);
+    opacity: 0.1;
+  }
+}
+
+.space-invaders-pattern {
+  background: 
+    repeating-linear-gradient(0deg, transparent 0px, transparent 8px, var(--primary-green) 8px, var(--primary-green) 9px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 12px, var(--primary-green) 12px, var(--primary-green) 13px),
+    radial-gradient(circle at 25% 25%, var(--primary-green) 3%, transparent 3%),
+    radial-gradient(circle at 75% 75%, var(--primary-green) 2%, transparent 2%);
+  background-size: 100% 100%, 100% 100%, 20px 20px, 30px 30px;
+  animation: invader-march 2s linear infinite;
+}
+
+@keyframes invader-march {
+  0% { 
+    transform: translateX(0) scale(1);
+    opacity: 0.1;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  50% { 
+    transform: translateX(5px) scale(1.02);
+    opacity: 0.12;
+  }
+  75% {
+    opacity: 0.18;
+  }
+  100% { 
+    transform: translateX(0) scale(1);
+    opacity: 0.1;
+  }
 }
 
 .pacman-pattern {

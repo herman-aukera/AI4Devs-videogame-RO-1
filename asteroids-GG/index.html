@@ -1,0 +1,192 @@
+<!-- © GG, MIT License -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ASTEROIDS GG - Vector graphics space combat with authentic arcade physics and progressive difficulty">
+    <meta name="keywords" content="asteroids, retro game, vector graphics, space combat, arcade, html5, canvas">
+    <meta name="author" content="AI4Devs Students - GG">
+    <meta name="theme-color" content="#00FF00">
+    
+    <!-- License Information for TDD Audit -->
+    <meta name="license" content="© GG, MIT License">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ASTEROIDS GG - Vector Space Combat">
+    <meta property="og:description" content="Authentic vector graphics Asteroids with realistic physics and progressive difficulty">
+    <meta property="og:type" content="game">
+    
+    <title>🚀 ASTEROIDS GG - Vector Space Combat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    
+    <main class="game-container">
+        <!-- Navigation -->
+        <nav class="game-navigation">
+            <a href="../index.html" class="back-button" tabindex="1">
+                <span class="back-arrow">←</span>
+                <span class="back-text">INICIO</span>
+            </a>
+        </nav>
+
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1 class="game-title">🚀 ASTEROIDS GG</h1>
+            <p class="game-subtitle">Vector Space Combat - Destroy or Be Destroyed</p>
+        </header>
+
+        <!-- Game Controls Info -->
+        <details class="instructions" tabindex="2">
+            <summary class="instructions-toggle">¿Cómo jugar? 🎮</summary>
+            <div class="instructions-content">
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <h3>🎯 Controles Principales</h3>
+                        <div class="control-item">
+                            <span class="control-key">↑ / W</span>
+                            <span class="control-desc">Propulsión</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">← → / A D</span>
+                            <span class="control-desc">Rotación</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">SPACE</span>
+                            <span class="control-desc">Disparar</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">SHIFT</span>
+                            <span class="control-desc">Hipervelocidad</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <h3>🎮 Mecánicas de Juego</h3>
+                        <ul class="game-mechanics">
+                            <li>🎯 Destruye todos los asteroides para avanzar</li>
+                            <li>⚡ Los asteroides grandes se dividen en medianos</li>
+                            <li>🔄 Los asteroides medianos se dividen en pequeños</li>
+                            <li>🛸 Los OVNIs aparecen cada 3 niveles</li>
+                            <li>💫 Usa hipervelocidad en emergencias (riesgo)</li>
+                            <li>🌌 Las pantallas se conectan por los bordes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Game Canvas Container -->
+        <section class="game-area">
+            <div class="game-ui">
+                <div class="score-display">
+                    <span class="score-label">SCORE</span>
+                    <span class="score-value" id="currentScore">0</span>
+                </div>
+                <div class="lives-display">
+                    <span class="lives-label">SHIPS</span>
+                    <div class="lives-icons" id="livesContainer"></div>
+                </div>
+                <div class="level-display">
+                    <span class="level-label">WAVE</span>
+                    <span class="level-value" id="currentLevel">1</span>
+                </div>
+            </div>
+            
+            <canvas id="gameCanvas" width="800" height="600" tabindex="3" 
+                    role="application" 
+                    aria-label="Asteroids game canvas - Use arrow keys to control ship">
+            </canvas>
+
+            <!-- Game State Overlays -->
+            <div class="game-overlay" id="startScreen">
+                <div class="overlay-content">
+                    <h2 class="overlay-title">🚀 ASTEROIDS GG</h2>
+                    <p class="overlay-subtitle">Vector Space Combat</p>
+                    <div class="high-score">
+                        <span class="high-score-label">HIGH SCORE</span>
+                        <span class="high-score-value" id="highScore">0</span>
+                    </div>
+                    <button class="play-button" id="startButton" tabindex="4">
+                        <span class="button-text">INICIAR MISIÓN</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="game-overlay" id="pauseScreen" style="display: none;">
+                <div class="overlay-content">
+                    <h2 class="overlay-title">⏸️ PAUSA</h2>
+                    <p class="overlay-subtitle">Misión en Espera</p>
+                    <button class="play-button" id="resumeButton" tabindex="5">
+                        <span class="button-text">CONTINUAR</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="game-overlay" id="gameOverScreen" style="display: none;">
+                <div class="overlay-content">
+                    <h2 class="overlay-title">💥 MISIÓN FALLIDA</h2>
+                    <p class="overlay-subtitle">Tu nave ha sido destruida</p>
+                    <div class="final-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Puntuación Final</span>
+                            <span class="stat-value" id="finalScore">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Ondas Completadas</span>
+                            <span class="stat-value" id="finalLevel">0</span>
+                        </div>
+                        <div class="stat-item" id="newHighScore" style="display: none;">
+                            <span class="stat-label">🏆 ¡NUEVO RÉCORD!</span>
+                        </div>
+                    </div>
+                    <button class="play-button" id="restartButton" tabindex="6">
+                        <span class="button-text">NUEVA MISIÓN</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile Touch Controls -->
+        <div class="mobile-controls">
+            <div class="touch-controls-left">
+                <button class="touch-btn rotation-btn" id="rotateLeft" aria-label="Rotar izquierda">
+                    <span class="btn-icon">↺</span>
+                </button>
+                <button class="touch-btn thrust-btn" id="thrustBtn" aria-label="Propulsión">
+                    <span class="btn-icon">🚀</span>
+                </button>
+                <button class="touch-btn rotation-btn" id="rotateRight" aria-label="Rotar derecha">
+                    <span class="btn-icon">↻</span>
+                </button>
+            </div>
+            <div class="touch-controls-right">
+                <button class="touch-btn fire-btn" id="fireBtn" aria-label="Disparar">
+                    <span class="btn-icon">💥</span>
+                </button>
+                <button class="touch-btn hyperspace-btn" id="hyperspaceBtn" aria-label="Hipervelocidad">
+                    <span class="btn-icon">⚡</span>
+                </button>
+                <button class="touch-btn pause-btn" id="pauseBtn" aria-label="Pausa">
+                    <span class="btn-icon">⏸️</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <p class="footer-text">
+            🎮 <span class="highlight">ASTEROIDS GG</span> | 
+            Vector Graphics Engine | 
+            © AI4Devs Students
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
