@@ -1,35 +1,39 @@
 /* © GG, MIT License */
 /* ==============================================
    MS. PAC-MAN - Game-specific styling
-   Extends shared design system
+   Extends shared design system with magenta theme
    ============================================== */
 
 /* Game-specific color overrides */
 :root {
-  /* Ms. Pac-Man specific colors (Magenta theme) */
-  --mspacman-pink: var(--neon-magenta);
-  --mspacman-bow: #ff1493;
+  /* Ms. Pac-Man specific colors */
+  --mspacman-magenta: var(--neon-magenta);
+  --mspacman-pink: var(--neon-pink);
   --ghost-red: var(--neon-red);      /* Blinky */
   --ghost-pink: var(--neon-pink);    /* Pinky */
   --ghost-cyan: var(--neon-cyan);    /* Inky */
-  --ghost-orange: var(--neon-orange); /* Clyde */
+  --ghost-orange: var(--neon-orange); /* Sue */
   --ghost-blue: var(--neon-blue);    /* Vulnerable */
   
-  /* Maze colors - different for each maze */
+  /* Maze-specific colors for 4 mazes */
   --maze-1-color: var(--neon-magenta); /* Pink maze */
   --maze-2-color: var(--neon-cyan);    /* Cyan maze */
   --maze-3-color: var(--neon-yellow);  /* Yellow maze */
   --maze-4-color: var(--neon-green);   /* Green maze */
   
+  --pellet-white: #FFFFFF;
+  --power-pellet: var(--neon-magenta);
+  
   /* Override default colors for Ms. Pac-Man theme */
-  --text-accent: var(--mspacman-pink);
+  --text-accent: var(--mspacman-magenta);
 }
 
 /* Animated starfield background for Ms. Pac-Man */
 body {
+  background: var(--bg-primary);
   background-image: 
-    radial-gradient(2px 2px at 20px 30px, var(--neon-magenta), transparent),
-    radial-gradient(2px 2px at 40px 70px, var(--neon-pink), transparent),
+    radial-gradient(1px 1px at 20px 30px, var(--neon-magenta), transparent),
+    radial-gradient(1px 1px at 40px 70px, var(--mspacman-pink), transparent),
     radial-gradient(1px 1px at 90px 40px, var(--neon-cyan), transparent),
     radial-gradient(1px 1px at 130px 80px, var(--neon-yellow), transparent);
   background-repeat: repeat;
@@ -42,166 +46,167 @@ body {
   100% { background-position: -200px 0, -200px 0, -200px 0, -200px 0; }
 }
 
-/* Ms. Pac-Man specific game title styling */
-.game-title {
-  color: var(--mspacman-pink);
-  text-shadow: var(--glow-magenta);
-}
-
-/* Ms. Pac-Man specific game board styling */
-.game-canvas {
-  border-color: var(--mspacman-pink);
-  box-shadow: var(--glow-magenta);
-}
-
-/* Ms. Pac-Man specific score values */
-.score-value {
-  color: var(--mspacman-pink);
-  text-shadow: var(--glow-magenta);
-}
-
-/* Ms. Pac-Man specific back button */
+/* Ms. Pac-Man specific navigation */
 .back-button {
-  color: var(--mspacman-pink);
-  border-color: var(--mspacman-pink);
+  color: var(--mspacman-magenta);
+  border-color: var(--mspacman-magenta);
   text-shadow: var(--glow-magenta);
   box-shadow: var(--glow-magenta);
-  background: rgba(255, 0, 255, 0.2);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 }
 
 .back-button:hover {
-  background: var(--mspacman-pink);
+  background: var(--mspacman-magenta);
   color: var(--bg-primary);
   box-shadow: var(--shadow-medium);
 }
 
-/* Ms. Pac-Man specific start prompt */
-.start-prompt {
-  color: var(--mspacman-pink);
+/* Ms. Pac-Man specific game title styling */
+.game-title {
+  color: var(--mspacman-magenta);
   text-shadow: var(--glow-magenta);
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-family: var(--font-retro);
+  position: relative;
 }
 
-/* Game-specific canvas sizing and retro effects */
-#gameCanvas {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+/* Ms. Pac-Man bow effect */
+.game-title::after {
+  content: "🎀";
+  position: absolute;
+  top: -10px;
+  right: -30px;
+  font-size: 2rem;
+  animation: bowBounce 2s ease-in-out infinite;
 }
 
-/* Ms. Pac-Man maze color classes (for different mazes) */
-.maze-1 { 
-  --current-maze-color: var(--maze-1-color);
-  --current-glow: var(--glow-magenta);
+@keyframes bowBounce {
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.1); }
 }
 
-.maze-2 { 
-  --current-maze-color: var(--maze-2-color);
-  --current-glow: var(--glow-cyan);
-}
-
-.maze-3 { 
-  --current-maze-color: var(--maze-3-color);
-  --current-glow: var(--glow-yellow);
-}
-
-.maze-4 { 
-  --current-maze-color: var(--maze-4-color);
-  --current-glow: var(--glow-green);
-}
-
-/* Dynamic maze styling based on current maze */
-.game-canvas.maze-1 {
-  border-color: var(--maze-1-color);
+/* Ms. Pac-Man specific game header */
+.game-header {
+  border-color: var(--mspacman-magenta);
+  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-tertiary));
   box-shadow: var(--glow-magenta);
 }
 
-.game-canvas.maze-2 {
-  border-color: var(--maze-2-color);
-  box-shadow: var(--glow-cyan);
+/* Ms. Pac-Man specific game board styling */
+.game-canvas {
+  border-color: var(--mspacman-magenta);
+  box-shadow: var(--glow-magenta);
+  
+  /* CRT screen effect with scanlines */
+  filter: contrast(1.1) brightness(1.1);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 255, 0.1) 2px,
+    rgba(255, 0, 255, 0.1) 4px
+  );
 }
 
-.game-canvas.maze-3 {
-  border-color: var(--maze-3-color);
-  box-shadow: var(--glow-yellow);
+/* Ms. Pac-Man specific score panel */
+.score-panel {
+  border-color: var(--mspacman-magenta);
+  background: var(--bg-secondary);
+  box-shadow: var(--glow-magenta);
 }
 
-.game-canvas.maze-4 {
-  border-color: var(--maze-4-color);
-  box-shadow: var(--glow-green);
+.score-value {
+  color: var(--mspacman-magenta);
+  text-shadow: var(--glow-magenta);
 }
 
-/* Ghost color classes for DOM elements if needed */
-.ghost-red { color: var(--ghost-red); }
-.ghost-pink { color: var(--ghost-pink); }
-.ghost-cyan { color: var(--ghost-cyan); }
-.ghost-orange { color: var(--ghost-orange); }
-.ghost-blue { color: var(--ghost-blue); }
-
-/* Ms. Pac-Man specific animations */
-@keyframes mspacman-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+/* Ms. Pac-Man specific overlay styling */
+.overlay-title {
+  color: var(--mspacman-magenta);
+  text-shadow: var(--glow-magenta);
 }
 
-.mspacman-bounce {
-  animation: mspacman-bounce 0.5s ease-in-out infinite;
+.start-prompt {
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
 }
 
-/* Fruit animations for moving fruits */
-@keyframes fruit-float {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  25% { transform: rotate(2deg) scale(1.05); }
-  75% { transform: rotate(-2deg) scale(1.05); }
+/* Ms. Pac-Man specific instructions */
+.instructions-toggle {
+  border-color: var(--mspacman-magenta);
+  background: var(--bg-secondary);
+  box-shadow: var(--glow-magenta);
 }
 
-.fruit-floating {
-  animation: fruit-float 2s ease-in-out infinite;
+.instructions-toggle summary {
+  color: var(--mspacman-magenta);
+  text-shadow: var(--glow-magenta);
 }
 
-/* Game state specific styling */
-.game-ready .game-canvas {
-  opacity: 0.8;
-  filter: brightness(0.7);
+.instruction-title {
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
 }
 
-.game-playing .game-canvas {
-  opacity: 1;
-  filter: brightness(1);
-}
-
-.game-paused .game-canvas {
-  opacity: 0.6;
-  filter: blur(2px) brightness(0.5);
-}
-
-.game-over .game-canvas {
-  opacity: 0.5;
-  filter: grayscale(1) brightness(0.3);
-}
-
-/* Accessibility improvements for Ms. Pac-Man */
-@media (prefers-reduced-motion: reduce) {
-  .mspacman-bounce,
-  .fruit-floating {
-    animation: none;
+/* Mobile controls for Ms. Pac-Man */
+@media (max-width: 768px) {
+  .game-title::after {
+    right: -20px;
+    font-size: 1.5rem;
   }
   
-  body {
-    animation: none;
-    background-image: none;
+  /* Mobile touch controls (if added) */
+  .mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: rgba(255, 0, 255, 0.1);
+    border: var(--border-thin) var(--mspacman-magenta);
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .control-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 150px;
+    height: 150px;
+  }
+  
+  .dpad-btn {
+    background: linear-gradient(45deg, var(--mspacman-magenta), var(--mspacman-pink));
+    border: var(--border-thin) var(--mspacman-magenta);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+  
+  .dpad-up { grid-column: 2; grid-row: 1; }
+  .dpad-left { grid-column: 1; grid-row: 2; }
+  .dpad-right { grid-column: 3; grid-row: 2; }
+  .dpad-down { grid-column: 2; grid-row: 3; }
+  
+  .dpad-btn:active {
+    transform: scale(0.95);
+    background: linear-gradient(45deg, var(--mspacman-pink), var(--mspacman-magenta));
   }
 }
 
-/* High contrast mode for Ms. Pac-Man */
-@media (prefers-contrast: high) {
-  .game-canvas {
-    filter: contrast(2);
-  }
-  
-  body {
-    background-image: none;
+@media (max-width: 480px) {
+  .game-title::after {
+    display: none; /* Hide bow on very small screens */
   }
 }
