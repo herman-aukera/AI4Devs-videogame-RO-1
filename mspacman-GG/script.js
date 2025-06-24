@@ -915,7 +915,13 @@ class EnhancedGhostAI {
     this.inHouse = false;
     this.mode = 'SCATTER';
     this.modeTimer = 0;
-    console.log(`🚪 ${this.name} RELEASED from house`);
+    
+    // Move to ghost house exit position (just outside the house)
+    this.gridPosition = { col: 9, row: 7 };
+    this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    
+    console.log(`🚪 ${this.name} RELEASED from house after ${this.spawnDelay}ms delay`);
+    console.log(`🟢 ${this.name} now free to move - inHouse: ${this.inHouse}, mode: ${this.mode}, position: (${this.gridPosition.col}, ${this.gridPosition.row})`);
   }
 
   initiateMovement(pacman, ghosts, maze) {
