@@ -510,12 +510,24 @@ class FruitBonus {
   }
 
   spawnFruit() {
-    // Spawn in the center of the maze
-    this.position = { col: 9, row: 12 };
-    this.active = true;
-    this.lifetime = 600;
-    this.fruitType = this.getRandomFruit();
-    console.log(`🍎 Fruit spawned: ${this.fruitType} (${this.points} points)`);
+    // Find valid spawn positions (empty spaces where Pac-Man can move)
+    const validPositions = [];
+    for (let row = 0; row < this.gameEngine.maze.length; row++) {
+      for (let col = 0; col < this.gameEngine.maze[row].length; col++) {
+        if (this.gameEngine.maze[row][col] === 0 || this.gameEngine.maze[row][col] === 2) {
+          validPositions.push({ col, row });
+        }
+      }
+    }
+    
+    // Choose random valid position
+    if (validPositions.length > 0) {
+      this.position = validPositions[Math.floor(Math.random() * validPositions.length)];
+      this.active = true;
+      this.lifetime = 600;
+      this.fruitType = this.getRandomFruit();
+      console.log(`🍎 Fruit spawned: ${this.fruitType} (${this.points} points) at (${this.position.col}, ${this.position.row})`);
+    }
   }
 
   despawn() {

@@ -660,14 +660,26 @@ class MovingFruit {
   }
 
   spawnFruit() {
-    // Spawn in center tunnel area
-    this.gridPosition = { col: 9, row: 9 };
-    this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-    this.active = true;
-    this.lifetime = 900;
-    this.direction = this.getRandomDirection();
-    this.fruitType = this.getRandomFruit();
-    console.log(`🍎 Moving fruit spawned: ${this.fruitType} (${this.points} points)`);
+    // Find valid spawn positions (empty spaces where Ms. Pac-Man can move)
+    const validPositions = [];
+    for (let row = 0; row < this.gameEngine.currentMaze.length; row++) {
+      for (let col = 0; col < this.gameEngine.currentMaze[row].length; col++) {
+        if (this.gameEngine.currentMaze[row][col] === 0 || this.gameEngine.currentMaze[row][col] === 2) {
+          validPositions.push({ col, row });
+        }
+      }
+    }
+    
+    // Choose random valid position
+    if (validPositions.length > 0) {
+      this.gridPosition = validPositions[Math.floor(Math.random() * validPositions.length)];
+      this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+      this.active = true;
+      this.lifetime = 900;
+      this.direction = this.getRandomDirection();
+      this.fruitType = this.getRandomFruit();
+      console.log(`🍎 Moving fruit spawned: ${this.fruitType} (${this.points} points) at (${this.gridPosition.col}, ${this.gridPosition.row})`);
+    }
   }
 
   moveFruit() {
