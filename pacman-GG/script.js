@@ -510,14 +510,29 @@ class FruitBonus {
   }
 
   spawnFruit() {
+    // Check if maze exists and is properly initialized
+    if (!this.maze?.maze) {
+      console.warn('🍎 Cannot spawn fruit: maze not available');
+      return;
+    }
+    
     // Find valid spawn positions (empty spaces where Pac-Man can move)
     const validPositions = [];
-    for (let row = 0; row < this.gameEngine.maze.length; row++) {
-      for (let col = 0; col < this.gameEngine.maze[row].length; col++) {
-        if (this.gameEngine.maze[row][col] === 0 || this.gameEngine.maze[row][col] === 2) {
-          validPositions.push({ col, row });
+    const mazeData = this.maze.maze;
+    
+    try {
+      for (let row = 0; row < mazeData.length; row++) {
+        for (let col = 0; col < mazeData[row].length; col++) {
+          // Check for walkable spaces: '.', 'O', and ' ' (empty spaces)
+          const cell = mazeData[row][col];
+          if (cell === '.' || cell === 'O' || cell === ' ') {
+            validPositions.push({ col, row });
+          }
         }
       }
+    } catch (error) {
+      console.warn('🍎 Error scanning maze for fruit spawn:', error);
+      return;
     }
     
     // Choose random valid position
@@ -1032,7 +1047,7 @@ class GhostAI {
     this.spawnDelay = GHOST_SPAWN_DELAYS[this.name] || 0; // Individual spawn delay in ms with fallback
     console.log(`🏠 Ghost ${this.name} initialized with spawn delay: ${this.spawnDelay}ms`);
     this.spawnTimer = 0; // Tracks time since game start
-    this.homePosition = { col: startCol, row: startRow };
+    this.homePosition = { col: 9, row: 9 }; // Common home position inside the house
     this.frameCount = 0;
     this.gameStartTime = null; // Track when game started
   }
@@ -1086,8 +1101,13 @@ class GhostAI {
     this.inHouse = false;
     this.mode = 'SCATTER';
     this.modeTimer = 0;
+    
+    // Move to ghost house exit position (just outside the house)
+    this.gridPosition = { col: 9, row: 7 };
+    this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    
     console.log(`🚪 ${this.name} RELEASED from house after ${this.spawnDelay}ms delay`);
-    console.log(`🟢 ${this.name} now free to move - inHouse: ${this.inHouse}, mode: ${this.mode}`);
+    console.log(`🟢 ${this.name} now free to move - inHouse: ${this.inHouse}, mode: ${this.mode}, position: (${this.gridPosition.col}, ${this.gridPosition.row})`);
   }
 
   logSpawnStatus(elapsedTime) {
@@ -1100,6 +1120,7 @@ class GhostAI {
     // Debug: Log when trying to initiate movement
     if (this.frameCount % 120 === 0) { // Every 2 seconds
       console.log(`🎯 ${this.name} trying to move - inHouse: ${this.inHouse}, moving: ${this.moving}, mode: ${this.mode}`);
+      console.log(`📍 ${this.name} position: (${this.gridPosition.col}, ${this.gridPosition.row})`);
     }
     
     const target = this.getTarget(pacman, ghosts, maze);
@@ -1114,6 +1135,10 @@ class GhostAI {
         console.log(`✅ ${this.name} started moving in direction (${this.direction.x}, ${this.direction.y})`);
       }
     } else {
+      // Debug: Log why no direction was found
+      if (this.frameCount % 120 === 0) {
+        console.log(`❌ ${this.name} found NO valid direction from (${this.gridPosition.col}, ${this.gridPosition.row})`);
+      }
       this.handleNoValidDirection(maze);
     }
   }
@@ -1160,8 +1185,18 @@ class GhostAI {
   }
 
   checkHomeReached() {
-    if (this.eaten && this.getDistance(this.gridPosition, this.homePosition) < 1) {
-      this.respawn();
+    if (this.eaten) {
+      const distance = this.getDistance(this.gridPosition, this.homePosition);
+      // Debug log for eaten ghosts approaching home
+      if (this.frameCount % 60 === 0) {
+        console.log(`🏠 ${this.name} (EATEN) distance to home: ${distance.toFixed(2)} - at (${this.gridPosition.col}, ${this.gridPosition.row}) targeting (${this.homePosition.col}, ${this.homePosition.row})`);
+      }
+      
+      // Use a more lenient distance check for respawn
+      if (distance < 1.5) {
+        console.log(`🔄 ${this.name} reached home, respawning!`);
+        this.respawn();
+      }
     }
   }
 
@@ -1421,15 +1456,18 @@ class GhostAI {
       const newCol = currentGrid.col + directionInfo.dir.x;
       const newRow = currentGrid.row + directionInfo.dir.y;
 
-      // No retroceder (excepto cuando es vulnerable)
+      // No retroceder (excepto cuando es vulnerable o eaten)
       const isReverse = directionInfo.dir.x === -this.direction.x && 
                        directionInfo.dir.y === -this.direction.y;
       
-      if (!this.vulnerable && isReverse && (this.direction.x !== 0 || this.direction.y !== 0)) {
+      if (!this.vulnerable && !this.eaten && isReverse && (this.direction.x !== 0 || this.direction.y !== 0)) {
         continue;
       }
 
-      if (maze.isWalkable(newCol, newRow)) {
+      // EATEN ghosts can move through walls to reach home
+      const canMove = this.eaten || maze.isWalkable(newCol, newRow);
+      
+      if (canMove) {
         const distance = this.getDistance({ col: newCol, row: newRow }, target);
         
         if (distance < bestDistance) {

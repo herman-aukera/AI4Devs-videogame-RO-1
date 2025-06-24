@@ -660,14 +660,29 @@ class MovingFruit {
   }
 
   spawnFruit() {
+    // Check if maze exists and is properly initialized
+    if (!this.maze?.maze) {
+      console.warn('🍎 Cannot spawn fruit: maze not available');
+      return;
+    }
+    
     // Find valid spawn positions (empty spaces where Ms. Pac-Man can move)
     const validPositions = [];
-    for (let row = 0; row < this.gameEngine.currentMaze.length; row++) {
-      for (let col = 0; col < this.gameEngine.currentMaze[row].length; col++) {
-        if (this.gameEngine.currentMaze[row][col] === 0 || this.gameEngine.currentMaze[row][col] === 2) {
-          validPositions.push({ col, row });
+    const mazeData = this.maze.maze;
+    
+    try {
+      for (let row = 0; row < mazeData.length; row++) {
+        for (let col = 0; col < mazeData[row].length; col++) {
+          // Check for walkable spaces: '.', 'O', and ' ' (empty spaces)
+          const cell = mazeData[row][col];
+          if (cell === '.' || cell === 'O' || cell === ' ') {
+            validPositions.push({ col, row });
+          }
         }
       }
+    } catch (error) {
+      console.warn('🍎 Error scanning maze for fruit spawn:', error);
+      return;
     }
     
     // Choose random valid position
@@ -958,8 +973,18 @@ class EnhancedGhostAI {
   }
 
   checkHomeReached() {
-    if (this.eaten && this.getDistance(this.gridPosition, this.homePosition) < 1) {
-      this.respawn();
+    if (this.eaten) {
+      const distance = this.getDistance(this.gridPosition, this.homePosition);
+      // Debug log for eaten ghosts approaching home
+      if (this.frameCount % 60 === 0) {
+        console.log(`🏠 ${this.name} (EATEN) distance to home: ${distance.toFixed(2)} - at (${this.gridPosition.col}, ${this.gridPosition.row}) targeting (${this.homePosition.col}, ${this.homePosition.row})`);
+      }
+      
+      // Use a more lenient distance check for respawn
+      if (distance < 1.5) {
+        console.log(`🔄 ${this.name} reached home, respawning!`);
+        this.respawn();
+      }
     }
   }
 
@@ -1194,11 +1219,15 @@ class EnhancedGhostAI {
       const isReverse = directionInfo.dir.x === -this.direction.x && 
                        directionInfo.dir.y === -this.direction.y;
       
-      if (!this.vulnerable && isReverse && (this.direction.x !== 0 || this.direction.y !== 0)) {
+      // No retroceder (excepto cuando es vulnerable o eaten)
+      if (!this.vulnerable && !this.eaten && isReverse && (this.direction.x !== 0 || this.direction.y !== 0)) {
         continue;
       }
 
-      if (maze.isWalkable(newCol, newRow)) {
+      // EATEN ghosts can move through walls to reach home
+      const canMove = this.eaten || maze.isWalkable(newCol, newRow);
+
+      if (canMove) {
         const distance = this.getDistance({ col: newCol, row: newRow }, target);
         
         if (distance < bestDistance) {
