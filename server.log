@@ -47,3 +47,63 @@
 ::1 - - [24/Jun/2025 16:28:57] "GET /pacman-GG/script.js HTTP/1.1" 200 -
 ::1 - - [24/Jun/2025 16:29:02] "GET /pacman-GG/index.html HTTP/1.1" 200 -
 ::1 - - [24/Jun/2025 16:29:02] "GET /shared-styles.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:37:05] "GET /pacman-GG/?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750775825203 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:37:05] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:37:05] "GET /pacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:37:12] "GET /mspacman-GG/?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750775832399 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:37:12] "GET /mspacman-GG/style.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:37:12] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:41:45] "GET /mspacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750776105082 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:41:45] "GET /mspacman-GG/style.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:41:45] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:41:45] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:42:08] "GET /mspacman-GG/index.html HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:08] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:42:08] "GET /mspacman-GG/style.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:08] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:42:11] "GET /mspacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750776131148 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:11] "GET /mspacman-GG/style.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:11] "GET /pacman-GG/index.html HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:11] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:42:11] "GET /pacman-GG/style.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:42:11] "GET /pacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:44:40] "GET /pacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750776280576 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:44:40] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:44:40] "GET /pacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:45:01] code 404, message File not found
+::1 - - [24/Jun/2025 16:45:01] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+::1 - - [24/Jun/2025 16:45:01] code 404, message File not found
+::1 - - [24/Jun/2025 16:45:01] code 404, message File not found
+::1 - - [24/Jun/2025 16:45:01] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+::1 - - [24/Jun/2025 16:45:01] code 404, message File not found
+::1 - - [24/Jun/2025 16:45:01] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [24/Jun/2025 16:45:01] "GET /favicon.ico HTTP/1.1" 404 -
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] "GET /pacman-GG/index.html HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] "GET /pacman-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] "GET /shared-styles.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] "GET /pacman-GG/script.js HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] code 404, message File not found
+::ffff:127.0.0.1 - - [24/Jun/2025 16:45:25] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [24/Jun/2025 16:46:53] "GET /?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750776413736 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:46:53] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:47:01] "GET /mspacman-GG/index.html HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:47:01] "GET /mspacman-GG/style.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:47:01] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:47:12] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:08] "GET /index.html HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:08] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:08] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:11] "GET /mspacman-GG/index.html HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:11] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:11] "GET /mspacman-GG/style.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:48:11] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:58:40] "GET /pacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750777120314 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:58:40] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:58:40] "GET /pacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:58:46] "GET /mspacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750777126039 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 16:58:46] "GET /mspacman-GG/style.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 16:58:46] "GET /mspacman-GG/script.js HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 17:04:09] "GET /pacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750777449888 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 17:04:09] "GET /shared-styles.css HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 17:04:14] "GET /mspacman-GG/index.html?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750777454151 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 17:04:14] "GET /mspacman-GG/style.css HTTP/1.1" 200 -
