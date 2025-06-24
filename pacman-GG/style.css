@@ -1,7 +1,7 @@
 /* © GG, MIT License */
 /* ==============================================
    PAC-MAN - Game-specific styling
-   Extends shared design system
+   Extends shared design system with yellow theme
    ============================================== */
 
 /* Game-specific color overrides */
@@ -19,117 +19,63 @@
   
   /* Override default colors for Pac-Man theme */
   --text-accent: var(--pacman-yellow);
+  --neon-glow: var(--glow-yellow); /* Unified glow override */
 }
 
-/* Pac-Man specific game title styling */
+/* Pac-Man specific theme overrides */
 .game-title {
   color: var(--pacman-yellow);
-  text-shadow: var(--glow-yellow);
+  text-shadow: var(--neon-glow);
 }
 
-/* Pac-Man specific game board styling */
+.game-header {
+  border-color: var(--pacman-yellow);
+  box-shadow: var(--neon-glow);
+}
+
 .game-canvas {
   border-color: var(--pacman-yellow);
-  box-shadow: var(--glow-yellow);
+  box-shadow: var(--neon-glow);
 }
 
-/* Pac-Man specific score values */
+.score-panel {
+  border-color: var(--pacman-yellow);
+  box-shadow: var(--neon-glow);
+}
+
 .score-value {
   color: var(--pacman-yellow);
-  text-shadow: var(--glow-yellow);
+  text-shadow: var(--neon-glow);
 }
 
-/* Pac-Man specific back button */
+.overlay-title {
+  color: var(--pacman-yellow);
+  text-shadow: var(--neon-glow);
+}
+
+.instructions-toggle {
+  border-color: var(--pacman-yellow);
+  box-shadow: var(--neon-glow);
+}
+
+.instructions-toggle summary {
+  color: var(--pacman-yellow);
+  text-shadow: var(--neon-glow);
+}
+
+.instruction-title {
+  color: var(--pacman-yellow);
+  text-shadow: var(--neon-glow);
+}
+
 .back-button {
   color: var(--pacman-yellow);
   border-color: var(--pacman-yellow);
-  text-shadow: var(--glow-yellow);
-  box-shadow: var(--glow-yellow);
+  text-shadow: var(--neon-glow);
+  box-shadow: var(--neon-glow);
 }
 
 .back-button:hover {
   background: var(--pacman-yellow);
   color: var(--bg-primary);
-}
-
-/* Pac-Man specific start prompt */
-.start-prompt {
-  color: var(--pacman-yellow);
-  text-shadow: var(--glow-yellow);
-}
-
-/* Game-specific canvas sizing and retro effects */
-#gameCanvas {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
-
-/* Pac-Man maze styling (drawn in canvas but keeping for reference) */
-.maze-wall {
-  stroke: var(--maze-blue);
-  fill: none;
-  stroke-width: 2;
-}
-
-.pellet {
-  fill: var(--pellet-yellow);
-}
-
-.power-pellet {
-  fill: var(--power-pellet);
-  filter: drop-shadow(0 0 4px var(--power-pellet));
-}
-
-/* Ghost color classes for DOM elements if needed */
-.ghost-red { color: var(--ghost-red); }
-.ghost-pink { color: var(--ghost-pink); }
-.ghost-cyan { color: var(--ghost-cyan); }
-.ghost-orange { color: var(--ghost-orange); }
-.ghost-blue { color: var(--ghost-blue); }
-
-/* Pac-Man specific animations */
-@keyframes pacman-chomp {
-  0%, 100% { transform: scaleX(1); }
-  50% { transform: scaleX(0.8); }
-}
-
-.pacman-chomping {
-  animation: pacman-chomp 0.2s ease-in-out infinite;
-}
-
-/* Game state specific styling */
-.game-ready .game-canvas {
-  opacity: 0.8;
-  filter: brightness(0.7);
-}
-
-.game-playing .game-canvas {
-  opacity: 1;
-  filter: brightness(1);
-}
-
-.game-paused .game-canvas {
-  opacity: 0.6;
-  filter: blur(2px) brightness(0.5);
-}
-
-.game-over .game-canvas {
-  opacity: 0.5;
-  filter: grayscale(1) brightness(0.3);
-}
-
-/* Accessibility improvements for Pac-Man */
-@media (prefers-reduced-motion: reduce) {
-  .pacman-chomping {
-    animation: none;
-  }
-}
-
-/* High contrast mode for Pac-Man */
-@media (prefers-contrast: high) {
-  .game-canvas {
-    filter: contrast(2);
-  }
 }

@@ -26,6 +26,7 @@
   
   /* Override default colors for Ms. Pac-Man theme */
   --text-accent: var(--mspacman-magenta);
+  --neon-glow: var(--glow-magenta); /* Unified glow override */
 }
 
 /* Animated starfield background for Ms. Pac-Man */
@@ -50,8 +51,8 @@ body {
 .back-button {
   color: var(--mspacman-magenta);
   border-color: var(--mspacman-magenta);
-  text-shadow: var(--glow-magenta);
-  box-shadow: var(--glow-magenta);
+  text-shadow: var(--neon-glow);
+  box-shadow: var(--neon-glow);
 }
 
 .back-button:hover {
@@ -63,10 +64,7 @@ body {
 /* Ms. Pac-Man specific game title styling */
 .game-title {
   color: var(--mspacman-magenta);
-  text-shadow: var(--glow-magenta);
-  font-weight: bold;
-  letter-spacing: 3px;
-  font-family: var(--font-retro);
+  text-shadow: var(--neon-glow);
   position: relative;
 }
 
@@ -88,16 +86,16 @@ body {
 /* Ms. Pac-Man specific game header */
 .game-header {
   border-color: var(--mspacman-magenta);
-  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-tertiary));
-  box-shadow: var(--glow-magenta);
+  box-shadow: var(--neon-glow);
 }
 
 /* Ms. Pac-Man specific game board styling */
 .game-canvas {
   border-color: var(--mspacman-magenta);
-  box-shadow: var(--glow-magenta);
+  box-shadow: var(--neon-glow);
   
   /* CRT screen effect with scanlines */
+  -webkit-filter: contrast(1.1) brightness(1.1);
   filter: contrast(1.1) brightness(1.1);
   background-image: repeating-linear-gradient(
     0deg,
@@ -111,19 +109,18 @@ body {
 /* Ms. Pac-Man specific score panel */
 .score-panel {
   border-color: var(--mspacman-magenta);
-  background: var(--bg-secondary);
-  box-shadow: var(--glow-magenta);
+  box-shadow: var(--neon-glow);
 }
 
 .score-value {
   color: var(--mspacman-magenta);
-  text-shadow: var(--glow-magenta);
+  text-shadow: var(--neon-glow);
 }
 
 /* Ms. Pac-Man specific overlay styling */
 .overlay-title {
   color: var(--mspacman-magenta);
-  text-shadow: var(--glow-magenta);
+  text-shadow: var(--neon-glow);
 }
 
 .start-prompt {
@@ -134,13 +131,12 @@ body {
 /* Ms. Pac-Man specific instructions */
 .instructions-toggle {
   border-color: var(--mspacman-magenta);
-  background: var(--bg-secondary);
-  box-shadow: var(--glow-magenta);
+  box-shadow: var(--neon-glow);
 }
 
 .instructions-toggle summary {
   color: var(--mspacman-magenta);
-  text-shadow: var(--glow-magenta);
+  text-shadow: var(--neon-glow);
 }
 
 .instruction-title {
