@@ -319,6 +319,20 @@ class PacManPlayer {
     this.mouthOpen = true;
   }
 
+  // Utility method to convert direction to grid offset
+  directionToOffset(direction) {
+    let col = 0;
+    let row = 0;
+    
+    if (direction.x > 0) col = 1;
+    else if (direction.x < 0) col = -1;
+    
+    if (direction.y > 0) row = 1;
+    else if (direction.y < 0) row = -1;
+    
+    return { col, row };
+  }
+
   update(maze) {
     // Increment animation frame
     this.animationFrame++;
@@ -330,8 +344,9 @@ class PacManPlayer {
     if (!this.moving) {
       // Check if we can start moving in the desired direction
       if (!this.nextDirection.equals(new Vector2D(0, 0))) {
-        const nextCol = this.gridPosition.col + (this.nextDirection.x > 0 ? 1 : this.nextDirection.x < 0 ? -1 : 0);
-        const nextRow = this.gridPosition.row + (this.nextDirection.y > 0 ? 1 : this.nextDirection.y < 0 ? -1 : 0);
+        const nextOffset = this.directionToOffset(this.nextDirection);
+        const nextCol = this.gridPosition.col + nextOffset.col;
+        const nextRow = this.gridPosition.row + nextOffset.row;
         
         if (maze.isWalkable(nextCol, nextRow)) {
           this.direction = this.nextDirection.clone();
@@ -342,8 +357,9 @@ class PacManPlayer {
       
       // Continue in current direction if possible
       if (!this.direction.equals(new Vector2D(0, 0))) {
-        const nextCol = this.gridPosition.col + (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        const nextRow = this.gridPosition.row + (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        const currentOffset = this.directionToOffset(this.direction);
+        const nextCol = this.gridPosition.col + currentOffset.col;
+        const nextRow = this.gridPosition.row + currentOffset.row;
         
         if (maze.isWalkable(nextCol, nextRow)) {
           this.startMoving();
@@ -357,8 +373,9 @@ class PacManPlayer {
       
       if (this.moveTimer >= this.moveSpeed) {
         // Complete the move
-        this.gridPosition.col += (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        this.gridPosition.row += (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        const moveOffset = this.directionToOffset(this.direction);
+        this.gridPosition.col += moveOffset.col;
+        this.gridPosition.row += moveOffset.row;
         
         // Handle teleportation
         if (this.gridPosition.col < 0) {
@@ -374,8 +391,9 @@ class PacManPlayer {
         // Interpolate position during movement - FIX: Corrected interpolation logic
         const progress = this.moveTimer / this.moveSpeed;
         const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        const targetCol = this.gridPosition.col + (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        const targetRow = this.gridPosition.row + (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        const targetOffset = this.directionToOffset(this.direction);
+        const targetCol = this.gridPosition.col + targetOffset.col;
+        const targetRow = this.gridPosition.row + targetOffset.row;
         const targetGridPos = Vector2D.fromGrid(targetCol, targetRow);
         
         this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
@@ -391,10 +409,8 @@ class PacManPlayer {
 
   setDirection(direction) {
     // Convert pixel direction to grid direction
-    const gridDir = new Vector2D(
-      direction.x > 0 ? 1 : direction.x < 0 ? -1 : 0,
-      direction.y > 0 ? 1 : direction.y < 0 ? -1 : 0
-    );
+    const gridOffset = this.directionToOffset(direction);
+    const gridDir = new Vector2D(gridOffset.col, gridOffset.row);
     this.nextDirection = gridDir;
   }
 
@@ -441,9 +457,120 @@ class PacManPlayer {
   }
 }
 
-// ===========================================
-// MAIN GAME CLASS
-// ============================================
+/**
+ * FruitBonus - Basic fruit system for Pac-Man
+ */
+class FruitBonus {
+  constructor(maze) {
+    this.maze = maze;
+    this.active = false;
+    this.position = null;
+    this.fruitType = 'cherry';
+    this.points = 100;
+    this.spawnTimer = 0;
+    this.lifetime = 600; // 10 seconds at 60fps
+    this.spawnDelay = 1800; // 30 seconds between spawns
+  }
+
+  update() {
+    if (!this.active) {
+      this.spawnTimer++;
+      if (this.spawnTimer >= this.spawnDelay) {
+        this.spawnFruit();
+      }
+    } else {
+      this.lifetime--;
+      if (this.lifetime <= 0) {
+        this.despawn();
+      }
+    }
+  }
+
+  spawnFruit() {
+    // Spawn in the center of the maze
+    this.position = { col: 9, row: 12 };
+    this.active = true;
+    this.lifetime = 600;
+    this.fruitType = this.getRandomFruit();
+    console.log(`🍎 Fruit spawned: ${this.fruitType} (${this.points} points)`);
+  }
+
+  despawn() {
+    this.active = false;
+    this.position = null;
+    this.spawnTimer = 0;
+  }
+
+  getRandomFruit() {
+    const fruits = ['cherry', 'strawberry', 'orange', 'apple', 'melon'];
+    const values = [100, 300, 500, 700, 1000];
+    const index = Math.floor(Math.random() * fruits.length);
+    this.points = values[index];
+    return fruits[index];
+  }
+
+  checkCollision(pacmanPosition) {
+    if (!this.active || !this.position) return null;
+    
+    const pacmanGrid = pacmanPosition.toGridIndex();
+    const distance = Math.abs(pacmanGrid.col - this.position.col) + 
+                    Math.abs(pacmanGrid.row - this.position.row);
+    
+    if (distance < 1) {
+      const points = this.points;
+      this.despawn();
+      return { type: 'fruit', points, fruitType: this.fruitType };
+    }
+    
+    return null;
+  }
+
+  render(ctx) {
+    if (!this.active || !this.position) return;
+    
+    const x = this.position.col * GAME_CONFIG.maze.cellSize + GAME_CONFIG.maze.cellSize / 2;
+    const y = this.position.row * GAME_CONFIG.maze.cellSize + GAME_CONFIG.maze.cellSize / 2;
+    
+    // Flash when lifetime is low
+    const shouldRender = this.lifetime > 120 || Math.floor(this.lifetime / 10) % 2 === 0;
+    
+    if (shouldRender) {
+      ctx.fillStyle = this.getFruitColor();
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Simple fruit icon
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '12px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(this.getFruitIcon(), x, y + 4);
+      ctx.textAlign = 'left';
+    }
+  }
+
+  getFruitColor() {
+    const colors = {
+      cherry: '#FF0000',
+      strawberry: '#FF69B4',
+      orange: '#FFA500',
+      apple: '#00FF00',
+      melon: '#FFFF00'
+    };
+    return colors[this.fruitType] || '#FFFF00';
+  }
+
+  getFruitIcon() {
+    const icons = {
+      cherry: '🍒',
+      strawberry: '🍓',
+      orange: '🍊',
+      apple: '🍎',
+      melon: '🍈'
+    };
+    return icons[this.fruitType] || '🍎';
+  }
+}
 
 /**
  * AudioManager - Sistema de audio con Web Audio API y fallback Safari
@@ -486,6 +613,7 @@ class AudioManager {
       'eatGhost': this.createBeepAudio(400, 0.5),
       'death': this.createBeepAudio(150, 1.0),
       'extraLife': this.createBeepAudio(1000, 0.8),
+      'fruit': this.createBeepAudio(660, 0.4),
     };
 
     Object.entries(audioFiles).forEach(([name, audioElement]) => {
@@ -615,6 +743,7 @@ class AudioManager {
     await this.loadSound('eatGhost', 400, 'triangle', 0.5);
     await this.loadSound('death', 150, 'sawtooth', 1.0);
     await this.loadSound('extraLife', 1000, 'sine', 0.8);
+    await this.loadSound('fruit', 660, 'sine', 0.4); // Add fruit sound
     
     console.log(`Audio initialized: ${this.webAudioSupported ? 'Web Audio API' : 'HTML5 Audio fallback'}`);
   }
@@ -872,7 +1001,7 @@ class GhostAI {
     // Calculate elapsed time since game start
     const elapsedTime = gameStartTime ? (Date.now() - gameStartTime) : 0;
     
-    // Handle individual ghost spawn timing
+    // Handle individual ghost spawn timing - FIX: Proper release logic
     if (this.inHouse) {
       if (elapsedTime >= this.spawnDelay) {
         this.inHouse = false;
@@ -880,10 +1009,9 @@ class GhostAI {
         this.modeTimer = 0;
         console.log(`🚪 ${this.name} RELEASED from house after ${this.spawnDelay}ms delay`);
       } else {
-        // Debug spawn timing every 60 frames
-        if (this.frameCount % 60 === 0) {
-          const remainingTime = this.spawnDelay - elapsedTime;
-          console.log(`[${this.name}] In house, releasing in ${remainingTime}ms`);
+        // Debug spawn timing every 60 frames but keep minimal logging
+        if (this.frameCount % 60 === 0 && this.name === 'blinky') {
+          console.log(`Ghost release status - elapsed: ${elapsedTime}ms`);
         }
         return; // Don't move or update AI while in house
       }
@@ -1308,6 +1436,7 @@ class GameEngine {
 
   resetGame() {
     this.maze = new MazeManager();
+    this.fruitBonus = new FruitBonus(this.maze);
     this.createEntities();
     this.score = 0;
     this.level = 1;
@@ -1317,6 +1446,7 @@ class GameEngine {
     this.paused = false;
     this.gameStartTime = null; // Reset game start time
     this.lastFrameTime = performance.now(); // Initialize frame timing
+    this.ghostEatenCount = 0; // Initialize ghost eaten counter
     this.updateUI();
   }
 
@@ -1408,6 +1538,7 @@ class GameEngine {
     this.lastFrameTime = now;
 
     this.pacman.update(this.maze);
+    this.fruitBonus.update(); // Update fruit bonus system
     
     // Update all ghosts with deltaTime and gameStartTime
     this.ghosts.forEach(ghost => {
@@ -1423,8 +1554,9 @@ class GameEngine {
     // FIX: Clear canvas once at start of render cycle
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     
-    // FIX: Single render pass - maze, pellets, pacman, ghosts
+    // FIX: Single render pass - maze, pellets, fruit, pacman, ghosts
     this.maze.render(this.ctx);
+    this.fruitBonus.render(this.ctx); // Render fruit bonus
     this.pacman.render(this.ctx);
     
     // Render all ghosts in a single pass
@@ -1476,6 +1608,14 @@ class GameEngine {
       }
     }
 
+    // Fruit bonus
+    const fruitConsumed = this.fruitBonus.checkCollision(this.pacman.position);
+    if (fruitConsumed) {
+      this.score += fruitConsumed.points;
+      this.audio.playSound('fruit');
+      console.log(`🍎 Fruit eaten: ${fruitConsumed.fruitType} (+${fruitConsumed.points} points)`);
+    }
+
     // Ghosts
     this.ghosts.forEach(ghost => {
       if (!ghost.eaten && ghost.checkCollisionWithPacman(this.pacman)) {
@@ -1490,13 +1630,26 @@ class GameEngine {
   
   activatePowerPellet() {
     this.audio.playSound('powerPellet');
-    this.ghosts.forEach(ghost => ghost.makeVulnerable());
+    this.ghostEatenCount = 0; // Reset ghost eaten counter for scoring multiplier
+    
+    this.ghosts.forEach(ghost => {
+      if (!ghost.inHouse && !ghost.eaten) {
+        ghost.makeVulnerable();
+      }
+    });
+    
+    console.log('Power pellet activated - all active ghosts are now vulnerable');
   }
 
   eatGhost(ghost) {
-    this.score += GAME_CONFIG.game.scoring.ghost;
+    this.ghostEatenCount = (this.ghostEatenCount || 0) + 1;
+    const points = GAME_CONFIG.game.scoring.ghost * Math.pow(2, this.ghostEatenCount - 1);
+    this.score += points;
+    
     this.audio.playSound('eatGhost');
     ghost.getEaten();
+    
+    console.log(`Ghost eaten! Points: ${points} (${this.ghostEatenCount} in sequence)`);
   }
 
   playerDeath() {

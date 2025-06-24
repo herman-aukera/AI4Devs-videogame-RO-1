@@ -29,7 +29,16 @@ class ComprehensiveAuditor {
         console.log('🔍 STARTING COMPREHENSIVE TDD AUDIT');
         console.log('=====================================');
         
-        const games = ['snake-GG', 'breakout-GG', 'fruit-catcher-GG', 'pacman-GG', 'tetris-GG'];
+        const games = [
+            'snake-GG', 
+            'breakout-GG', 
+            'fruit-catcher-GG', 
+            'pacman-GG', 
+            'tetris-GG',
+            'asteroids-GG',
+            'space-invaders-GG',
+            'mspacman-GG'
+        ];
         
         for (const game of games) {
             console.log(`\n🎮 Auditing ${game}...`);
