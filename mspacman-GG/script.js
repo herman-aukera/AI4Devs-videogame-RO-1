@@ -83,14 +83,6 @@ const GAME_CONFIG = {
   }
 };
 
-// Ghost spawn delays (staggered release)
-const GHOST_SPAWN_DELAYS = {
-  'blinky': 0,       // Immediate
-  'pinky': 4000,     // 4 seconds (faster than Pac-Man)
-  'inky': 8000,      // 8 seconds
-  'clyde': 12000     // 12 seconds
-};
-
 // ===========================================
 // MS. PAC-MAN MAZES
 // ===========================================
@@ -437,86 +429,110 @@ class MsPacManPlayer {
   }
 
   update(maze) {
-    // Animation
+    this.updateAnimation();
+    
+    if (!this.moving) {
+      this.handleStaticMovement(maze);
+    } else {
+      this.handleActiveMovement(maze);
+    }
+  }
+
+  updateAnimation() {
     this.animationFrame++;
     if (this.animationFrame % 8 === 0) {
       this.mouthOpen = !this.mouthOpen;
     }
+  }
 
-    // Grid-based movement logic (same as Pac-Man)
-    if (!this.moving) {
-      if (!this.nextDirection.equals(new Vector2D(0, 0))) {
-        // Calculate next position based on intended direction
-        let nextCol = this.gridPosition.col;
-        if (this.nextDirection.x > 0) nextCol += 1;
-        else if (this.nextDirection.x < 0) nextCol -= 1;
-        
-        let nextRow = this.gridPosition.row;
-        if (this.nextDirection.y > 0) nextRow += 1;
-        else if (this.nextDirection.y < 0) nextRow -= 1;
-        
-        if (maze.isWalkable(nextCol, nextRow)) {
-          this.direction = this.nextDirection.clone();
-          this.nextDirection = new Vector2D(0, 0);
-          this.startMoving();
-        }
-      }
+  handleStaticMovement(maze) {
+    this.tryNextDirection(maze);
+    this.tryContinueCurrentDirection(maze);
+  }
+
+  tryNextDirection(maze) {
+    if (!this.nextDirection.equals(new Vector2D(0, 0))) {
+      const nextPosition = this.calculateNextPosition(this.nextDirection);
       
-      if (!this.direction.equals(new Vector2D(0, 0))) {
-        // Calculate next position based on current direction
-        let nextCol = this.gridPosition.col;
-        if (this.direction.x > 0) nextCol += 1;
-        else if (this.direction.x < 0) nextCol -= 1;
-        
-        let nextRow = this.gridPosition.row;
-        if (this.direction.y > 0) nextRow += 1;
-        else if (this.direction.y < 0) nextRow -= 1;
-        
-        if (maze.isWalkable(nextCol, nextRow)) {
-          this.startMoving();
-        } else {
-          this.direction = new Vector2D(0, 0);
-        }
-      }
-    } else {
-      this.moveTimer++;
-      
-      if (this.moveTimer >= this.moveSpeed) {
-        // Update grid position based on direction
-        if (this.direction.x > 0) this.gridPosition.col += 1;
-        else if (this.direction.x < 0) this.gridPosition.col -= 1;
-        
-        if (this.direction.y > 0) this.gridPosition.row += 1;
-        else if (this.direction.y < 0) this.gridPosition.row -= 1;
-        
-        // Teleportation
-        if (this.gridPosition.col < 0) {
-          this.gridPosition.col = maze.width - 1;
-        } else if (this.gridPosition.col >= maze.width) {
-          this.gridPosition.col = 0;
-        }
-        
-        this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        this.moving = false;
-        this.moveTimer = 0;
-      } else {
-        // Smooth interpolation
-        const progress = this.moveTimer / this.moveSpeed;
-        const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        // Calculate target position for collision detection
-        let targetCol = this.gridPosition.col;
-        if (this.direction.x > 0) targetCol += 1;
-        else if (this.direction.x < 0) targetCol -= 1;
-        
-        let targetRow = this.gridPosition.row;
-        if (this.direction.y > 0) targetRow += 1;
-        else if (this.direction.y < 0) targetRow -= 1;
-        const targetGridPos = Vector2D.fromGrid(targetCol, targetRow);
-        
-        this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
-        this.position.y = currentGridPos.y + (targetGridPos.y - currentGridPos.y) * progress;
+      if (maze.isWalkable(nextPosition.col, nextPosition.row)) {
+        this.direction = this.nextDirection.clone();
+        this.nextDirection = new Vector2D(0, 0);
+        this.startMoving();
       }
     }
+  }
+
+  tryContinueCurrentDirection(maze) {
+    if (!this.direction.equals(new Vector2D(0, 0))) {
+      const nextPosition = this.calculateNextPosition(this.direction);
+      
+      if (maze.isWalkable(nextPosition.col, nextPosition.row)) {
+        this.startMoving();
+      } else {
+        this.direction = new Vector2D(0, 0);
+      }
+    }
+  }
+
+  calculateNextPosition(direction) {
+    let nextCol = this.gridPosition.col;
+    let nextRow = this.gridPosition.row;
+    
+    if (direction.x > 0) nextCol += 1;
+    else if (direction.x < 0) nextCol -= 1;
+    
+    if (direction.y > 0) nextRow += 1;
+    else if (direction.y < 0) nextRow -= 1;
+    
+    return { col: nextCol, row: nextRow };
+  }
+
+  handleActiveMovement(maze) {
+    this.moveTimer++;
+    
+    if (this.moveTimer >= this.moveSpeed) {
+      this.completeMovement(maze);
+    } else {
+      this.interpolateMovement();
+    }
+  }
+
+  completeMovement(maze) {
+    this.updateGridPosition();
+    this.handleTeleportation(maze);
+    this.finalizeMoveStep();
+  }
+
+  updateGridPosition() {
+    if (this.direction.x > 0) this.gridPosition.col += 1;
+    else if (this.direction.x < 0) this.gridPosition.col -= 1;
+    
+    if (this.direction.y > 0) this.gridPosition.row += 1;
+    else if (this.direction.y < 0) this.gridPosition.row -= 1;
+  }
+
+  handleTeleportation(maze) {
+    if (this.gridPosition.col < 0) {
+      this.gridPosition.col = maze.width - 1;
+    } else if (this.gridPosition.col >= maze.width) {
+      this.gridPosition.col = 0;
+    }
+  }
+
+  finalizeMoveStep() {
+    this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    this.moving = false;
+    this.moveTimer = 0;
+  }
+
+  interpolateMovement() {
+    const progress = this.moveTimer / this.moveSpeed;
+    const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    const targetPosition = this.calculateNextPosition(this.direction);
+    const targetGridPos = Vector2D.fromGrid(targetPosition.col, targetPosition.row);
+    
+    this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
+    this.position.y = currentGridPos.y + (targetGridPos.y - currentGridPos.y) * progress;
   }
 
   startMoving() {
@@ -824,78 +840,112 @@ class EnhancedGhostAI {
 
   update(pacman, ghosts, maze, deltaTime, gameStartTime) {
     this.frameCount++;
+    this.initializeGameTime(gameStartTime);
     
-    if (!this.gameStartTime && gameStartTime) {
-      this.gameStartTime = gameStartTime;
-    }
-    
-    const elapsedTime = gameStartTime ? (Date.now() - gameStartTime) : 0;
-    
-    // Handle spawn timing
     if (this.inHouse) {
-      if (elapsedTime >= this.spawnDelay) {
-        this.inHouse = false;
-        this.mode = 'SCATTER';
-        this.modeTimer = 0;
-        console.log(`🚪 ${this.name} RELEASED from house`);
-      } else {
-        return;
-      }
+      return this.handleHouseLogic(gameStartTime);
     }
 
     this.updateState(deltaTime);
     this.updateVulnerability(deltaTime);
 
-    // Enhanced AI decision making
     if (!this.moving) {
-      let target;
-      
-      // Add unpredictability - sometimes make random decisions
-      if (Math.random() < this.unpredictabilityFactor && this.mode !== 'EATEN') {
-        target = this.getRandomTarget(maze);
-      } else {
-        target = this.getTarget(pacman, ghosts, maze);
-      }
-      
-      const bestDirection = this.findBestDirection(target, maze);
-      
-      if (bestDirection) {
-        this.direction = bestDirection;
-        this.startMoving();
-      }
+      this.initiateMovement(pacman, ghosts, maze);
     } else {
-      this.moveTimer++;
-      
-      if (this.moveTimer >= this.moveSpeed) {
-        this.gridPosition.col += this.direction.x;
-        this.gridPosition.row += this.direction.y;
-        
-        // Handle teleportation
-        if (this.gridPosition.col < 0) {
-          this.gridPosition.col = maze.width - 1;
-        } else if (this.gridPosition.col >= maze.width) {
-          this.gridPosition.col = 0;
-        }
-        
-        this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        this.moving = false;
-        this.moveTimer = 0;
-        
-        if (this.eaten && this.getDistance(this.gridPosition, this.homePosition) < 1) {
-          this.respawn();
-        }
-      } else {
-        // Smooth interpolation
-        const progress = this.moveTimer / this.moveSpeed;
-        const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        const targetCol = this.gridPosition.col + this.direction.x;
-        const targetRow = this.gridPosition.row + this.direction.y;
-        const targetGridPos = Vector2D.fromGrid(targetCol, targetRow);
-        
-        this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
-        this.position.y = currentGridPos.y + (targetGridPos.y - currentGridPos.y) * progress;
-      }
+      this.continueMovement(maze);
     }
+  }
+
+  initializeGameTime(gameStartTime) {
+    if (!this.gameStartTime && gameStartTime) {
+      this.gameStartTime = gameStartTime;
+    }
+  }
+
+  handleHouseLogic(gameStartTime) {
+    const elapsedTime = gameStartTime ? (Date.now() - gameStartTime) : 0;
+    
+    if (elapsedTime >= this.spawnDelay) {
+      this.releaseFromHouse();
+    }
+  }
+
+  releaseFromHouse() {
+    this.inHouse = false;
+    this.mode = 'SCATTER';
+    this.modeTimer = 0;
+    console.log(`🚪 ${this.name} RELEASED from house`);
+  }
+
+  initiateMovement(pacman, ghosts, maze) {
+    const target = this.selectTarget(pacman, ghosts, maze);
+    const bestDirection = this.findBestDirection(target, maze);
+    
+    if (bestDirection) {
+      this.direction = bestDirection;
+      this.startMoving();
+    }
+  }
+
+  selectTarget(pacman, ghosts, maze) {
+    // Add unpredictability - sometimes make random decisions
+    if (Math.random() < this.unpredictabilityFactor && this.mode !== 'EATEN') {
+      return this.getRandomTarget(maze);
+    }
+    return this.getTarget(pacman, ghosts, maze);
+  }
+
+  continueMovement(maze) {
+    this.moveTimer++;
+    
+    if (this.moveTimer >= this.moveSpeed) {
+      this.completeMovement(maze);
+    } else {
+      this.interpolateMovement();
+    }
+  }
+
+  completeMovement(maze) {
+    this.updateGridPosition();
+    this.handleTeleportation(maze);
+    this.finalizeMovement();
+    this.checkHomeReached();
+  }
+
+  updateGridPosition() {
+    this.gridPosition.col += this.direction.x;
+    this.gridPosition.row += this.direction.y;
+  }
+
+  handleTeleportation(maze) {
+    if (this.gridPosition.col < 0) {
+      this.gridPosition.col = maze.width - 1;
+    } else if (this.gridPosition.col >= maze.width) {
+      this.gridPosition.col = 0;
+    }
+  }
+
+  finalizeMovement() {
+    this.position = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    this.moving = false;
+    this.moveTimer = 0;
+  }
+
+  checkHomeReached() {
+    if (this.eaten && this.getDistance(this.gridPosition, this.homePosition) < 1) {
+      this.respawn();
+    }
+  }
+
+  interpolateMovement() {
+    const progress = this.moveTimer / this.moveSpeed;
+    const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
+    const targetCol = this.gridPosition.col + this.direction.x;
+    const targetRow = this.gridPosition.row + this.direction.y;
+    const targetGridPos = Vector2D.fromGrid(targetCol, targetRow);
+    
+    this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
+    this.position.y = currentGridPos.y + (targetGridPos.y - currentGridPos.y) * progress;
   }
 
   getRandomTarget(maze) {
@@ -1011,49 +1061,67 @@ class EnhancedGhostAI {
   getChaseTarget(pacmanPos, pacmanDir, ghosts) {
     switch (this.name) {
       case 'blinky':
-        return pacmanPos;
-      case 'pinky': {
-        // Calculate direction multipliers for Blinky targeting  
-        let dirX = 0;
-        if (pacmanDir.x > 0) dirX = 4;
-        else if (pacmanDir.x < 0) dirX = -4;
-        
-        let dirY = 0;
-        if (pacmanDir.y > 0) dirY = 4;
-        else if (pacmanDir.y < 0) dirY = -4;
-        return { col: pacmanPos.col + dirX, row: pacmanPos.row + dirY };
-      }
-      case 'inky': {
-        const blinky = ghosts.find(g => g.name === 'blinky');
-        if (blinky) {
-          const blinkyGrid = blinky.gridPosition;
-          // Calculate direction multipliers for Inky targeting
-          let dirX = 0;
-          if (pacmanDir.x > 0) dirX = 2;
-          else if (pacmanDir.x < 0) dirX = -2;
-          
-          let dirY = 0;
-          if (pacmanDir.y > 0) dirY = 2;
-          else if (pacmanDir.y < 0) dirY = -2;
-          const pivotCol = pacmanPos.col + dirX;
-          const pivotRow = pacmanPos.row + dirY;
-          return {
-            col: pivotCol + (pivotCol - blinkyGrid.col),
-            row: pivotRow + (pivotRow - blinkyGrid.row)
-          };
-        }
-        return pacmanPos;
-      }
-      case 'clyde': {
-        const distance = Math.sqrt(
-          Math.pow(pacmanPos.col - this.gridPosition.col, 2) + 
-          Math.pow(pacmanPos.row - this.gridPosition.row, 2)
-        );
-        return distance > 8 ? pacmanPos : this.getScatterTarget();
-      }
+        return this.getBlinkyTarget(pacmanPos);
+      case 'pinky':
+        return this.getPinkyTarget(pacmanPos, pacmanDir);
+      case 'inky':
+        return this.getInkyTarget(pacmanPos, pacmanDir, ghosts);
+      case 'clyde':
+        return this.getClydeTarget(pacmanPos);
       default:
         return pacmanPos;
     }
+  }
+
+  getBlinkyTarget(pacmanPos) {
+    return pacmanPos;
+  }
+
+  getPinkyTarget(pacmanPos, pacmanDir) {
+    const direction = this.getDirectionMultipliers(pacmanDir, 4);
+    return { 
+      col: pacmanPos.col + direction.x, 
+      row: pacmanPos.row + direction.y 
+    };
+  }
+
+  getInkyTarget(pacmanPos, pacmanDir, ghosts) {
+    const blinky = ghosts.find(g => g.name === 'blinky');
+    if (!blinky) return pacmanPos;
+
+    const direction = this.getDirectionMultipliers(pacmanDir, 2);
+    const pivotCol = pacmanPos.col + direction.x;
+    const pivotRow = pacmanPos.row + direction.y;
+    const blinkyGrid = blinky.gridPosition;
+    
+    return {
+      col: pivotCol + (pivotCol - blinkyGrid.col),
+      row: pivotRow + (pivotRow - blinkyGrid.row)
+    };
+  }
+
+  getClydeTarget(pacmanPos) {
+    const distance = this.calculateDistance(pacmanPos, this.gridPosition);
+    return distance > 8 ? pacmanPos : this.getScatterTarget();
+  }
+
+  getDirectionMultipliers(direction, multiplier) {
+    let x = 0, y = 0;
+    
+    if (direction.x > 0) x = multiplier;
+    else if (direction.x < 0) x = -multiplier;
+    
+    if (direction.y > 0) y = multiplier;
+    else if (direction.y < 0) y = -multiplier;
+    
+    return { x, y };
+  }
+
+  calculateDistance(pos1, pos2) {
+    return Math.sqrt(
+      Math.pow(pos1.col - pos2.col, 2) + 
+      Math.pow(pos1.row - pos2.row, 2)
+    );
   }
 
   getFleeTarget(pacmanPos, maze) {
@@ -1198,13 +1266,23 @@ class MsPacManAudioManager {
         this.webAudioSupported = true;
         console.log('Ms. Pac-Man Audio: Web Audio API enabled');
       }
-    } catch (e) {
+    } catch (error) {
+      console.warn('Ms. Pac-Man Audio initialization failed:', error.message);
       console.log('Ms. Pac-Man Audio: Using HTML5 fallback');
       this.webAudioSupported = false;
+      this.handleAudioFallback(error);
     }
 
     if (!this.webAudioSupported) {
       this.createFallbackAudio();
+    }
+  }
+
+  handleAudioFallback(error) {
+    if (error.name === 'NotAllowedError') {
+      console.info('Ms. Pac-Man Audio requires user interaction - will initialize on first user action');
+    } else {
+      console.warn('Ms. Pac-Man Audio defaulting to HTML5 Audio due to:', error.name);
     }
   }
 
