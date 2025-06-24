@@ -825,6 +825,7 @@ class EnhancedGhostAI {
     this.eaten = false;
     this.inHouse = true;
     this.spawnDelay = this.getSpawnDelay();
+    console.log(`🏠 Ms. Pac-Man Ghost ${this.name} initialized with spawn delay: ${this.spawnDelay}ms`);
     this.homePosition = { col: startCol, row: startRow };
     this.frameCount = 0;
     this.gameStartTime = null;
@@ -867,10 +868,15 @@ class EnhancedGhostAI {
   handleHouseLogic(gameStartTime) {
     const elapsedTime = gameStartTime ? (Date.now() - gameStartTime) : 0;
     
-    if (elapsedTime >= this.spawnDelay) {
+    // Special case: if spawn delay is 0, release immediately regardless of elapsed time
+    if (this.spawnDelay === 0 || elapsedTime >= this.spawnDelay) {
       this.releaseFromHouse();
       return false; // Continue with normal update
     } else {
+      // Debug: Log release status for all ghosts every second
+      if (this.frameCount % 60 === 0) {
+        console.log(`👻 Ms.Pac ${this.name}: ${elapsedTime}ms/${this.spawnDelay}ms (${this.spawnDelay - elapsedTime}ms remaining)`);
+      }
       return true; // Stay in house, skip rest of update
     }
   }

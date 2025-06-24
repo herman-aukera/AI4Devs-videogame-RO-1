@@ -1017,7 +1017,8 @@ class GhostAI {
     this.vulnerableTimer = 0;
     this.eaten = false;
     this.inHouse = true; // Individual per-ghost flag
-    this.spawnDelay = GHOST_SPAWN_DELAYS[this.name]; // Individual spawn delay in ms
+    this.spawnDelay = GHOST_SPAWN_DELAYS[this.name] || 0; // Individual spawn delay in ms with fallback
+    console.log(`🏠 Ghost ${this.name} initialized with spawn delay: ${this.spawnDelay}ms`);
     this.spawnTimer = 0; // Tracks time since game start
     this.homePosition = { col: startCol, row: startRow };
     this.frameCount = 0;
@@ -1053,11 +1054,15 @@ class GhostAI {
   handleHouseLogic(gameStartTime) {
     const elapsedTime = gameStartTime ? (Date.now() - gameStartTime) : 0;
     
-    if (elapsedTime >= this.spawnDelay) {
+    // Special case: if spawn delay is 0, release immediately regardless of elapsed time
+    if (this.spawnDelay === 0 || elapsedTime >= this.spawnDelay) {
       this.releaseFromHouse();
       return false; // Continue with normal update
     } else {
-      this.logSpawnStatus(elapsedTime);
+      // Debug: Log release status for all ghosts every second
+      if (this.frameCount % 60 === 0) {
+        console.log(`👻 ${this.name}: ${elapsedTime}ms/${this.spawnDelay}ms (${this.spawnDelay - elapsedTime}ms remaining)`);
+      }
       return true; // Stay in house, skip rest of update
     }
   }
