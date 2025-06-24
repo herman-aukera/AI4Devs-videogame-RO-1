@@ -34,10 +34,10 @@ class ComprehensiveAuditor {
             'breakout-GG', 
             'fruit-catcher-GG', 
             'pacman-GG', 
+            'mspacman-GG', // Added ms pacman
             'tetris-GG',
             'asteroids-GG',
-            'space-invaders-GG',
-            'mspacman-GG'
+            'space-invaders-GG'
         ];
         
         for (const game of games) {

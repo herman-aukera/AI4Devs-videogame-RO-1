@@ -446,8 +446,14 @@ class MsPacManPlayer {
     // Grid-based movement logic (same as Pac-Man)
     if (!this.moving) {
       if (!this.nextDirection.equals(new Vector2D(0, 0))) {
-        const nextCol = this.gridPosition.col + (this.nextDirection.x > 0 ? 1 : this.nextDirection.x < 0 ? -1 : 0);
-        const nextRow = this.gridPosition.row + (this.nextDirection.y > 0 ? 1 : this.nextDirection.y < 0 ? -1 : 0);
+        // Calculate next position based on intended direction
+        let nextCol = this.gridPosition.col;
+        if (this.nextDirection.x > 0) nextCol += 1;
+        else if (this.nextDirection.x < 0) nextCol -= 1;
+        
+        let nextRow = this.gridPosition.row;
+        if (this.nextDirection.y > 0) nextRow += 1;
+        else if (this.nextDirection.y < 0) nextRow -= 1;
         
         if (maze.isWalkable(nextCol, nextRow)) {
           this.direction = this.nextDirection.clone();
@@ -457,8 +463,14 @@ class MsPacManPlayer {
       }
       
       if (!this.direction.equals(new Vector2D(0, 0))) {
-        const nextCol = this.gridPosition.col + (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        const nextRow = this.gridPosition.row + (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        // Calculate next position based on current direction
+        let nextCol = this.gridPosition.col;
+        if (this.direction.x > 0) nextCol += 1;
+        else if (this.direction.x < 0) nextCol -= 1;
+        
+        let nextRow = this.gridPosition.row;
+        if (this.direction.y > 0) nextRow += 1;
+        else if (this.direction.y < 0) nextRow -= 1;
         
         if (maze.isWalkable(nextCol, nextRow)) {
           this.startMoving();
@@ -470,8 +482,12 @@ class MsPacManPlayer {
       this.moveTimer++;
       
       if (this.moveTimer >= this.moveSpeed) {
-        this.gridPosition.col += (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        this.gridPosition.row += (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        // Update grid position based on direction
+        if (this.direction.x > 0) this.gridPosition.col += 1;
+        else if (this.direction.x < 0) this.gridPosition.col -= 1;
+        
+        if (this.direction.y > 0) this.gridPosition.row += 1;
+        else if (this.direction.y < 0) this.gridPosition.row -= 1;
         
         // Teleportation
         if (this.gridPosition.col < 0) {
@@ -487,8 +503,14 @@ class MsPacManPlayer {
         // Smooth interpolation
         const progress = this.moveTimer / this.moveSpeed;
         const currentGridPos = Vector2D.fromGrid(this.gridPosition.col, this.gridPosition.row);
-        const targetCol = this.gridPosition.col + (this.direction.x > 0 ? 1 : this.direction.x < 0 ? -1 : 0);
-        const targetRow = this.gridPosition.row + (this.direction.y > 0 ? 1 : this.direction.y < 0 ? -1 : 0);
+        // Calculate target position for collision detection
+        let targetCol = this.gridPosition.col;
+        if (this.direction.x > 0) targetCol += 1;
+        else if (this.direction.x < 0) targetCol -= 1;
+        
+        let targetRow = this.gridPosition.row;
+        if (this.direction.y > 0) targetRow += 1;
+        else if (this.direction.y < 0) targetRow -= 1;
         const targetGridPos = Vector2D.fromGrid(targetCol, targetRow);
         
         this.position.x = currentGridPos.x + (targetGridPos.x - currentGridPos.x) * progress;
@@ -991,16 +1013,28 @@ class EnhancedGhostAI {
       case 'blinky':
         return pacmanPos;
       case 'pinky': {
-        const dirX = pacmanDir.x > 0 ? 4 : pacmanDir.x < 0 ? -4 : 0;
-        const dirY = pacmanDir.y > 0 ? 4 : pacmanDir.y < 0 ? -4 : 0;
+        // Calculate direction multipliers for Blinky targeting  
+        let dirX = 0;
+        if (pacmanDir.x > 0) dirX = 4;
+        else if (pacmanDir.x < 0) dirX = -4;
+        
+        let dirY = 0;
+        if (pacmanDir.y > 0) dirY = 4;
+        else if (pacmanDir.y < 0) dirY = -4;
         return { col: pacmanPos.col + dirX, row: pacmanPos.row + dirY };
       }
       case 'inky': {
         const blinky = ghosts.find(g => g.name === 'blinky');
         if (blinky) {
           const blinkyGrid = blinky.gridPosition;
-          const dirX = pacmanDir.x > 0 ? 2 : pacmanDir.x < 0 ? -2 : 0;
-          const dirY = pacmanDir.y > 0 ? 2 : pacmanDir.y < 0 ? -2 : 0;
+          // Calculate direction multipliers for Inky targeting
+          let dirX = 0;
+          if (pacmanDir.x > 0) dirX = 2;
+          else if (pacmanDir.x < 0) dirX = -2;
+          
+          let dirY = 0;
+          if (pacmanDir.y > 0) dirY = 2;
+          else if (pacmanDir.y < 0) dirY = -2;
           const pivotCol = pacmanPos.col + dirX;
           const pivotRow = pacmanPos.row + dirY;
           return {

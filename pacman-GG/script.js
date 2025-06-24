@@ -1215,8 +1215,14 @@ class GhostAI {
       
       case 'pinky': {
         // Pinky: target 4 tiles ahead of Pac-Man
-        const dirX = pacmanDir.x > 0 ? 1 : pacmanDir.x < 0 ? -1 : 0;
-        const dirY = pacmanDir.y > 0 ? 1 : pacmanDir.y < 0 ? -1 : 0;
+        // Calculate direction multipliers for targeting
+        let dirX = 0;
+        if (pacmanDir.x > 0) dirX = 1;
+        else if (pacmanDir.x < 0) dirX = -1;
+        
+        let dirY = 0;
+        if (pacmanDir.y > 0) dirY = 1;
+        else if (pacmanDir.y < 0) dirY = -1;
         return {
           col: pacmanPos.col + dirX * 4,
           row: pacmanPos.row + dirY * 4
@@ -1228,8 +1234,14 @@ class GhostAI {
         const blinky = ghosts.find(g => g.name === 'blinky');
         if (blinky) {
           const blinkyGrid = blinky.gridPosition;
-          const dirX = pacmanDir.x > 0 ? 1 : pacmanDir.x < 0 ? -1 : 0;
-          const dirY = pacmanDir.y > 0 ? 1 : pacmanDir.y < 0 ? -1 : 0;
+          // Calculate direction multipliers for targeting  
+          let dirX = 0;
+          if (pacmanDir.x > 0) dirX = 1;
+          else if (pacmanDir.x < 0) dirX = -1;
+          
+          let dirY = 0;
+          if (pacmanDir.y > 0) dirY = 1;
+          else if (pacmanDir.y < 0) dirY = -1;
           const pivotCol = pacmanPos.col + dirX * 2;
           const pivotRow = pacmanPos.row + dirY * 2;
           return {
