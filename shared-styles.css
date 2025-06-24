@@ -1,0 +1,340 @@
+/* © GG, MIT License */
+/* ==============================================
+   AI4DEVS RETRO GAMES - Shared Design System
+   Standard CSS variables and components
+   ============================================== */
+
+:root {
+  /* ===== RETRO NEON COLOR PALETTE ===== */
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-yellow: #ffff00;
+  --neon-green: #00ff00;
+  --neon-red: #ff0000;
+  --neon-orange: #ffb852;
+  --neon-pink: #ffb8ff;
+  --neon-blue: #0000ff;
+  
+  /* ===== BACKGROUND COLORS ===== */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #1a1a1a;
+  --bg-overlay: rgba(0, 0, 0, 0.9);
+  
+  /* ===== TEXT COLORS ===== */
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-accent: var(--neon-cyan);
+  
+  /* ===== TYPOGRAPHY ===== */
+  --font-retro: 'Press Start 2P', 'Courier New', monospace;
+  --font-size-xxl: 3rem;      /* Major titles */
+  --font-size-xl: 2rem;       /* Game titles */
+  --font-size-lg: 1.5rem;     /* Section headers */
+  --font-size-md: 1rem;       /* Body text */
+  --font-size-sm: 0.8rem;     /* Small text */
+  --font-size-xs: 0.7rem;     /* Tiny text */
+  
+  /* ===== SPACING SCALE ===== */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-xxl: 4rem;
+  
+  /* ===== GLOW EFFECTS ===== */
+  --glow-cyan: 0 0 8px var(--neon-cyan), 0 0 16px var(--neon-cyan);
+  --glow-magenta: 0 0 8px var(--neon-magenta), 0 0 16px var(--neon-magenta);
+  --glow-yellow: 0 0 8px var(--neon-yellow), 0 0 16px var(--neon-yellow);
+  --glow-green: 0 0 8px var(--neon-green), 0 0 16px var(--neon-green);
+  --glow-red: 0 0 8px var(--neon-red), 0 0 16px var(--neon-red);
+  
+  /* ===== SHADOWS ===== */
+  --shadow-light: 0 2px 8px rgba(0, 255, 255, 0.2);
+  --shadow-medium: 0 4px 15px rgba(0, 255, 255, 0.3);
+  --shadow-heavy: 0 8px 25px rgba(0, 255, 255, 0.4);
+  
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 0.15s ease-out;
+  --transition-medium: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+  
+  /* ===== BORDERS ===== */
+  --border-thin: 2px solid;
+  --border-medium: 3px solid;
+  --border-thick: 4px solid;
+  --border-radius: 8px;
+  
+  /* ===== RESPONSIVE BREAKPOINTS ===== */
+  --mobile-max: 768px;
+  --tablet-max: 1024px;
+}
+
+/* ===== UNIVERSAL RESET ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-retro);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.4;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== STANDARDIZED NAVIGATION ===== */
+.game-navigation {
+  position: fixed;
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
+  z-index: 1000;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--bg-secondary);
+  color: var(--neon-cyan);
+  text-decoration: none;
+  border: var(--border-thin) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-retro);
+  transition: all var(--transition-medium);
+  text-shadow: var(--glow-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.back-button:hover {
+  background: var(--neon-cyan);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* ===== STANDARDIZED GAME CONTAINER ===== */
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-sm);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  min-height: 100vh;
+}
+
+/* ===== STANDARDIZED GAME HEADER ===== */
+.game-header {
+  text-align: center;
+  padding: var(--spacing-md) 0;
+  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-tertiary));
+  border: var(--border-medium) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-title {
+  font-size: var(--font-size-xl);
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--font-retro);
+  letter-spacing: 2px;
+}
+
+/* Remove GG subtitle styling since we're removing it */
+.game-subtitle {
+  display: none;
+}
+
+/* ===== STANDARDIZED GAME BOARD ===== */
+.game-board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.game-canvas {
+  border: var(--border-medium) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  box-shadow: var(--glow-cyan);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== STANDARDIZED SCORE PANEL ===== */
+.score-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: var(--border-thin) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+}
+
+.score-item {
+  text-align: center;
+  padding: var(--spacing-xs);
+}
+
+.score-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  margin-bottom: 2px;
+}
+
+.score-value {
+  color: var(--neon-cyan);
+  font-size: var(--font-size-sm);
+  text-shadow: var(--glow-cyan);
+}
+
+/* ===== STANDARDIZED CONTROLS ===== */
+.game-controls {
+  text-align: center;
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border: var(--border-thin) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing-md);
+}
+
+.start-prompt {
+  font-size: var(--font-size-md);
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+  margin-bottom: var(--spacing-sm);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ===== STANDARDIZED OVERLAYS ===== */
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-overlay);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.overlay-title {
+  font-size: var(--font-size-lg);
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+/* ===== STANDARDIZED INSTRUCTIONS ===== */
+.game-instructions {
+  margin-top: var(--spacing-lg);
+}
+
+.instructions-toggle {
+  background: var(--bg-secondary);
+  border: var(--border-thin) var(--neon-cyan);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+}
+
+.instructions-toggle summary {
+  color: var(--neon-cyan);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  text-shadow: var(--glow-cyan);
+}
+
+.instructions-content {
+  padding: var(--spacing-md) 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.instruction-title {
+  color: var(--neon-yellow);
+  font-size: var(--font-size-sm);
+  margin: var(--spacing-md) 0 var(--spacing-xs) 0;
+  text-shadow: var(--glow-yellow);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .game-container {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+  
+  .game-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .back-button {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .game-navigation {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .score-panel {
+    grid-template-columns: repeat(2, 1fr);
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --neon-cyan: #ffffff;
+    --neon-magenta: #ffffff;
+    --neon-yellow: #ffffff;
+    --bg-primary: #000000;
+    --bg-secondary: #000000;
+  }
+}

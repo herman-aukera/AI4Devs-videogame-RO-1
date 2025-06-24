@@ -1,0 +1,549 @@
+/* © GG, MIT License */
+
+/* ============================ */
+/* MS. PAC-MAN GG - RETRO STYLES */
+/* ============================ */
+
+:root {
+  /* Ms. Pac-Man Pink/Magenta Theme */
+  --primary-magenta: #ff00ff;
+  --primary-pink: #ffb8ff;
+  --primary-yellow: #ffff00;
+  --primary-cyan: #00ffff;
+  --primary-green: #00ff00;
+  
+  /* Game-specific colors */
+  --mspacman-pink: #ff69b4;
+  --mspacman-bow: #ff1493;
+  --ghost-vulnerable: #0000ff;
+  
+  /* Dark theme */
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #16213e;
+  
+  /* UI colors */
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-highlight: var(--primary-magenta);
+  
+  /* Effects */
+  --glow-color: var(--primary-magenta);
+  --shadow-primary: 0 0 10px var(--primary-magenta);
+  --shadow-secondary: 0 0 20px var(--primary-magenta);
+  
+  /* Maze colors - different for each maze */
+  --maze-1-color: var(--primary-magenta); /* Pink maze */
+  --maze-2-color: var(--primary-cyan);    /* Cyan maze */
+  --maze-3-color: var(--primary-yellow);  /* Yellow maze */
+  --maze-4-color: var(--primary-green);   /* Green maze */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+  
+  /* Animated starfield background */
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--primary-magenta), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--primary-pink), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--primary-cyan), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--primary-yellow), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: starfield 20s linear infinite;
+}
+
+@keyframes starfield {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: -200px 0, -200px 0, -200px 0, -200px 0; }
+}
+
+/* ============================ */
+/* NAVIGATION */
+/* ============================ */
+
+.game-navigation {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 0, 255, 0.2);
+  border: 2px solid var(--primary-magenta);
+  border-radius: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background: rgba(255, 0, 255, 0.4);
+  box-shadow: var(--shadow-primary);
+  transform: translateY(-2px);
+}
+
+.back-icon {
+  font-size: 16px;
+}
+
+/* ============================ */
+/* MAIN GAME CONTAINER */
+/* ============================ */
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* ============================ */
+/* GAME HEADER */
+/* ============================ */
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: bold;
+  color: var(--primary-magenta);
+  text-shadow: var(--shadow-primary);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  
+  /* Ms. Pac-Man bow effect */
+  position: relative;
+}
+
+.game-title::after {
+  content: "🎀";
+  position: absolute;
+  top: -10px;
+  right: -30px;
+  font-size: 2rem;
+  animation: bowBounce 2s ease-in-out infinite;
+}
+
+@keyframes bowBounce {
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.1); }
+}
+
+.game-subtitle {
+  font-size: 1.2rem;
+  color: var(--primary-pink);
+  text-shadow: 0 0 5px var(--primary-pink);
+  letter-spacing: 2px;
+}
+
+/* ============================ */
+/* GAME HUD */
+/* ============================ */
+
+.game-hud {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 15px;
+  background: rgba(255, 0, 255, 0.1);
+  border: 1px solid var(--primary-magenta);
+  border-radius: 8px;
+  min-width: 100px;
+}
+
+.hud-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+
+.hud-value {
+  font-size: 1.5rem;
+  color: var(--primary-magenta);
+  font-weight: bold;
+  text-shadow: 0 0 5px var(--primary-magenta);
+  font-family: 'Courier New', monospace;
+}
+
+/* ============================ */
+/* GAME CANVAS */
+/* ============================ */
+
+.game-canvas-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameCanvas {
+  border: 3px solid var(--primary-magenta);
+  border-radius: 12px;
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-secondary);
+  max-width: 100%;
+  height: auto;
+  
+  /* CRT screen effect */
+  filter: contrast(1.1) brightness(1.1);
+  
+  /* Scanlines effect */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 255, 0.1) 2px,
+    rgba(255, 0, 255, 0.1) 4px
+  );
+}
+
+/* ============================ */
+/* GAME OVERLAY */
+/* ============================ */
+
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  border-radius: 12px;
+}
+
+.overlay-content {
+  text-align: center;
+  color: var(--text-primary);
+  padding: 30px;
+}
+
+.overlay-title {
+  font-size: 2.5rem;
+  color: var(--primary-magenta);
+  text-shadow: var(--shadow-primary);
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.overlay-message {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.overlay-button {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-magenta), var(--primary-pink));
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-primary);
+}
+
+.overlay-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-secondary);
+  background: linear-gradient(45deg, var(--primary-pink), var(--primary-magenta));
+}
+
+/* ============================ */
+/* MOBILE CONTROLS */
+/* ============================ */
+
+.mobile-controls {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 0, 255, 0.1);
+  border: 1px solid var(--primary-magenta);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.control-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  width: 150px;
+  height: 150px;
+}
+
+.dpad-btn {
+  background: linear-gradient(45deg, var(--primary-magenta), var(--primary-pink));
+  border: 2px solid var(--primary-magenta);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.dpad-up { grid-column: 2; grid-row: 1; }
+.dpad-left { grid-column: 1; grid-row: 2; }
+.dpad-right { grid-column: 3; grid-row: 2; }
+.dpad-down { grid-column: 2; grid-row: 3; }
+
+.dpad-btn:active {
+  transform: scale(0.95);
+  background: linear-gradient(45deg, var(--primary-pink), var(--primary-magenta));
+}
+
+.control-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.action-btn {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--primary-cyan), var(--primary-yellow));
+  border: 2px solid var(--primary-cyan);
+  border-radius: 50%;
+  color: var(--bg-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================ */
+/* INSTRUCTIONS PANEL */
+/* ============================ */
+
+.instructions-panel {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 30px;
+}
+
+.instructions-details {
+  background: rgba(255, 0, 255, 0.1);
+  border: 1px solid var(--primary-magenta);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.instructions-summary {
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 0, 255, 0.15);
+  transition: all 0.3s ease;
+  list-style: none;
+}
+
+.instructions-summary:hover {
+  background: rgba(255, 0, 255, 0.25);
+}
+
+.summary-icon {
+  font-size: 1.5rem;
+  color: var(--primary-magenta);
+}
+
+.summary-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.instructions-content {
+  padding: 25px;
+  border-top: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.instruction-group {
+  margin-bottom: 25px;
+}
+
+.instruction-group:last-child {
+  margin-bottom: 0;
+}
+
+.instruction-title {
+  font-size: 1.1rem;
+  color: var(--primary-magenta);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.instruction-group p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.instruction-group ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.instruction-group li {
+  padding: 8px 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(255, 0, 255, 0.2);
+}
+
+.instruction-group li:last-child {
+  border-bottom: none;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background: rgba(255, 0, 255, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.control-item strong {
+  color: var(--primary-magenta);
+  font-size: 0.9rem;
+}
+
+.control-item span {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ============================ */
+/* RESPONSIVE DESIGN */
+/* ============================ */
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 10px;
+    gap: 15px;
+  }
+  
+  .game-title {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .game-hud {
+    gap: 15px;
+  }
+  
+  .hud-item {
+    min-width: 80px;
+    padding: 8px 12px;
+  }
+  
+  .mobile-controls {
+    display: flex;
+  }
+  
+  .instructions-details {
+    font-size: 0.9rem;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+  }
+  
+  .overlay-title {
+    font-size: 2rem;
+  }
+  
+  .mobile-controls {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .control-dpad {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .dpad-btn {
+    font-size: 1.2rem;
+  }
+}

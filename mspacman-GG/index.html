@@ -5,19 +5,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="GG" />
-    <title>Ms. Pac-Man - GG Edition</title>
-    <meta name="description" content="Ms. Pac-Man retro arcade game - AI4Devs collection" />
+    <title>Ms. Pac-Man - AI4Devs Retro Games</title>
+    <meta name="description" content="Classic Ms. Pac-Man retro arcade game - AI4Devs collection" />
     <meta name="keywords" content="game, retro, arcade, mspacman, html5, canvas" />
     <meta name="theme-color" content="#FF00FF" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Ms. Pac-Man - GG Edition" />
-    <meta property="og:description" content="Ms. Pac-Man retro arcade game with multiple mazes and moving fruit" />
+    <meta property="og:title" content="Ms. Pac-Man - AI4Devs Retro Games" />
+    <meta property="og:description" content="Classic Ms. Pac-Man retro arcade game with multiple mazes and moving fruit" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico" />
     
+    <!-- Shared design system -->
+    <link rel="stylesheet" href="../shared-styles.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -33,104 +35,65 @@
     <main class="game-container">
       <header class="game-header">
         <h1 class="game-title">MS. PAC-MAN</h1>
-        <div class="game-subtitle">GG EDITION</div>
       </header>
 
-      <!-- HUD del juego -->
-      <section class="game-hud">
-        <div class="hud-item">
-          <span class="hud-label">SCORE</span>
-          <span class="hud-value" id="score">0</span>
+      <!-- Score panel -->
+      <section class="score-panel">
+        <div class="score-item">
+          <div class="score-label">SCORE</div>
+          <div class="score-value" id="score">0</div>
         </div>
-        <div class="hud-item">
-          <span class="hud-label">MAZE</span>
-          <span class="hud-value" id="maze">1</span>
+        <div class="score-item">
+          <div class="score-label">LEVEL</div>
+          <div class="score-value" id="maze">1</div>
         </div>
-        <div class="hud-item">
-          <span class="hud-label">HIGH SCORE</span>
-          <span class="hud-value" id="highScore">0</span>
+        <div class="score-item">
+          <div class="score-label">HIGH SCORE</div>
+          <div class="score-value" id="highScore">0</div>
         </div>
       </section>
 
-      <!-- Canvas del juego -->
-      <div class="game-canvas-container">
-        <canvas id="gameCanvas" width="380" height="420"></canvas>
+      <!-- Game board -->
+      <div class="game-board">
+        <canvas id="gameCanvas" class="game-canvas" width="380" height="420"></canvas>
         
-        <!-- Overlay para estados del juego -->
+        <!-- Game overlay -->
         <div class="game-overlay" id="gameOverlay">
-          <div class="overlay-content">
-            <h2 class="overlay-title" id="overlayTitle">MS. PAC-MAN READY</h2>
-            <p class="overlay-message" id="overlayMessage">Press ENTER to start</p>
-            <button class="overlay-button" id="overlayButton">START GAME</button>
+          <h2 class="overlay-title" id="overlayTitle">MS. PAC-MAN READY</h2>
+          <div class="game-controls">
+            <div class="start-prompt" id="overlayMessage">Press ENTER to start</div>
           </div>
         </div>
       </div>
 
-      <!-- Controles móviles -->
-      <section class="mobile-controls" id="mobileControls">
-        <div class="control-dpad">
-          <button class="dpad-btn dpad-up" data-direction="up">↑</button>
-          <button class="dpad-btn dpad-left" data-direction="left">←</button>
-          <button class="dpad-btn dpad-right" data-direction="right">→</button>
-          <button class="dpad-btn dpad-down" data-direction="down">↓</button>
-        </div>
-        <div class="control-actions">
-          <button class="action-btn action-pause">⏸</button>
-          <button class="action-btn action-restart">↻</button>
-        </div>
-      </section>
-
-      <!-- Panel de instrucciones -->
-      <section class="instructions-panel" aria-label="Instrucciones del juego">
-        <details class="instructions-details">
-          <summary class="instructions-summary">
-            <span class="summary-icon">❓</span>
-            <span class="summary-text">¿Cómo jugar?</span>
-          </summary>
+      <!-- Game instructions -->
+      <section class="game-instructions" aria-label="Instrucciones del juego">
+        <details class="instructions-toggle">
+          <summary>¿Cómo jugar?</summary>
           <div class="instructions-content">
-            <div class="instruction-group">
-              <h3 class="instruction-title">🎯 Objetivo</h3>
-              <p>
-                Recoge todas las píldoras evitando a los fantasmas. 🌟 <strong>Características únicas de Ms. Pac-Man:</strong>
-                4 laberintos diferentes, frutas móviles que rebotan, e IA de fantasmas más impredecible.
-              </p>
-            </div>
+            <h3 class="instruction-title">🎯 Objetivo</h3>
+            <p>
+              Recoge todas las píldoras evitando a los fantasmas. Las frutas móviles dan puntos extra.
+            </p>
 
-            <div class="instruction-group">
-              <h3 class="instruction-title">🕹️ Controles</h3>
-              <div class="controls-grid">
-                <div class="control-item">
-                  <strong>Movimiento:</strong>
-                  <span>Flechas ↑ ↓ ← → o WASD</span>
-                </div>
-                <div class="control-item">
-                  <strong>Inicio:</strong>
-                  <span>ENTER para comenzar</span>
-                </div>
-                <div class="control-item">
-                  <strong>Pausa:</strong>
-                  <span>Barra Espaciadora</span>
-                </div>
-              </div>
-            </div>
+            <h3 class="instruction-title">🕹️ Controles</h3>
+            <p>
+              <strong>Movimiento:</strong> Flechas ↑ ↓ ← → o WASD<br>
+              <strong>Inicio:</strong> ENTER para comenzar<br>
+              <strong>Pausa:</strong> Barra Espaciadora
+            </p>
 
-            <div class="instruction-group">
-              <h3 class="instruction-title">🎀 Diferencias con Pac-Man</h3>
-              <ul>
-                <li>🏠 <strong>4 Laberintos:</strong> Rosa, Cian, Amarillo y Verde</li>
-                <li>🍎 <strong>Frutas Móviles:</strong> Rebotan por el laberinto</li>
-                <li>🤖 <strong>IA Mejorada:</strong> Fantasmas más impredecibles</li>
-                <li>🎨 <strong>Estilo Visual:</strong> Colores magenta y temática femenina</li>
-              </ul>
-            </div>
+            <h3 class="instruction-title">🎀 Diferencias con Pac-Man</h3>
+            <p>
+              <strong>4 Laberintos:</strong> Rosa, Cian, Amarillo y Verde<br>
+              <strong>Frutas Móviles:</strong> Rebotan por el laberinto<br>
+              <strong>IA Mejorada:</strong> Fantasmas más impredecibles
+            </p>
 
-            <div class="instruction-group">
-              <h3 class="instruction-title">📈 Progresión</h3>
-              <p>
-                🚀 <strong>Sistema de Laberintos:</strong> Completa un laberinto para avanzar al siguiente.
-                Cada laberinto tiene patrones únicos y mayor dificultad.
-              </p>
-            </div>
+            <h3 class="instruction-title">📈 Progresión</h3>
+            <p>
+              Completa un laberinto para avanzar al siguiente. Cada laberinto tiene patrones únicos y mayor dificultad.
+            </p>
           </div>
         </details>
       </section>
@@ -138,20 +101,5 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
-    <script>
-      // Hacer que el botón START GAME funcione igual que Enter
-      document.addEventListener('DOMContentLoaded', function() {
-        const overlayButton = document.getElementById('overlayButton');
-        if (overlayButton) {
-          overlayButton.addEventListener('click', function() {
-            if (window.game && typeof window.game.startGame === 'function') {
-              window.game.startGame();
-              const overlay = document.getElementById('gameOverlay');
-              if (overlay) overlay.style.display = 'none';
-            }
-          });
-        }
-      });
-    </script>
   </body>
 </html>
