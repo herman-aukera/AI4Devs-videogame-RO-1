@@ -1041,15 +1041,18 @@ class GhostAI {
     this.frameCount++;
     this.initializeGameTime(gameStartTime);
     
+    // Check house status first
     if (this.inHouse) {
       if (this.handleHouseLogic(gameStartTime)) {
         return; // Stay in house, skip rest of update
       }
+      // If handleHouseLogic returns false, ghost was just released - continue with movement
     }
 
     this.updateState(deltaTime);
     this.updateVulnerability(deltaTime);
 
+    // Movement logic - all released ghosts should move
     if (!this.moving) {
       this.initiateMovement(pacman, ghosts, maze);
     } else {
@@ -1084,6 +1087,7 @@ class GhostAI {
     this.mode = 'SCATTER';
     this.modeTimer = 0;
     console.log(`🚪 ${this.name} RELEASED from house after ${this.spawnDelay}ms delay`);
+    console.log(`🟢 ${this.name} now free to move - inHouse: ${this.inHouse}, mode: ${this.mode}`);
   }
 
   logSpawnStatus(elapsedTime) {
@@ -1093,12 +1097,22 @@ class GhostAI {
   }
 
   initiateMovement(pacman, ghosts, maze) {
+    // Debug: Log when trying to initiate movement
+    if (this.frameCount % 120 === 0) { // Every 2 seconds
+      console.log(`🎯 ${this.name} trying to move - inHouse: ${this.inHouse}, moving: ${this.moving}, mode: ${this.mode}`);
+    }
+    
     const target = this.getTarget(pacman, ghosts, maze);
     const bestDirection = this.findBestDirection(target, maze);
     
     if (bestDirection) {
       this.direction = bestDirection;
       this.startMoving();
+      
+      // Debug: Confirm movement started
+      if (this.frameCount % 120 === 0) {
+        console.log(`✅ ${this.name} started moving in direction (${this.direction.x}, ${this.direction.y})`);
+      }
     } else {
       this.handleNoValidDirection(maze);
     }

@@ -855,15 +855,18 @@ class EnhancedGhostAI {
     this.frameCount++;
     this.initializeGameTime(gameStartTime);
     
+    // Check house status first
     if (this.inHouse) {
       if (this.handleHouseLogic(gameStartTime)) {
         return; // Stay in house, skip rest of update
       }
+      // If handleHouseLogic returns false, ghost was just released - continue with movement
     }
 
     this.updateState(deltaTime);
     this.updateVulnerability(deltaTime);
 
+    // Movement logic - all released ghosts should move
     if (!this.moving) {
       this.initiateMovement(pacman, ghosts, maze);
     } else {
