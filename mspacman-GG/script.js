@@ -853,7 +853,7 @@ class EnhancedGhostAI {
     this.inHouse = true;
     this.spawnDelay = this.getSpawnDelay();
     console.log(`🏠 Ms. Pac-Man Ghost ${this.name} initialized with spawn delay: ${this.spawnDelay}ms`);
-    this.homePosition = { col: startCol, row: startRow };
+    this.homePosition = { col: 9, row: 9 }; // Common home position inside the house
     this.frameCount = 0;
     this.gameStartTime = null;
     

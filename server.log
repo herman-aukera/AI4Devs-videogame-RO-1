@@ -1,0 +1,11 @@
+::1 - - [24/Jun/2025 15:35:40] "HEAD / HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:37:57] "GET / HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:38:21] "GET /pacman-GG HTTP/1.1" 301 -
+::1 - - [24/Jun/2025 15:38:21] "GET /pacman-GG/ HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:38:21] "GET /pacman-GG/script.js HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:39:29] "GET /index.html HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 15:39:29] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [24/Jun/2025 15:39:35] "GET /mspacman-GG/script.js HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:42:43] "GET /mspacman-GG?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750772563098 HTTP/1.1" 301 -
+::1 - - [24/Jun/2025 15:42:43] "GET /mspacman-GG/?id=ba230b97-e2e1-4585-b4e0-9e316162001c&vscodeBrowserReqId=1750772563098 HTTP/1.1" 200 -
+::1 - - [24/Jun/2025 15:42:43] "GET /mspacman-GG/script.js HTTP/1.1" 200 -
