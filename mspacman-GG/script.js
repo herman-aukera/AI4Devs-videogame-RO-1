@@ -113,24 +113,24 @@ const MS_PACMAN_MAZES = {
     "XXXXXXXXXXXXXXXXXXX"
   ],
   
-  // Maze 2 - Cyan Theme (Intermediate)
+  // Maze 2 - Cyan Theme (Intermediate) - FIXED: Removed isolated sections
   2: [
     "XXXXXXXXXXXXXXXXXXX",
     "X.......X.X.......X",
     "X.XXXXX.X.X.XXXXX.X",
     "XO....X.....X....OX",
     "XXXX.XX.XXX.XX.XXXX",
-    "X...............X.X",
-    "X.XX.XXXXXXX.XX.X.X",
-    "X.X..X.....X..X.X.X",
-    "X.X.XX.XXX.XX.X.X.X",
-    "X.......X.......X.X",
+    "X.....................X",
+    "X.XX.XXXXXXX.XX...X",
+    "X.X..X.....X..X...X",
+    "X.X.XX.XXX.XX.X...X",
+    "X.......X.........X",
     "XXXXXXX.X.XXXXXXX.X",
-    "X.......X.......X.X",
-    "X.X.XX.XXX.XX.X.X.X",
-    "X.X..X.....X..X.X.X",
-    "X.XX.XXXXXXX.XX.X.X",
-    "X...............X.X",
+    "X.......X.........X",
+    "X.X.XX.XXX.XX.X...X",
+    "X.X..X.....X..X...X",
+    "X.XX.XXXXXXX.XX...X",
+    "X.....................X",
     "XXXX.XX.XXX.XX.XXXX",
     "XO....X..P..X....OX",
     "X.XXXXX.X.X.XXXXX.X",
@@ -843,7 +843,9 @@ class EnhancedGhostAI {
     this.initializeGameTime(gameStartTime);
     
     if (this.inHouse) {
-      return this.handleHouseLogic(gameStartTime);
+      if (this.handleHouseLogic(gameStartTime)) {
+        return; // Stay in house, skip rest of update
+      }
     }
 
     this.updateState(deltaTime);
@@ -867,6 +869,9 @@ class EnhancedGhostAI {
     
     if (elapsedTime >= this.spawnDelay) {
       this.releaseFromHouse();
+      return false; // Continue with normal update
+    } else {
+      return true; // Stay in house, skip rest of update
     }
   }
 

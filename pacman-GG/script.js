@@ -1029,7 +1029,9 @@ class GhostAI {
     this.initializeGameTime(gameStartTime);
     
     if (this.inHouse) {
-      return this.handleHouseLogic(gameStartTime);
+      if (this.handleHouseLogic(gameStartTime)) {
+        return; // Stay in house, skip rest of update
+      }
     }
 
     this.updateState(deltaTime);
@@ -1053,8 +1055,10 @@ class GhostAI {
     
     if (elapsedTime >= this.spawnDelay) {
       this.releaseFromHouse();
+      return false; // Continue with normal update
     } else {
       this.logSpawnStatus(elapsedTime);
+      return true; // Stay in house, skip rest of update
     }
   }
 
