@@ -21,7 +21,6 @@
     <!-- Shared design system -->
     <!-- Unified Design System -->
     <link rel="stylesheet" href="../css-tokens.css" />
-    <link rel="stylesheet" href="../game-shell.css" />
     <link rel="stylesheet" href="../shared-styles.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -37,7 +36,7 @@
     <!-- Container principal del juego -->
     <main class="game-container">
       <header class="game-header">
-        <h1 class="game-title">🟡 PAC-MAN</h1>
+        <h1 class="game-title">🟡 PAC-MAN GG</h1>
       </header>
 
       <!-- Score panel -->

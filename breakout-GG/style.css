@@ -1,83 +1,49 @@
 /* © GG, MIT License */
-/* ===================================================================
-   🧱 BREAKOUT RETRO - GG EDITION
-   ===================================================================
-   
-   Archivo: style.css
-   Desarrollador: GG
-   Proyecto: AI4Devs Video Game Project
-   
-   Descripción:
-   Estilos CSS3 modernos con diseño retro-futurista para el juego Breakout.
-   Implementa diseño responsive, efectos visuales arcade, y variables CSS
-   para fácil mantenimiento y personalización.
-   
-   Estructura:
-   1. Variables CSS & Reset
-   2. Layout Principal & Grid
-   3. Header & Branding
-   4. Game Area & Canvas
-   5. UI Components & Stats
-   6. Controls & Instructions
-   7. Overlay & Game States
-   8. Footer & Credits
-   9. Animations & Effects
-   10. Media Queries & Responsive
-   
-================================================================== */
+/* ==============================================
+   BREAKOUT GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro breakout game
+   ============================================== */
 
-/* ===================================================================
-   1. VARIABLES CSS & CONFIGURACIÓN GLOBAL
-================================================================== */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
 
+/* ===== BREAKOUT-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* === Paleta de Colores Retro-Neón === */
-  --primary-cyan: #00ffff;
-  --primary-orange: #ff6600;
-  --primary-magenta: #ff00ff;
-  --accent-yellow: #ffff00;
-  --accent-green: #00ff00;
-  --accent-red: #ff0040;
+  /* Override theme colors with Breakout-specific palette */
+  --color-primary: var(--breakout-primary);
+  --color-secondary: var(--breakout-secondary);
+  --current-glow: var(--breakout-glow);
+  
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
 
-  /* === Colores de Fondo === */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #16213e;
-  --bg-glass: rgba(0, 255, 255, 0.05);
-  --bg-overlay: rgba(0, 0, 0, 0.8);
-
-  /* === Gradientes === */
-  --gradient-primary: linear-gradient(
-    135deg,
-    var(--primary-cyan),
-    var(--primary-magenta)
-  );
-  --gradient-secondary: linear-gradient(
-    45deg,
-    var(--primary-orange),
-    var(--accent-yellow)
-  );
-  --gradient-background: radial-gradient(
-    ellipse at center,
-    var(--bg-secondary) 0%,
-    var(--bg-primary) 70%
-  );
-
-  /* === Tipografía === */
-  --font-primary: 'Orbitron', 'Courier New', monospace;
-  --font-secondary: 'Courier New', monospace;
-
-  /* === Tamaños de Fuente === */
-  --font-xs: 0.75rem; /* 12px */
-  --font-sm: 0.875rem; /* 14px */
-  --font-base: 1rem; /* 16px */
-  --font-lg: 1.125rem; /* 18px */
-  --font-xl: 1.25rem; /* 20px */
-  --font-2xl: 1.5rem; /* 24px */
-  --font-3xl: 1.875rem; /* 30px */
-  --font-4xl: 2.25rem; /* 36px */
-
-  /* === Espaciado === */
+  /* Legacy variable mapping for compatibility */
+  --primary-cyan: var(--breakout-primary);
+  --primary-orange: var(--neon-orange);
+  --primary-magenta: var(--breakout-brick);
+  --accent-yellow: var(--breakout-secondary);
+  --accent-green: var(--neon-green);
+  --accent-red: var(--neon-red);
+  --bg-primary: var(--bg-primary);
+  --bg-secondary: var(--bg-secondary);
+  --bg-tertiary: var(--bg-tertiary);
+  --bg-glass: var(--bg-glass);
+  --bg-overlay: var(--bg-overlay);
+  --gradient-primary: linear-gradient(135deg, var(--breakout-primary), var(--breakout-brick));
+  --gradient-secondary: linear-gradient(45deg, var(--neon-orange), var(--breakout-secondary));
+  --gradient-background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+  --font-primary: var(--font-retro);
+  --font-secondary: var(--font-mono);
+  --font-xs: var(--font-size-xs);
+  --font-sm: var(--font-size-sm);
+  --font-base: var(--font-size-base);
+  --font-lg: var(--font-size-lg);
+  --font-xl: var(--font-size-xl);
+  --font-2xl: var(--font-size-2xl);
+  --font-3xl: var(--font-size-3xl);
+  --font-4xl: 2.25rem;
   --spacing-xs: 0.25rem; /* 4px */
   --spacing-sm: 0.5rem; /* 8px */
   --spacing-md: 1rem; /* 16px */
@@ -128,7 +94,7 @@ html {
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-retro);
   font-size: var(--font-base);
   line-height: 1.6;
   color: var(--primary-cyan);
@@ -328,7 +294,7 @@ body::before {
   color: var(--primary-cyan);
   font-weight: 900;
   text-shadow: var(--shadow-glow-sm);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
 }
 
 /* ===================================================================
@@ -446,7 +412,7 @@ body::before {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--accent-yellow);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
   font-weight: 700;
 }
 
@@ -509,7 +475,7 @@ body::before {
 .key {
   background: var(--bg-primary);
   color: var(--accent-yellow);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
   font-size: var(--font-sm);
   font-weight: 700;
   padding: var(--spacing-xs) var(--spacing-sm);
@@ -650,7 +616,7 @@ body::before {
 .build-date {
   font-size: var(--font-sm);
   color: var(--primary-magenta);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
 }
 
 /* ===================================================================
@@ -896,11 +862,11 @@ body::before {
 /* High contrast preference */
 @media (prefers-contrast: high) {
   :root {
-    --primary-cyan: #ffffff;
-    --primary-orange: #ffff00;
-    --primary-magenta: #ff00ff;
-    --bg-primary: #000000;
-    --bg-secondary: #333333;
+    --primary-cyan: var(--text-primary);
+    --primary-orange: var(--neon-yellow);
+    --primary-magenta: var(--neon-magenta);
+    --bg-primary: var(--bg-primary);
+    --bg-secondary: var(--bg-tertiary);
   }
 }
 
@@ -945,7 +911,7 @@ body::before {
   text-decoration: none;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--border-radius-md);
-  font-family: var(--font-family);
+  font-family: var(--font-retro);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-sm);
   transition: all var(--transition-normal);
@@ -1115,7 +1081,7 @@ body::before {
   color: var(--primary-cyan);
   font-weight: 900;
   text-shadow: var(--shadow-glow-sm);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
 }
 
 /* ===================================================================
@@ -1233,7 +1199,7 @@ body::before {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--accent-yellow);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
   font-weight: 700;
 }
 
@@ -1296,7 +1262,7 @@ body::before {
 .key {
   background: var(--bg-primary);
   color: var(--accent-yellow);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
   font-size: var(--font-sm);
   font-weight: 700;
   padding: var(--spacing-xs) var(--spacing-sm);
@@ -1437,7 +1403,7 @@ body::before {
 .build-date {
   font-size: var(--font-sm);
   color: var(--primary-magenta);
-  font-family: var(--font-secondary);
+  font-family: var(--font-retro);
 }
 
 /* ===================================================================
@@ -1683,11 +1649,11 @@ body::before {
 /* High contrast preference */
 @media (prefers-contrast: high) {
   :root {
-    --primary-cyan: #ffffff;
-    --primary-orange: #ffff00;
-    --primary-magenta: #ff00ff;
-    --bg-primary: #000000;
-    --bg-secondary: #333333;
+    --primary-cyan: var(--text-primary);
+    --primary-orange: var(--neon-yellow);
+    --primary-magenta: var(--neon-magenta);
+    --bg-primary: var(--bg-primary);
+    --bg-secondary: var(--bg-tertiary);
   }
 }
 

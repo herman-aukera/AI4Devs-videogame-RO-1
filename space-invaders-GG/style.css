@@ -1,43 +1,47 @@
 /* © GG, MIT License */
 /* ==============================================
-   Space Invaders - GG Edition
-   Retro arcade styling with AI4Devs standards
-   Neon color palette and pixel-perfect aesthetics
+   SPACE INVADERS GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro space invaders game
    ============================================== */
 
-/* Variables CSS retro - AI4Devs Compliant */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
+
+/* ===== SPACE INVADERS-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* AI4Devs Standard Neon Colors */
-  --primary-cyan: #00ffff;      /* Primary neon cyan */
-  --primary-magenta: #ff00ff;   /* Primary neon magenta */
-  --primary-yellow: #ffff00;    /* Primary neon yellow */
-  --accent-green: #00ff00;      /* Accent neon green */
-  --accent-orange: #ff6600;     /* Supporting orange */
-  --accent-red: #ff0040;        /* Supporting red */
+  /* Override theme colors with Space Invaders-specific palette */
+  --color-primary: var(--invaders-primary);
+  --color-secondary: var(--invaders-secondary);
+  --current-glow: var(--invaders-glow);
   
-  /* Fondos retro */
-  --bg-primary: #0a0a0f;        /* Deep space black */
-  --bg-secondary: #1a1a2e;      /* Dark navy */
-  --bg-tertiary: #16213e;       /* Midnight blue */
-  
-  /* Efectos neon */
-  --glow-primary: 0 0 10px var(--primary-cyan);
-  --glow-secondary: 0 0 15px var(--primary-magenta);
-  --glow-tertiary: 0 0 10px var(--primary-yellow);
-  --shadow-depth: 0 4px 15px rgba(0, 255, 255, 0.3);
-  
-  /* Tipografía pixel/monospace */
-  --font-main: 'Courier New', 'Monaco', 'Lucida Console', monospace;
-  --font-size-xl: 2.5rem;
-  --font-size-lg: 1.8rem;
-  --font-size-md: 1.2rem;
-  --font-size-sm: 0.9rem;
-  
-  /* Espaciado */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+
+  /* Legacy variable mapping for compatibility */
+  --primary-cyan: var(--invaders-secondary);
+  --primary-magenta: var(--invaders-enemy);
+  --primary-yellow: var(--neon-yellow);
+  --accent-green: var(--invaders-primary);
+  --accent-orange: var(--neon-orange);
+  --accent-red: var(--neon-red);
+  --bg-primary: var(--bg-primary);
+  --bg-secondary: var(--bg-secondary);
+  --bg-tertiary: var(--bg-tertiary);
+  --glow-primary: var(--invaders-glow);
+  --glow-secondary: var(--glow-magenta);
+  --glow-tertiary: var(--glow-yellow);
+  --shadow-depth: 0 4px 15px rgba(0, 255, 0, 0.3);
+  --font-main: var(--font-retro);
+  --font-size-xl: var(--font-size-3xl);
+  --font-size-lg: var(--font-size-xl);
+  --font-size-md: var(--font-size-lg);
+  --font-size-sm: var(--font-size-sm);
+  --spacing-xs: var(--spacing-xs);
+  --spacing-sm: var(--spacing-sm);
+  --spacing-md: var(--spacing-md);
+  --spacing-lg: var(--spacing-lg);
   --spacing-xl: 3rem;
   
   /* Transiciones retro (rápidas) */
@@ -54,7 +58,7 @@
 }
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   color: var(--primary-cyan);
   min-height: 100vh;
@@ -71,7 +75,7 @@ body {
   z-index: 1000;
   padding: var(--spacing-sm);
   background: rgba(10, 10, 15, 0.9);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--primary-cyan);
 }
 
@@ -153,7 +157,7 @@ body {
   background: rgba(26, 26, 46, 0.8);
   border: 2px solid var(--primary-cyan);
   border-radius: 12px;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
 }
 
 .hud-item {
@@ -268,7 +272,7 @@ body {
   border: 2px solid var(--primary-cyan);
   border-radius: 12px;
   background: rgba(26, 26, 46, 0.9);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
 }
 
 .overlay-title {
@@ -287,7 +291,7 @@ body {
 }
 
 .overlay-button {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-size: var(--font-size-md);
   color: var(--bg-primary);
   background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
@@ -319,7 +323,7 @@ body {
   background: rgba(26, 26, 46, 0.8);
   border: 2px solid var(--primary-cyan);
   border-radius: 12px;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
 }
 
 .control-dpad {
@@ -340,7 +344,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   touch-action: manipulation;
-  user-select: none;
+  -webkit-user-select: none; user-select: none;
 }
 
 .dpad-btn:active {
@@ -361,7 +365,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   touch-action: manipulation;
-  user-select: none;
+  -webkit-user-select: none; user-select: none;
   margin: 0 var(--spacing-sm);
 }
 
@@ -387,7 +391,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-fast);
   touch-action: manipulation;
-  user-select: none;
+  -webkit-user-select: none; user-select: none;
 }
 
 .action-btn:active {
@@ -402,7 +406,7 @@ body {
 }
 
 .game-instructions summary {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-size: var(--font-size-md);
   color: var(--primary-magenta);
   text-shadow: var(--glow-secondary);
@@ -411,10 +415,10 @@ body {
   background: rgba(26, 26, 46, 0.6);
   border: 2px solid var(--primary-magenta);
   border-radius: 12px;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
   list-style: none;
   transition: all var(--transition-medium);
-  user-select: none;
+  -webkit-user-select: none; user-select: none;
   letter-spacing: 0.1em;
 }
 
@@ -444,7 +448,7 @@ body {
   border-top: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(10px);
   margin-top: -2px;
 }
 

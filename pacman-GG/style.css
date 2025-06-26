@@ -1,25 +1,38 @@
 /* © GG, MIT License */
 /* ==============================================
-   PAC-MAN - Game-specific styling
-   Extends shared design system with yellow theme
+   PAC-MAN GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro pac-man game
    ============================================== */
 
-/* Game-specific color overrides */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
+
+/* ===== PAC-MAN-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* Pac-Man specific colors */
-  --pacman-yellow: var(--neon-yellow);
+  /* Use standard Pac-Man theme colors from design tokens */
+  --color-primary: var(--pacman-primary);
+  --color-secondary: var(--pacman-secondary);
+  --current-glow: var(--pacman-glow);
+  
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+
+  /* Pac-Man specific colors mapped to design tokens */
+  --pacman-yellow: var(--pacman-primary);
   --ghost-red: var(--neon-red);      /* Blinky */
   --ghost-pink: var(--neon-pink);    /* Pinky */
   --ghost-cyan: var(--neon-cyan);    /* Inky */
   --ghost-orange: var(--neon-orange); /* Clyde */
   --ghost-blue: var(--neon-blue);    /* Vulnerable */
-  --maze-blue: #2121DE;
-  --pellet-yellow: #FFFF87;
-  --power-pellet: var(--neon-yellow);
+  --maze-blue: var(--neon-blue);
+  --pellet-yellow: var(--neon-yellow);
+  --power-pellet: var(--pacman-primary);
   
   /* Override default colors for Pac-Man theme */
-  --text-accent: var(--pacman-yellow);
-  --neon-glow: var(--glow-yellow); /* Unified glow override */
+  --text-accent: var(--pacman-primary);
+  --neon-glow: var(--pacman-glow);
 }
 
 /* Pac-Man specific theme overrides */
@@ -78,4 +91,55 @@
 .back-button:hover {
   background: var(--pacman-yellow);
   color: var(--bg-primary);
+}
+
+/* Ensure consistent typography */
+body, .game-container, .game-title, .game-menu, .game-over, .score {
+  font-family: var(--font-retro);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .game-container {
+    padding: var(--spacing-4);
+    margin: var(--spacing-2);
+  }
+  
+  .game-title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .game-controls {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+  
+  .game-menu {
+    padding: var(--spacing-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: var(--spacing-2);
+    margin: var(--spacing-1);
+  }
+  
+  .game-title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .score, .level {
+    font-size: var(--font-size-md);
+  }
+  
+  .game-menu button {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-sm);
+  }
 }

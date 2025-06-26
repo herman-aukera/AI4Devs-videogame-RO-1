@@ -4,14 +4,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Space Invaders - Classic Arcade</title>
+    <title>Space Invaders - GG Edition</title>
     <meta name="description" content="Space Invaders juego retro arcade - Colección AI4Devs" />
     <meta name="keywords" content="juego, retro, arcade, space-invaders, html5, canvas" />
     <meta name="theme-color" content="#00FFFF" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Space Invaders - Classic Arcade" />
+    <meta property="og:title" content="Space Invaders - GG Edition" />
     <meta property="og:description" content="Space Invaders juego retro arcade" />
     
     <!-- Favicon -->
@@ -19,7 +19,6 @@
     
     <!-- Unified Design System -->
     <link rel="stylesheet" href="../css-tokens.css" />
-    <link rel="stylesheet" href="../game-shell.css" />
     <link rel="stylesheet" href="../shared-styles.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -36,7 +35,7 @@
     <main class="game-container">
       <header class="game-header">
         <h1 class="game-title">SPACE INVADERS</h1>
-        <div class="game-subtitle">RETRO EDITION</div>
+        <div class="game-subtitle">GG EDITION</div>
       </header>
 
       <!-- HUD del juego -->

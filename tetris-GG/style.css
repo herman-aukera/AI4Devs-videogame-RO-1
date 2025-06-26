@@ -1,43 +1,47 @@
 /* © GG, MIT License */
-/**
- * Tetris GG - Professional Retro Arcade Styling
- * Advanced CSS architecture with neon effects, responsive design, and authentic 8-bit aesthetics
- * Optimized for 60fps performance and cross-device compatibility
- */
+/* ==============================================
+   TETRIS GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro tetris game
+   ============================================== */
 
-/* ===== CSS CUSTOM PROPERTIES (Design System) ===== */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
+
+/* ===== TETRIS-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* Tetris Classic Colors */
-  --tetris-cyan: #00FFFF;    /* I-piece */
-  --tetris-yellow: #FFFF00;  /* O-piece */
-  --tetris-magenta: #FF00FF; /* T-piece */
-  --tetris-green: #00FF00;   /* S-piece */
-  --tetris-red: #FF0000;     /* Z-piece */
-  --tetris-blue: #0000FF;    /* J-piece */
-  --tetris-orange: #FFA500;  /* L-piece */
+  /* Override theme colors with Tetris-specific palette */
+  --color-primary: var(--tetris-primary);
+  --color-secondary: var(--tetris-secondary);
+  --current-glow: var(--tetris-glow);
   
-  /* UI Colors */
-  --neon-primary: var(--tetris-cyan);
-  --neon-secondary: var(--tetris-magenta);
-  --neon-accent: var(--tetris-yellow);
-  --neon-success: var(--tetris-green);
-  
-  /* Background & Effects */
-  --bg-primary: #000011;
-  --bg-secondary: #001122;
-  --grid-line: #333366;
-  --glow-intensity: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
-  
-  /* Typography */
-  --font-primary: 'Courier New', 'Monaco', 'Menlo', monospace;
-  --font-size-base: 16px;
-  --font-size-large: 24px;
-  --font-size-xlarge: 32px;
-  
-  /* Spacing System */
-  --spacing-xs: 8px;
-  --spacing-sm: 16px;
-  --spacing-md: 24px;
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+
+  /* Legacy variable mapping for compatibility */
+  --tetris-cyan: var(--neon-cyan);
+  --tetris-yellow: var(--neon-yellow);
+  --tetris-magenta: var(--tetris-primary);
+  --tetris-green: var(--neon-green);
+  --tetris-red: var(--neon-red);
+  --tetris-blue: var(--neon-blue);
+  --tetris-orange: var(--neon-orange);
+  --neon-primary: var(--tetris-primary);
+  --neon-secondary: var(--tetris-secondary);
+  --neon-accent: var(--tetris-accent);
+  --neon-success: var(--neon-green);
+  --bg-primary: var(--bg-primary);
+  --bg-secondary: var(--bg-secondary);
+  --grid-line: var(--bg-tertiary);
+  --glow-intensity: var(--glow-lg);
+  --font-primary: var(--font-retro);
+  --font-size-base: var(--font-size-base);
+  --font-size-large: var(--font-size-lg);
+  --font-size-xlarge: var(--font-size-xl);
+  --spacing-xs: var(--spacing-xs);
+  --spacing-sm: var(--spacing-sm);
+  --spacing-md: var(--spacing-md);
   --spacing-lg: 32px;
   --spacing-xl: 48px;
   
@@ -56,7 +60,7 @@
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-retro);
   background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   color: var(--neon-primary);
   min-height: 100vh;
@@ -238,7 +242,7 @@ body::before {
   background: transparent;
   border: 2px solid var(--neon-primary);
   color: var(--neon-primary);
-  font-family: var(--font-primary);
+  font-family: var(--font-retro);
   font-size: var(--font-size-base);
   font-weight: bold;
   padding: var(--spacing-sm) var(--spacing-md);

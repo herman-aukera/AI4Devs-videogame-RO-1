@@ -4,18 +4,17 @@
   <!-- © GG, MIT License -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧩 Tetris - AI4Devs Retro Games</title>
+  <title>🧩 Tetris GG - AI4Devs Retro Games</title>
   <meta name="description" content="Tetris clásico con efectos neón, controles táctiles y jugabilidad auténtica de arcade">
   <meta name="keywords" content="tetris, retro, arcade, puzzle, HTML5, JavaScript, neon, responsive">
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="🧩 Tetris - AI4Devs Retro Games">
+  <meta property="og:title" content="🧩 Tetris GG - AI4Devs Retro Games">
   <meta property="og:description" content="Tetris clásico con efectos neón, controles táctiles y jugabilidad auténtica de arcade">
   <meta property="og:type" content="website">
 
   <!-- Unified Design System -->
   <link rel="stylesheet" href="../css-tokens.css">
-  <link rel="stylesheet" href="../game-shell.css">
   <link rel="stylesheet" href="../shared-styles.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -27,7 +26,7 @@
         <span class="back-text">INICIO</span>
       </a>
     </nav>
-    <h1 class="game-title">🧩 Tetris</h1>
+    <h1 class="game-title">🧩 Tetris GG</h1>
   </header>
 
   <main class="game-container">

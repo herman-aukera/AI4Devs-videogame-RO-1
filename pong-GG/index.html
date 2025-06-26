@@ -1,0 +1,229 @@
+<!-- © GG, MIT License -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pong - Clásico juego de paletas retro con física realista y efectos neón">
+    <meta name="keywords" content="pong, paddle, retro, arcade, html5, canvas, ai4devs">
+    <meta name="author" content="GG - AI4Devs Retro Games">
+    <meta name="theme-color" content="#00FFFF">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pong - Retro Paddle Game">
+    <meta property="og:description" content="Juego clásico de paletas con física realista y efectos neón">
+    <meta property="og:type" content="game">
+    
+    <title>🏓 Pong - Retro Paddle Game</title>
+    
+    <!-- Shared Design System -->
+    <link rel="stylesheet" href="../css-tokens.css">
+    <link rel="stylesheet" href="../game-shell.css">
+    <link rel="stylesheet" href="../shared-styles.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-game" class="skip-link">Saltar al juego</a>
+    
+    <!-- Navigation Header -->
+    <nav class="game-navigation" role="navigation" aria-label="Navegación principal">
+        <a href="../index.html" class="back-button" aria-label="Volver al inicio">
+            <span class="back-icon">⬅</span>
+            <span class="back-text">INICIO</span>
+        </a>
+    </nav>
+
+    <!-- Game Header -->
+    <header class="game-header">
+        <h1 class="game-title">🏓 PONG</h1>
+        <p class="subtitle">Clásico juego de paletas retro</p>
+    </header>
+
+    <!-- Main Game Container -->
+    <main id="main-game" class="game-container" role="main">
+        
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <canvas id="gameCanvas" 
+                    width="800" 
+                    height="600"
+                    aria-label="Área de juego Pong - Usa las teclas W/S o el ratón para controlar tu paleta"
+                    tabindex="0">
+                Tu navegador no soporta Canvas HTML5. Por favor actualiza tu navegador.
+            </canvas>
+            
+            <!-- Game Overlay UI -->
+            <div id="gameUI" class="game-ui" aria-live="polite">
+                
+                <!-- Menu Screen -->
+                <div id="menuScreen" class="screen menu-screen active">
+                    <div class="menu-content">
+                        <h2 class="screen-title">PONG</h2>
+                        <p class="screen-subtitle">Clásico juego de paletas retro</p>
+                        
+                        <div class="menu-buttons">
+                            <button id="playBtn" class="btn btn-primary" data-action="play">
+                                JUGAR
+                            </button>
+                            <button id="optionsBtn" class="btn btn-secondary" data-action="options">
+                                OPCIONES
+                            </button>
+                        </div>
+                        
+                        <!-- High Score Display -->
+                        <div class="high-score">
+                            <p>MEJOR PUNTUACIÓN</p>
+                            <span id="highScore">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Options Screen -->
+                <div id="optionsScreen" class="screen options-screen">
+                    <div class="options-content">
+                        <h2 class="screen-title">OPCIONES</h2>
+                        
+                        <div class="option-group">
+                            <label for="difficultySelect">Dificultad:</label>
+                            <select id="difficultySelect" class="option-select">
+                                <option value="easy">Fácil</option>
+                                <option value="medium" selected>Medio</option>
+                                <option value="hard">Difícil</option>
+                                <option value="expert">Experto</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label for="soundToggle">Sonido:</label>
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="toggle-label">Activado</span>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label for="speedSelect">Velocidad inicial:</label>
+                            <select id="speedSelect" class="option-select">
+                                <option value="slow">Lenta</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="fast">Rápida</option>
+                            </select>
+                        </div>
+                        
+                        <button id="backBtn" class="btn btn-secondary">VOLVER</button>
+                    </div>
+                </div>
+                
+                <!-- Game HUD -->
+                <div id="gameHUD" class="screen game-hud">
+                    <div class="score-display">
+                        <div class="score-section">
+                            <span class="score-label">JUGADOR</span>
+                            <span id="playerScore" class="score-value">0</span>
+                        </div>
+                        <div class="score-divider">-</div>
+                        <div class="score-section">
+                            <span class="score-label">CPU</span>
+                            <span id="cpuScore" class="score-value">0</span>
+                        </div>
+                    </div>
+                    
+                    <button id="pauseBtn" class="btn btn-small" aria-label="Pausar juego">
+                        PAUSA
+                    </button>
+                </div>
+                
+                <!-- Pause Screen -->
+                <div id="pauseScreen" class="screen pause-screen">
+                    <div class="pause-content">
+                        <h2 class="screen-title">PAUSADO</h2>
+                        <div class="pause-buttons">
+                            <button id="resumeBtn" class="btn btn-primary">CONTINUAR</button>
+                            <button id="menuBtn" class="btn btn-secondary">MENÚ PRINCIPAL</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game Over Screen -->
+                <div id="gameOverScreen" class="screen game-over-screen">
+                    <div class="game-over-content">
+                        <h2 id="gameOverTitle" class="screen-title">¡JUEGO TERMINADO!</h2>
+                        <div id="gameOverMessage" class="game-over-message">
+                            <p id="winnerText">¡Felicidades!</p>
+                            <p id="finalScore">Puntuación final: <span id="finalScoreValue">0-0</span></p>
+                        </div>
+                        
+                        <div class="game-over-buttons">
+                            <button id="playAgainBtn" class="btn btn-primary">JUGAR DE NUEVO</button>
+                            <button id="mainMenuBtn" class="btn btn-secondary">MENÚ PRINCIPAL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instructions Section -->
+        <details class="instructions-section" open>
+            <summary class="instructions-title">¿Cómo jugar?</summary>
+            <div class="instructions-content">
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <h4>🖱️ Ratón/Trackpad</h4>
+                        <ul>
+                            <li>Mover ratón: Controlar paleta</li>
+                            <li>Clic: Pausar/Continuar</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h4>⌨️ Teclado</h4>
+                        <ul>
+                            <li>W/S: Mover paleta arriba/abajo</li>
+                            <li>↑/↓: Mover paleta arriba/abajo</li>
+                            <li>Espacio: Pausar/Continuar</li>
+                            <li>R: Reiniciar juego</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h4>📱 Táctil</h4>
+                        <ul>
+                            <li>Deslizar: Mover paleta</li>
+                            <li>Tocar: Pausar/Continuar</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h4>🎯 Objetivo</h4>
+                        <ul>
+                            <li>Primer jugador en llegar a 11 puntos gana</li>
+                            <li>La pelota acelera con cada rebote</li>
+                            <li>El ángulo depende del punto de contacto</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+        
+        <!-- Performance Info (Development) -->
+        <div id="performanceInfo" class="performance-info hidden">
+            <div class="fps-counter">FPS: <span id="fpsCounter">60</span></div>
+            <div class="frame-time">Frame: <span id="frameTime">16.67ms</span></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <p>© GG, MIT License - AI4Devs Retro Games Collection</p>
+        <p>🏓 Pong - Física realista y controles precisos</p>
+    </footer>
+
+    <!-- Screen Reader Live Region -->
+    <div id="gameAnnouncements" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+    <!-- Game Script -->
+    <script src="script.js" defer></script>
+</body>
+</html>

@@ -1,41 +1,46 @@
 /* © GG, MIT License */
-/* ASTEROIDS GG - Vector Graphics Space Combat */
+/* ==============================================
+   ASTEROIDS GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro asteroids game
+   ============================================== */
 
-/* ===================================================================
-   CSS VARIABLES & DESIGN TOKENS
-================================================================== */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
 
+/* ===== ASTEROIDS-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* === Core Vector Colors === */
-  --vector-green: #00FF00;      /* Primary ship/asteroid color */
-  --vector-white: #FFFFFF;      /* Secondary elements */
-  --vector-cyan: #00FFFF;       /* UI highlights */
-  --vector-yellow: #FFFF00;     /* Thrust/explosions */
-  --vector-red: #FF0040;        /* Danger/UFO */
-  --vector-blue: #4040FF;       /* Power-ups */
+  /* Override theme colors with Asteroids-specific palette */
+  --color-primary: var(--asteroids-primary);
+  --color-secondary: var(--asteroids-secondary);
+  --current-glow: var(--asteroids-glow);
   
-  /* === Background & Space === */
-  --space-black: #000000;       /* Pure space black */
-  --space-dark: #0a0a0f;        /* Dark UI backgrounds */
-  --space-medium: #1a1a2e;      /* Card backgrounds */
-  
-  /* === Typography === */
-  --font-main: 'Courier New', 'Lucida Console', monospace;
-  --font-vector: 'Orbitron', 'Courier New', monospace;
-  
-  /* === Spacing === */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-12: 3rem;
-  
-  /* === Glow Effects === */
-  --glow-vector: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
-  --glow-subtle: 0 0 5px currentColor;
-  --glow-intense: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+
+  /* Legacy variable mapping for compatibility */
+  --vector-green: var(--asteroids-secondary);
+  --vector-white: var(--text-primary);
+  --vector-cyan: var(--asteroids-primary);
+  --vector-yellow: var(--neon-yellow);
+  --vector-red: var(--asteroids-danger);
+  --vector-blue: var(--neon-blue);
+  --space-black: var(--bg-primary);
+  --space-dark: var(--bg-secondary);
+  --space-medium: var(--bg-tertiary);
+  --font-main: var(--font-retro);
+  --font-vector: var(--font-retro);
+  --space-1: var(--spacing-xs);
+  --space-2: var(--spacing-sm);
+  --space-3: calc(var(--spacing-xs) * 3);
+  --space-4: var(--spacing-md);
+  --space-6: var(--spacing-lg);
+  --space-8: var(--spacing-xl);
+  --space-12: var(--spacing-3xl);
+  --glow-vector: var(--glow-lg);
+  --glow-subtle: var(--glow-sm);
+  --glow-intense: var(--glow-xl);
 }
 
 /* ===================================================================
@@ -54,7 +59,7 @@ html {
 }
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   background: var(--space-black);
   color: var(--vector-green);
   min-height: 100vh;
@@ -242,7 +247,7 @@ body {
   color: var(--vector-green);
   padding: var(--space-2) var(--space-3);
   border: 2px solid var(--vector-green);
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-weight: bold;
   min-width: 80px;
   text-align: center;
@@ -431,7 +436,7 @@ body {
   border: 2px solid var(--vector-green);
   color: var(--vector-green);
   padding: var(--space-4) var(--space-8);
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
@@ -657,9 +662,9 @@ body {
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   :root {
-    --vector-green: #00FF00;
-    --vector-white: #FFFFFF;
-    --space-black: #000000;
+    --vector-green: var(--neon-green);
+    --vector-white: var(--text-primary);
+    --space-black: var(--bg-primary);
   }
 }
 
@@ -687,7 +692,7 @@ button:focus,
 }
 
 .vector-text {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   fill: var(--vector-green);
   text-anchor: middle;
   dominant-baseline: central;

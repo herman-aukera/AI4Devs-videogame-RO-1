@@ -1,33 +1,41 @@
 /* © GG, MIT License */
-/* ===== RESET Y VARIABLES CSS ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ==============================================
+   SNAKE GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro snake game
+   ============================================== */
 
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
+
+/* ===== SNAKE-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* Colores retro principales */
-  --primary-bg: #0a0a0a;
-  --secondary-bg: #1a1a1a;
-  --accent-green: #00ff00;
-  --accent-red: #ff0040;
-  --accent-yellow: #ffff00;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --border-color: #333333;
+  /* Override theme colors with Snake-specific palette */
+  --color-primary: var(--snake-primary);
+  --color-secondary: var(--snake-secondary);
+  --current-glow: var(--snake-glow);
+  
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+  
+  /* Legacy variable mapping for compatibility */
+  --primary-bg: var(--bg-primary);
+  --secondary-bg: var(--bg-secondary);
+  --accent-green: var(--snake-primary);
+  --accent-red: var(--snake-food);
+  --accent-yellow: var(--snake-secondary);
+  --text-primary: var(--text-primary);
+  --text-secondary: var(--text-secondary);
+  --border-color: var(--bg-tertiary);
   --shadow-glow: rgba(0, 255, 0, 0.3);
-
-  /* Fuentes retro */
-  --font-main: 'Courier New', 'Monaco', 'Lucida Console', monospace;
-  --font-size-small: 0.85rem;
-  --font-size-normal: 1rem;
-  --font-size-large: 1.5rem;
-  --font-size-xlarge: 2rem;
-
-  /* Espaciado */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
+  --font-main: var(--font-mono);
+  --font-size-small: var(--font-size-sm);
+  --font-size-normal: var(--font-size-base);
+  --font-size-large: var(--font-size-lg);
+  --font-size-xlarge: var(--font-size-xl);
+  --spacing-xs: var(--spacing-xs);
+  --spacing-sm: var(--spacing-sm);
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
@@ -35,7 +43,7 @@
 
 /* ===== ESTILOS GLOBALES ===== */
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   background: linear-gradient(
     135deg,
     var(--primary-bg) 0%,
@@ -176,7 +184,7 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur; backdrop-filter: blur(5px);
   z-index: 10;
 }
 
@@ -215,12 +223,12 @@ body {
 .start-btn,
 .restart-btn,
 .pause-btn {
-  background: linear-gradient(45deg, var(--accent-green), #00cc00);
+  background: linear-gradient(45deg, var(--accent-green), var(--neon-green));
   color: var(--primary-bg);
   border: none;
   padding: var(--spacing-md) var(--spacing-xl);
   border-radius: 5px;
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-size: var(--font-size-normal);
   font-weight: bold;
   cursor: pointer;
@@ -233,7 +241,7 @@ body {
 .start-btn:hover,
 .restart-btn:hover,
 .pause-btn:hover {
-  background: linear-gradient(45deg, #00cc00, var(--accent-green));
+  background: linear-gradient(45deg, var(--neon-green), var(--accent-green));
   box-shadow: 0 6px 20px rgba(0, 255, 0, 0.5);
   transform: translateY(-2px);
 }
@@ -322,7 +330,7 @@ body {
   text-decoration: none;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 8px;
-  font-family: var(--font-main);
+  font-family: var(--font-retro);
   font-weight: bold;
   font-size: var(--font-size-small);
   transition: all 0.3s ease;

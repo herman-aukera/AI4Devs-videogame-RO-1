@@ -1,14 +1,27 @@
 /* © GG, MIT License */
 /* ==============================================
-   MS. PAC-MAN - Game-specific styling
-   Extends shared design system with magenta theme
+   MS. PAC-MAN GG - Game-Specific Styles (Harmonized)
+   Extends unified CSS tokens for consistent retro ms. pac-man game
    ============================================== */
 
-/* Game-specific color overrides */
+/* Import unified design tokens */
+@import url('../css-tokens.css');
+@import url('../game-shell.css');
+
+/* ===== MS. PAC-MAN-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
+  /* Override theme colors with Ms. Pac-Man-specific palette */
+  --color-primary: var(--mspacman-primary);
+  --color-secondary: var(--mspacman-secondary);
+  --current-glow: var(--mspacman-glow);
+  
+  /* Game-specific measurements */
+  --canvas-max-width: var(--canvas-width-lg);
+  --canvas-max-height: var(--canvas-height-lg);
+
   /* Ms. Pac-Man specific colors */
-  --mspacman-magenta: var(--neon-magenta);
-  --mspacman-pink: var(--neon-pink);
+  --mspacman-magenta: var(--mspacman-primary);
+  --mspacman-pink: var(--mspacman-primary);
   --ghost-red: var(--neon-red);      /* Blinky */
   --ghost-pink: var(--neon-pink);    /* Pinky */
   --ghost-cyan: var(--neon-cyan);    /* Inky */
@@ -16,17 +29,17 @@
   --ghost-blue: var(--neon-blue);    /* Vulnerable */
   
   /* Maze-specific colors for 4 mazes */
-  --maze-1-color: var(--neon-magenta); /* Pink maze */
-  --maze-2-color: var(--neon-cyan);    /* Cyan maze */
-  --maze-3-color: var(--neon-yellow);  /* Yellow maze */
-  --maze-4-color: var(--neon-green);   /* Green maze */
+  --maze-1-color: var(--mspacman-primary); /* Pink maze */
+  --maze-2-color: var(--neon-cyan);        /* Cyan maze */
+  --maze-3-color: var(--mspacman-secondary); /* Yellow maze */
+  --maze-4-color: var(--neon-green);       /* Green maze */
   
-  --pellet-white: #FFFFFF;
-  --power-pellet: var(--neon-magenta);
+  --pellet-white: var(--text-primary);
+  --power-pellet: var(--mspacman-primary);
   
   /* Override default colors for Ms. Pac-Man theme */
-  --text-accent: var(--mspacman-magenta);
-  --neon-glow: var(--glow-magenta); /* Unified glow override */
+  --text-accent: var(--mspacman-primary);
+  --neon-glow: var(--mspacman-glow);
 }
 
 /* Animated starfield background for Ms. Pac-Man */
@@ -205,4 +218,9 @@ body {
   .game-title::after {
     display: none; /* Hide bow on very small screens */
   }
+}
+
+/* Ensure consistent typography */
+body, .game-container, .game-title, .game-menu, .game-over, .score {
+  font-family: var(--font-retro);
 }

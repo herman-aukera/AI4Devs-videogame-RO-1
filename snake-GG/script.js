@@ -102,13 +102,26 @@ class SnakeGame {
 
         // Prevenir scroll con las flechas
         window.addEventListener('keydown', (e) => {
-            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter'].includes(e.code)) {
                 e.preventDefault();
             }
         });
     }
 
     handleKeyPress(event) {
+        // Handle Enter key for menu navigation
+        if (event.code === 'Enter') {
+            if (!this.startScreen.classList.contains('hidden')) {
+                // Start game from start screen
+                this.startGame();
+                return;
+            } else if (!this.gameOverScreen.classList.contains('hidden')) {
+                // Restart game from game over screen
+                this.restartGame();
+                return;
+            }
+        }
+
         if (!this.gameState.isRunning || this.gameState.isPaused) {
             if (event.code === 'Space') {
                 this.togglePause();

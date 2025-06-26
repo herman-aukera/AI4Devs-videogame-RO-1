@@ -4,16 +4,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="GG" />
-    <title>Pac-Man - AI4Devs Retro Games</title>
-    <meta name="description" content="Classic Pac-Man retro arcade game - AI4Devs collection" />
-    <meta name="keywords" content="game, retro, arcade, pacman, html5, canvas" />
-    <meta name="theme-color" content="#00FFFF" />
+    <meta name="author" content="AI4Devs" />
+    <title>Ms. Pac-Man - AI4Devs Retro Games</title>
+    <meta name="description" content="Classic Ms. Pac-Man retro arcade game - AI4Devs collection" />
+    <meta name="keywords" content="game, retro, arcade, mspacman, html5, canvas" />
+    <meta name="theme-color" content="#FF00FF" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pac-Man - AI4Devs Retro Games" />
-    <meta property="og:description" content="Classic Pac-Man retro arcade game" />
+    <meta property="og:title" content="Ms. Pac-Man - AI4Devs Retro Games" />
+    <meta property="og:description" content="Classic Ms. Pac-Man retro arcade game with multiple mazes and moving fruit" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico" />
@@ -21,7 +21,6 @@
     <!-- Shared design system -->
     <!-- Unified Design System -->
     <link rel="stylesheet" href="../css-tokens.css" />
-    <link rel="stylesheet" href="../game-shell.css" />
     <link rel="stylesheet" href="../shared-styles.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -37,7 +36,7 @@
     <!-- Container principal del juego -->
     <main class="game-container">
       <header class="game-header">
-        <h1 class="game-title">🟡 PAC-MAN</h1>
+        <h1 class="game-title">MS. PAC-MAN</h1>
       </header>
 
       <!-- Score panel -->
@@ -48,7 +47,7 @@
         </div>
         <div class="score-item">
           <div class="score-label">LEVEL</div>
-          <div class="score-value" id="level">1</div>
+          <div class="score-value" id="maze">1</div>
         </div>
         <div class="score-item">
           <div class="score-label">HIGH SCORE</div>
@@ -62,7 +61,7 @@
         
         <!-- Game overlay -->
         <div class="game-overlay" id="gameOverlay">
-          <h2 class="overlay-title" id="overlayTitle">GAME READY</h2>
+          <h2 class="overlay-title" id="overlayTitle">MS. PAC-MAN READY</h2>
           <div class="game-controls">
             <div class="start-prompt" id="overlayMessage">Press ENTER to start</div>
           </div>
@@ -76,7 +75,7 @@
           <div class="instructions-content">
             <h3 class="instruction-title">🎯 Objetivo</h3>
             <p>
-              Recoge todas las píldoras evitando a los fantasmas. Usa las píldoras de poder para comer fantasmas temporalmente.
+              Recoge todas las píldoras evitando a los fantasmas. Las frutas móviles dan puntos extra.
             </p>
 
             <h3 class="instruction-title">🕹️ Controles</h3>
@@ -86,9 +85,16 @@
               <strong>Pausa:</strong> Barra Espaciadora
             </p>
 
-            <h3 class="instruction-title">📈 Estado del Juego</h3>
+            <h3 class="instruction-title">🎀 Diferencias con Pac-Man</h3>
             <p>
-              Completa cada nivel comiendo todas las píldoras. Los fantasmas se vuelven más rápidos en niveles superiores.
+              <strong>4 Laberintos:</strong> Rosa, Cian, Amarillo y Verde<br>
+              <strong>Frutas Móviles:</strong> Rebotan por el laberinto<br>
+              <strong>IA Mejorada:</strong> Fantasmas más impredecibles
+            </p>
+
+            <h3 class="instruction-title">📈 Progresión</h3>
+            <p>
+              Completa un laberinto para avanzar al siguiente. Cada laberinto tiene patrones únicos y mayor dificultad.
             </p>
           </div>
         </details>
@@ -97,22 +103,5 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
-    <script>
-      // Hacer que el botón START GAME funcione igual que Enter
-      document.addEventListener('DOMContentLoaded', function() {
-        const overlayButton = document.getElementById('overlayButton');
-        if (overlayButton) {
-          overlayButton.addEventListener('click', function() {
-            // Forzar el estado PLAYING y ocultar overlay si el método no lo hace
-            if (window.game && typeof window.game.startGame === 'function') {
-              window.game.startGame();
-              // Ocultar overlay por si acaso
-              const overlay = document.getElementById('gameOverlay');
-              if (overlay) overlay.style.display = 'none';
-            }
-          });
-        }
-      });
-    </script>
   </body>
 </html>

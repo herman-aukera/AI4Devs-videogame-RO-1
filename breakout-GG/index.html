@@ -16,7 +16,7 @@
     <meta name="theme-color" content="#00FFFF" />
 
     <!-- Open Graph Meta Tags para redes sociales -->
-    <meta property="og:title" content="Breakout Retro GG - Arcade Clásico" />
+    <meta property="og:title" content="Breakout Retro - Arcade Clásico" />
     <meta
       property="og:description"
       content="Destruye ladrillos en este clásico juego de arcade con estética retro y mecánicas modernas."
@@ -26,7 +26,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Breakout Retro GG" />
+    <meta name="twitter:title" content="Breakout Retro" />
     <meta
       name="twitter:description"
       content="Juego clásico de Breakout con diseño retro-futurista"
@@ -54,9 +54,13 @@
       href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap"
       rel="stylesheet"
     />
+    <!-- Unified Design System -->
+    <link rel="stylesheet" href="../css-tokens.css" />
+    <link rel="stylesheet" href="../game-shell.css" />
+    <link rel="stylesheet" href="../shared-styles.css" />
     <link rel="stylesheet" href="./style.css" />
 
-    <title>🧱 Breakout Retro - GG Edition | Classic Arcade Game</title>
+    <title>🧱 Breakout Retro - Classic Arcade Game</title>
   </head>
   <body>
     <!-- Header con información del juego -->
@@ -252,7 +256,7 @@
       // Configuración de analytics básica para tracking de juego
       if (typeof gtag !== 'undefined') {
         gtag('config', 'GA_MEASUREMENT_ID', {
-          page_title: 'Breakout Retro GG',
+          page_title: 'Breakout Retro',
           page_location: window.location.href,
         });
       }

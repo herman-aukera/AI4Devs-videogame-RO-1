@@ -1,11 +1,14 @@
 /* © GG, MIT License */
 /* ==============================================
-   AI4DEVS RETRO GAMES - Shared Design System
-   Standard CSS variables and components
+   AI4DEVS RETRO GAMES - Enhanced Shared Design System
+   Unified tokens and harmonized components
    ============================================== */
 
+/* Import unified design tokens */
+@import url('./css-tokens.css');
+
 :root {
-  /* ===== RETRO NEON COLOR PALETTE ===== */
+  /* ===== RETRO NEON COLOR PALETTE (Enhanced) ===== */
   --neon-cyan: #00ffff;
   --neon-magenta: #ff00ff;
   --neon-yellow: #ffff00;

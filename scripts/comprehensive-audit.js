@@ -37,7 +37,8 @@ class ComprehensiveAuditor {
             'mspacman-GG', // Added ms pacman
             'tetris-GG',
             'asteroids-GG',
-            'space-invaders-GG'
+            'space-invaders-GG',
+            'pong-GG' // Added Pong GG - Physics Foundation
         ];
         
         for (const game of games) {

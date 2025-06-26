@@ -41,7 +41,7 @@
   "emmet.showExpandedAbbreviation": "always",
   
   // === LIVE SERVER CONFIGURATION ===
-  "liveServer.settings.port": 8000,
+  "liveServer.settings.port": 8001,
   "liveServer.settings.root": "/",
   "liveServer.settings.CustomBrowser": "chrome",
   "liveServer.settings.NoBrowser": false,
