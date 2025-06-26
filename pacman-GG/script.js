@@ -54,7 +54,7 @@ const GAME_CONFIG = {
       left: ['ArrowLeft', 'KeyA'],
       right: ['ArrowRight', 'KeyD'],
       start: ['Enter'],
-      pause: ['Space', 'KeyP'],
+      pause: ['Space', 'KeyP', 'Escape'],
       restart: ['KeyR'],
     },
   },

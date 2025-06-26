@@ -100,11 +100,66 @@ class SnakeGame {
         // Teclado
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
 
+        // Touch events for mobile swipe controls
+        this.setupTouchControls();
+
         // Prevenir scroll con las flechas
         window.addEventListener('keydown', (e) => {
-            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter'].includes(e.code)) {
+            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter', 'Escape'].includes(e.code)) {
                 e.preventDefault();
             }
+        });
+    }
+
+    setupTouchControls() {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const minSwipeDistance = 30;
+
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        });
+
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (!this.gameState.isRunning || this.gameState.isPaused) return;
+
+            const touch = e.changedTouches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+
+            // Determine swipe direction
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                if (Math.abs(deltaX) > minSwipeDistance) {
+                    if (deltaX > 0 && this.snake.direction.x === 0) {
+                        // Swipe right
+                        this.snake.nextDirection = { x: 1, y: 0 };
+                    } else if (deltaX < 0 && this.snake.direction.x === 0) {
+                        // Swipe left
+                        this.snake.nextDirection = { x: -1, y: 0 };
+                    }
+                }
+            } else {
+                // Vertical swipe
+                if (Math.abs(deltaY) > minSwipeDistance) {
+                    if (deltaY > 0 && this.snake.direction.y === 0) {
+                        // Swipe down
+                        this.snake.nextDirection = { x: 0, y: 1 };
+                    } else if (deltaY < 0 && this.snake.direction.y === 0) {
+                        // Swipe up
+                        this.snake.nextDirection = { x: 0, y: -1 };
+                    }
+                }
+            }
+        });
+
+        // Prevent scrolling on canvas
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
         });
     }
 
@@ -120,6 +175,18 @@ class SnakeGame {
                 this.restartGame();
                 return;
             }
+        }
+
+        // Handle Escape key for pause/menu
+        if (event.code === 'Escape') {
+            if (this.gameState.isRunning && !this.gameState.isPaused) {
+                // Pause game if running
+                this.togglePause();
+            } else if (this.gameState.isPaused) {
+                // Resume game if paused
+                this.togglePause();
+            }
+            return;
         }
 
         if (!this.gameState.isRunning || this.gameState.isPaused) {

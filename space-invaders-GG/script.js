@@ -761,7 +761,7 @@ class InputManager {
   setupEventListeners() {
     document.addEventListener('keydown', (e) => {
       this.keys.add(e.code);
-      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter'].includes(e.code)) {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', 'Enter', 'Escape'].includes(e.code)) {
         e.preventDefault();
       }
     });
@@ -888,7 +888,7 @@ class SpaceInvadersGame {
       this.restart();
     }
     
-    if (this.inputManager.isPressed('KeyP')) {
+    if (this.inputManager.isPressed('KeyP') || this.inputManager.isPressed('Escape')) {
       this.togglePause();
     }
     if (this.inputManager.isPressed('KeyR')) {

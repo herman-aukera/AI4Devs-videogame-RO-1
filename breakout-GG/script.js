@@ -229,6 +229,9 @@ class BreakoutGame {
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
         document.addEventListener('keyup', (e) => this.handleKeyUp(e));
         
+        // Touch controls for mobile
+        this.setupTouchControls();
+        
         // Prevenir scroll con teclas de flecha
         document.addEventListener('keydown', (e) => {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
@@ -239,6 +242,55 @@ class BreakoutGame {
         // Focus en el canvas para capturar input
         this.canvas.addEventListener('click', () => this.canvas.focus());
         this.canvas.tabIndex = 0;
+    }
+
+    /**
+     * Setup touch controls for mobile devices
+     */
+    setupTouchControls() {
+        let touchStartX = 0;
+        let isTracking = false;
+
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = this.canvas.getBoundingClientRect();
+            touchStartX = touch.clientX - rect.left;
+            isTracking = true;
+        });
+
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!isTracking || this.gameState !== GAME_STATES.PLAYING) return;
+
+            const touch = e.touches[0];
+            const rect = this.canvas.getBoundingClientRect();
+            const touchX = touch.clientX - rect.left;
+            const deltaX = touchX - touchStartX;
+
+            // Simulate left/right key presses based on touch movement
+            if (deltaX < -10) {
+                this.inputHandler.handleKeyDown('ArrowLeft');
+                this.inputHandler.handleKeyUp('ArrowRight');
+            } else if (deltaX > 10) {
+                this.inputHandler.handleKeyDown('ArrowRight');
+                this.inputHandler.handleKeyUp('ArrowLeft');
+            } else {
+                // Stop movement when touch is centered
+                this.inputHandler.handleKeyUp('ArrowLeft');
+                this.inputHandler.handleKeyUp('ArrowRight');
+            }
+
+            touchStartX = touchX;
+        });
+
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            isTracking = false;
+            // Stop all movement
+            this.inputHandler.handleKeyUp('ArrowLeft');
+            this.inputHandler.handleKeyUp('ArrowRight');
+        });
     }
     
     /**
