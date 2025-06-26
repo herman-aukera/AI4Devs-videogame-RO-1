@@ -332,3 +332,5 @@ Every time I prompt you. Your mission is to **analyze** and **enhance** it so th
 - It follows **best practices**: explicit role, clear objective, context, constraints, output-format, stop sequences, and invitation for further improvements.
 
 Use these standards to maintain consistency and quality across the entire AI4Devs Retro Web Games collection.
+
+Any modification to this instruction should be approve manually  

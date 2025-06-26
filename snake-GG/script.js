@@ -232,6 +232,12 @@ class SnakeGame {
         this.showPauseButton();
         this.gameState.isRunning = true;
         this.gameState.isPaused = false;
+        
+        // Audio: Game start sound
+        if (window.globalAudioManager) {
+            window.globalAudioManager.playSelect();
+        }
+        
         this.generateFood();
         this.updateUI();
         requestAnimationFrame((time) => this.gameLoop(time));
@@ -275,6 +281,12 @@ class SnakeGame {
     gameOver() {
         this.gameState.isRunning = false;
         this.gameState.isPaused = false;
+        
+        // Audio: Game over sound
+        if (window.globalAudioManager) {
+            window.globalAudioManager.playGameOver();
+        }
+        
         this.hidePauseButton();
         this.showGameOverScreen();
         this.updateFinalScore();
@@ -331,6 +343,11 @@ class SnakeGame {
             this.updateUI();
             this.generateFood();
             
+            // Audio: Snake eating sound
+            if (window.globalAudioManager) {
+                window.globalAudioManager.playEat();
+            }
+            
             // Efecto visual al comer
             this.showEatingEffect();
         }
@@ -362,6 +379,12 @@ class SnakeGame {
             this.gameState.level = newLevel;
             this.gameState.speed = Math.max(50, this.gameState.speed * GAME_CONFIG.SPEED_INCREMENT);
             this.updateUI();
+            
+            // Audio: Level up sound
+            if (window.globalAudioManager) {
+                window.globalAudioManager.playLevelUp();
+            }
+            
             this.showLevelUpEffect();
         }
     }
