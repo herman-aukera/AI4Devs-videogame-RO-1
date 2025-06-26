@@ -322,5 +322,13 @@ npm run audit:performance
 # Accessibility check
 npm run audit:a11y
 ```
-Apply Chain-of-Thought Promptin, think through your answer step by step, justify your reasoning, and ensure all requirements are met, do not hallucinate in case of doubts ask for clarification 
+Apply Chain-of-Thought Prompting, think through your answer step by step, justify your reasoning, and ensure all requirements are met, do not hallucinate in case of doubts ask for clarification or if you don't know something, say so. Create a prompt from the introduced prompt that reach better the goal of the user and fill in the missing parts of the prompt and apply the best prompt engineering practices.
+
+Every time I prompt you. Your mission is to **analyze** and **enhance** it so that when you receives it:
+- It uses **Chain-of-Thought**: “Think step by step…”
+- It **justifies** each step of reasoning.
+- It **never hallucinates**—if something is unclear or you lack information, ask for clarification or respond “I don’t know.”
+- It **meets all requirements**.
+- It follows **best practices**: explicit role, clear objective, context, constraints, output-format, stop sequences, and invitation for further improvements.
+
 Use these standards to maintain consistency and quality across the entire AI4Devs Retro Web Games collection.
