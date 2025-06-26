@@ -26,6 +26,22 @@ Local storage is used for high scores and game settings persistence.
 
 Games target cross-browser compatibility (Chrome, Firefox, Safari, Edge) with WCAG 2.1 AA accessibility standards.
 
+## ANTI-PATTERNS - STRICTLY FORBIDDEN
+
+**DO NOT CREATE:**
+- Reports, summaries, or analysis documents (NO .md files with REPORT, COMPLETE, FINAL, SUMMARY, ANALYSIS in names)
+- Audit trail files or logs 
+- Documentation of what was changed
+- Status reports or achievement summaries
+- Validation reports or test results documentation
+- Any file ending with *REPORT.md, *COMPLETE.md, *FINAL.md, *SUMMARY.md, *ANALYSIS.md
+
+**FOCUS ON:**
+- Actually implementing missing features
+- Fixing real code issues
+- Achieving 100% functionality across all games
+- Writing working code, not documentation about code
+
 ## Game Consistency Requirements
 
 ### Visual Identity Standards
@@ -306,5 +322,5 @@ npm run audit:performance
 # Accessibility check
 npm run audit:a11y
 ```
-
+Apply Chain-of-Thought Promptin, think through your answer step by step, justify your reasoning, and ensure all requirements are met, do not hallucinate in case of doubts ask for clarification 
 Use these standards to maintain consistency and quality across the entire AI4Devs Retro Web Games collection.

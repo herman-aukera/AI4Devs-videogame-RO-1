@@ -501,6 +501,10 @@ class InputManager {
         this.keys.r = true;
         e.preventDefault();
         break;
+      case 'KeyM':
+        this.keys.m = true;
+        e.preventDefault();
+        break;
     }
   }
   
@@ -525,6 +529,9 @@ class InputManager {
         break;
       case 'KeyR':
         this.keys.r = false;
+        break;
+      case 'KeyM':
+        this.keys.m = false;
         break;
     }
   }
@@ -578,7 +585,7 @@ class InputManager {
   
   handleFocusLoss() {
     // Clear all inputs when window loses focus
-    this.keys = { up: false, down: false, space: false, enter: false, escape: false, r: false };
+    this.keys = { up: false, down: false, space: false, enter: false, escape: false, r: false, m: false };
     this.mouse.active = false;
     this.touch.active = false;
   }

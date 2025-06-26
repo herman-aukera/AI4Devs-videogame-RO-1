@@ -89,7 +89,7 @@ const COLORS = {
 const KEYS = {
     LEFT: ['ArrowLeft', 'a', 'A'],
     RIGHT: ['ArrowRight', 'd', 'D'],
-    PAUSE: [' ', 'Escape'],
+    PAUSE: ['Space', 'Escape'],
     START: ['Enter'],
     RESTART: ['r', 'R']
 };

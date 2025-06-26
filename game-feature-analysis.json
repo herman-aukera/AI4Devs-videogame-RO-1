@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-06-26T16:56:59.450Z",
+  "timestamp": "2025-06-26T17:06:53.939Z",
   "featureMatrix": {
     "pong-GG": {
       "keyboardControls": {
@@ -80,7 +80,7 @@
     "breakout-GG": {
       "keyboardControls": {
         "enterKey": true,
-        "spaceKey": false,
+        "spaceKey": true,
         "escapeKey": true,
         "arrowKeys": true,
         "wasdKeys": false,
@@ -346,14 +346,6 @@
   },
   "recommendations": [
     {
-      "category": "keyboard",
-      "feature": "spaceKey",
-      "missingGames": [
-        "breakout-GG"
-      ],
-      "priority": "high"
-    },
-    {
       "category": "audio",
       "feature": "webAudioAPI",
       "missingGames": [
@@ -382,7 +374,7 @@
   ],
   "summary": {
     "totalGames": 9,
-    "totalRecommendations": 3,
-    "highPriorityIssues": 1
+    "totalRecommendations": 2,
+    "highPriorityIssues": 0
   }
 }
