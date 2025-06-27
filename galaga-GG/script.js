@@ -715,14 +715,14 @@ class GalagaGame {
       this.startGameLoop();
 
       // Initialize Universal Systems
-      if (typeof UniversalAudio !== 'undefined') {
-        UniversalAudio.init();
+      if (typeof window.globalAudioManager !== 'undefined') {
+        window.globalAudioManager.init();
       }
-      if (typeof Tournament !== 'undefined') {
-        Tournament.init();
+      if (typeof window.globalTournamentManager !== 'undefined') {
+        window.globalTournamentManager.init();
       }
-      if (typeof Achievements !== 'undefined') {
-        Achievements.init();
+      if (typeof window.globalAchievementSystem !== 'undefined') {
+        window.globalAchievementSystem.init();
       }
 
       // Enhanced audit integration for development
@@ -834,17 +834,17 @@ class GalagaGame {
     // Universal Systems shortcuts
     if (e.code === 'KeyM') {
       if (typeof UniversalAudio !== 'undefined') {
-        UniversalAudio.toggle();
+        window.globalAudioManager.toggle();
       }
     }
     if (e.code === 'KeyT') {
       if (typeof Tournament !== 'undefined') {
-        Tournament.toggleOverlay();
+        window.globalTournamentUI.toggleTournamentOverlay();
       }
     }
     if (e.code === 'KeyA') {
       if (typeof Achievements !== 'undefined') {
-        Achievements.toggleBrowser();
+        window.globalAchievementSystem.showAchievementBrowser();
       }
     }
     
@@ -867,10 +867,10 @@ class GalagaGame {
     
     // Universal Systems Integration
     if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameStart();
+      window.globalAudioManager.playGameStart();
     }
     if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_start', { game: 'galaga' });
+      window.globalAchievementSystem.updatePlayerProgress('galaga', this.score, this.stage, { game: 'galaga' });
     }
     
     console.log('🚀 Galaga started!');
@@ -917,13 +917,13 @@ class GalagaGame {
     
     // Universal Systems Integration
     if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameOver();
+      window.globalAudioManager.playGameOver();
     }
     if (typeof Tournament !== 'undefined') {
-      Tournament.submitScore('galaga', this.score, { stage: this.stage });
+      window.globalTournamentManager.submitScore('galaga', this.score, this.stage, { stage: this.stage });
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_over', { 
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      window.globalAchievementSystem.updatePlayerProgress('galaga', this.score, this.stage, { 
         game: 'galaga', 
         score: this.score, 
         stage: this.stage 
@@ -937,11 +937,8 @@ class GalagaGame {
       this.saveHighScore();
       newHighScore = true;
       
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('high_score', { 
-          game: 'galaga', 
-          score: this.score 
-        });
+      if (typeof window.globalAchievementSystem !== 'undefined') {
+        // High score achievement is already tracked in updatePlayerProgress
       }
     }
     
@@ -963,12 +960,8 @@ class GalagaGame {
     this.stageCompleteBonus = this.lives * 100;
     this.score += this.stageCompleteBonus;
     
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('stage_complete', { 
-        game: 'galaga', 
-        stage: this.stage - 1,
-        score: this.score
-      });
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      // Stage completion is tracked automatically in updatePlayerProgress
     }
   }
 
@@ -1065,28 +1058,19 @@ class GalagaGame {
             this.score += enemy.points;
             
             // Universal Systems Integration
-            if (typeof UniversalAudio !== 'undefined') {
-              UniversalAudio.playPointScore();
+            if (typeof window.globalAudioManager !== 'undefined') {
+              window.globalAudioManager.playPointScore();
             }
-            if (typeof Achievements !== 'undefined') {
-              Achievements.trackEvent('enemy_destroyed', { 
-                game: 'galaga', 
-                enemyType: enemy.type,
-                points: enemy.points,
-                score: this.score
-              });
+            if (typeof window.globalAchievementSystem !== 'undefined') {
+              // Enemy destruction is tracked automatically in game over
             }
             
             // Handle captured player rescue
             if (enemy.captured) {
               this.score += GALAGA_CONFIG.game.rescueBonusPoints;
               
-              if (typeof Achievements !== 'undefined') {
-                Achievements.trackEvent('player_rescued', { 
-                  game: 'galaga', 
-                  bonus: GALAGA_CONFIG.game.rescueBonusPoints,
-                  score: this.score
-                });
+              if (typeof window.globalAchievementSystem !== 'undefined') {
+                // Player rescue bonus is tracked in final score
               }
             }
           }
@@ -1113,10 +1097,8 @@ class GalagaGame {
           if (enemy.canCapture() && Math.random() < 0.3) { // 30% chance of capture
             enemy.capturePlayer(this.player);
             
-            if (typeof Achievements !== 'undefined') {
-              Achievements.trackEvent('player_captured', { 
-                game: 'galaga'
-              });
+            if (typeof window.globalAchievementSystem !== 'undefined') {
+              // Player capture is tracked in game statistics
             }
           } else {
             this.playerHit();

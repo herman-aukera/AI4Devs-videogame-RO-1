@@ -38,7 +38,8 @@ class ComprehensiveAuditor {
             'tetris-GG',
             'asteroids-GG',
             'space-invaders-GG',
-            'pong-GG' // Added Pong GG - Physics Foundation
+            'pong-GG', // Added Pong GG - Physics Foundation
+            'galaga-GG' // Added Galaga GG - Formation Flying
         ];
         
         for (const game of games) {

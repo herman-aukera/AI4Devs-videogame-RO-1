@@ -390,3 +390,41 @@
 ::1 - - [26/Jun/2025 17:31:07] "GET /index.html HTTP/1.1" 200 -
 ::1 - - [26/Jun/2025 17:31:07] "GET /styles.css HTTP/1.1" 200 -
 ::1 - - [26/Jun/2025 17:31:12] "GET /asteroids-GG/index.html HTTP/1.1" 304 -
+::1 - - [27/Jun/2025 07:34:59] "GET /?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002499938 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:34:59] "GET /styles.css HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /galaga-GG?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002504026 HTTP/1.1" 301 -
+::1 - - [27/Jun/2025 07:35:04] "GET /galaga-GG/?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002504026 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /galaga-GG/style.css HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /shared-tournament.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /shared-audio.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /shared-achievements.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /galaga-GG/script.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:35:04] "GET /shared-styles.css HTTP/1.1" 304 -
+::1 - - [27/Jun/2025 07:35:04] code 404, message File not found
+::1 - - [27/Jun/2025 07:35:04] "GET /css-tokens.css HTTP/1.1" 404 -
+::1 - - [27/Jun/2025 07:40:39] "GET /galaga-GG?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002839886 HTTP/1.1" 301 -
+::1 - - [27/Jun/2025 07:40:39] "GET /galaga-GG/?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002839886 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:40:39] "GET /galaga-GG/style.css HTTP/1.1" 304 -
+::1 - - [27/Jun/2025 07:40:39] code 404, message File not found
+::1 - - [27/Jun/2025 07:40:39] "GET /galaga-GG/script.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:40:39] "GET /css-tokens.css HTTP/1.1" 404 -
+::1 - - [27/Jun/2025 07:41:00] "GET /galaga-GG?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002860106 HTTP/1.1" 301 -
+::1 - - [27/Jun/2025 07:41:00] "GET /galaga-GG/?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002860106 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:00] code 404, message File not found
+::1 - - [27/Jun/2025 07:41:00] "GET /css-tokens.css HTTP/1.1" 404 -
+::1 - - [27/Jun/2025 07:41:00] "GET /galaga-GG/script.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:01] "GET /galaga-GG?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002861017 HTTP/1.1" 301 -
+::1 - - [27/Jun/2025 07:41:01] "GET /galaga-GG/?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002861017 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:01] code 404, message File not found
+::1 - - [27/Jun/2025 07:41:01] "GET /css-tokens.css HTTP/1.1" 404 -
+::1 - - [27/Jun/2025 07:41:02] "GET /?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002862646 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:02] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [27/Jun/2025 07:41:07] "GET /asteroids-GG?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002867810 HTTP/1.1" 301 -
+::1 - - [27/Jun/2025 07:41:07] "GET /asteroids-GG/?id=9289d8fb-af62-4cae-8c46-874d850adcb3&vscodeBrowserReqId=1751002867810 HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:07] code 404, message File not found
+::1 - - [27/Jun/2025 07:41:07] "GET /css-tokens.css HTTP/1.1" 404 -
+::1 - - [27/Jun/2025 07:41:07] "GET /asteroids-GG/script.js HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:07] "GET /asteroids-GG/style.css HTTP/1.1" 200 -
+::1 - - [27/Jun/2025 07:41:07] "GET /game-shell.css HTTP/1.1" 304 -
+::1 - - [27/Jun/2025 07:41:07] code 404, message File not found
+::1 - - [27/Jun/2025 07:41:07] "GET /css-tokens.css HTTP/1.1" 404 -
