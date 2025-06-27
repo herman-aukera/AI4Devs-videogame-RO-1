@@ -1583,15 +1583,9 @@ class GameEngine {
     this.resetGame();
     
     // Initialize Universal Systems
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.init();
-    }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.init();
-    }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.init();
-    }
+    this.audioManager = window.globalAudioManager;
+    this.tournamentManager = window.globalTournamentManager;
+    this.achievementSystem = window.globalAchievementSystem;
     
     // Run audit tasks in development mode
     if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
@@ -1645,11 +1639,11 @@ class GameEngine {
     this.overlay.style.display = 'none';
     
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameStart();
+    if (this.audioManager) {
+      this.audioManager.playSound('gameStart');
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_start', { game: 'pacman' });
+    if (this.achievementSystem) {
+      this.achievementSystem.updateAchievement('game_start', { game: 'pacman' });
     }
     
     console.log(`Game started at ${this.gameStartTime} with ${this.ghosts.length} ghosts`);
@@ -1785,11 +1779,11 @@ class GameEngine {
       this.audio.playSound('pellet');
       
       // Universal Systems Integration
-      if (typeof UniversalAudio !== 'undefined') {
-        UniversalAudio.playPointScore();
+      if (this.audioManager) {
+        this.audioManager.playSound('score');
       }
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('pellet_eaten', { 
+      if (this.achievementSystem) {
+        this.achievementSystem.updateAchievement('pellet_eaten', { 
           game: 'pacman', 
           type: consumed.type,
           points: consumed.points,
@@ -1809,8 +1803,8 @@ class GameEngine {
       this.audio.playSound('fruit');
       
       // Universal Systems Integration
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('fruit_eaten', { 
+      if (this.achievementSystem) {
+        this.achievementSystem.updateAchievement('fruit_eaten', { 
           game: 'pacman', 
           type: fruitConsumed.fruitType,
           points: fruitConsumed.points,
@@ -1855,8 +1849,8 @@ class GameEngine {
     ghost.getEaten();
     
     // Universal Systems Integration
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('ghost_eaten', { 
+    if (this.achievementSystem) {
+      this.achievementSystem.updateAchievement('ghost_eaten', { 
         game: 'pacman', 
         ghost: ghost.name,
         points: points,
@@ -1878,14 +1872,14 @@ class GameEngine {
       this.gameOver = true;
       
       // Universal Systems Integration
-      if (typeof UniversalAudio !== 'undefined') {
-        UniversalAudio.playGameOver();
+      if (this.audioManager) {
+        this.audioManager.playSound('gameOver');
       }
-      if (typeof Tournament !== 'undefined') {
-        Tournament.submitScore('pacman', this.score, { level: this.level });
+      if (this.tournamentManager) {
+        this.tournamentManager.submitScore('pacman', this.score, { level: this.level });
       }
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('game_over', { 
+      if (this.achievementSystem) {
+        this.achievementSystem.updateAchievement('game_over', { 
           game: 'pacman', 
           score: this.score, 
           level: this.level 
@@ -1896,8 +1890,8 @@ class GameEngine {
         this.highScore = this.score;
         localStorage.setItem('pacmanHighScore', this.highScore);
         
-        if (typeof Achievements !== 'undefined') {
-          Achievements.trackEvent('high_score', { 
+        if (this.achievementSystem) {
+          this.achievementSystem.updateAchievement('high_score', { 
             game: 'pacman', 
             score: this.score 
           });

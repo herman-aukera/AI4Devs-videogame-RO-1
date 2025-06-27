@@ -862,15 +862,9 @@ class SpaceInvadersGame {
     this.gameLoop();
     
     // Initialize Universal Systems
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.init();
-    }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.init();
-    }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.init();
-    }
+    this.globalAudioManager = window.globalAudioManager;
+    this.globalTournamentManager = window.globalTournamentManager;
+    this.globalAchievementSystem = window.globalAchievementSystem;
     
     // Auto-run audit in development
     if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
@@ -973,11 +967,11 @@ class SpaceInvadersGame {
           this.particleSystem.addExplosion(hitInvader.x, hitInvader.y, hitInvader.color);
           
           // Universal Systems Integration
-          if (typeof UniversalAudio !== 'undefined') {
-            UniversalAudio.playPointScore();
+          if (this.globalAudioManager) {
+            this.globalAudioManager.playSound('score');
           }
-          if (typeof Achievements !== 'undefined') {
-            Achievements.trackEvent('invader_destroyed', { 
+          if (this.globalAchievementSystem) {
+            this.globalAchievementSystem.updateAchievement('invader_destroyed', { 
               game: 'space_invaders', 
               points: hitInvader.points,
               score: this.score
@@ -995,11 +989,11 @@ class SpaceInvadersGame {
           this.particleSystem.addExplosion(this.ufo.x + this.ufo.width / 2, this.ufo.y + this.ufo.height / 2);
           
           // Universal Systems Integration
-          if (typeof UniversalAudio !== 'undefined') {
-            UniversalAudio.playPointScore();
+          if (this.globalAudioManager) {
+            this.globalAudioManager.playSound('score');
           }
-          if (typeof Achievements !== 'undefined') {
-            Achievements.trackEvent('ufo_destroyed', { 
+          if (this.globalAchievementSystem) {
+            this.globalAchievementSystem.updateAchievement('ufo_destroyed', { 
               game: 'space_invaders', 
               points: this.ufo.points,
               score: this.score
@@ -1090,14 +1084,14 @@ class SpaceInvadersGame {
     this.audioManager.playGameOver();
     
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameOver();
+    if (this.globalAudioManager) {
+      this.globalAudioManager.playSound('gameOver');
     }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.submitScore('space_invaders', this.score, { level: this.level });
+    if (this.globalTournamentManager) {
+      this.globalTournamentManager.submitScore('space_invaders', this.score, { level: this.level });
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_over', { 
+    if (this.globalAchievementSystem) {
+      this.globalAchievementSystem.updateAchievement('game_over', { 
         game: 'space_invaders', 
         score: this.score, 
         level: this.level 
@@ -1108,8 +1102,8 @@ class SpaceInvadersGame {
       this.highScore = this.score;
       localStorage.setItem('space_invaders_highScore', this.highScore.toString());
       
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('high_score', { 
+      if (this.globalAchievementSystem) {
+        this.globalAchievementSystem.updateAchievement('high_score', { 
           game: 'space_invaders', 
           score: this.score 
         });
@@ -1134,11 +1128,11 @@ class SpaceInvadersGame {
     this.ufo = new UFO();
     
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameStart();
+    if (this.globalAudioManager) {
+      this.globalAudioManager.playSound('gameStart');
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_start', { game: 'space_invaders' });
+    if (this.globalAchievementSystem) {
+      this.globalAchievementSystem.updateAchievement('game_start', { game: 'space_invaders' });
     }
     
     this.updateHUD();

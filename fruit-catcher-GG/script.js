@@ -89,15 +89,9 @@ class FruitCatcherGame {
     this.setupCanvas();
 
     // Initialize Universal Systems
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.init();
-    }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.init();
-    }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.init();
-    }
+    this.audioManager = window.globalAudioManager;
+    this.tournamentManager = window.globalTournamentManager;
+    this.achievementSystem = window.globalAchievementSystem;
 
     console.log('🍎 Fruit Catcher inicializado correctamente');
   }
@@ -265,11 +259,11 @@ class FruitCatcherGame {
     this.player.reset();
 
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameStart();
+    if (this.audioManager) {
+      this.audioManager.playSound('gameStart');
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_start', { game: 'fruit_catcher' });
+    if (this.achievementSystem) {
+      this.achievementSystem.updateAchievement('game_start', { game: 'fruit_catcher' });
     }
 
     // Actualizar UI
@@ -324,14 +318,14 @@ class FruitCatcherGame {
     this.gameState = 'gameOver';
 
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameOver();
+    if (this.audioManager) {
+      this.audioManager.playSound('gameOver');
     }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.submitScore('fruit_catcher', this.score, { level: this.level });
+    if (this.tournamentManager) {
+      this.tournamentManager.submitScore('fruit_catcher', this.score, { level: this.level });
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_over', { 
+    if (this.achievementSystem) {
+      this.achievementSystem.updateAchievement('game_over', { 
         game: 'fruit_catcher', 
         score: this.score, 
         level: this.level 
@@ -344,8 +338,8 @@ class FruitCatcherGame {
       this.saveHighScore();
       this.effectsManager.createCelebration();
       
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('high_score', { 
+      if (this.achievementSystem) {
+        this.achievementSystem.updateAchievement('high_score', { 
           game: 'fruit_catcher', 
           score: this.score 
         });
@@ -515,7 +509,9 @@ class FruitCatcherGame {
     );
 
     // Reproducir sonido (si está disponible)
-    this.audioManager.playCollectSound();
+    if (this.audioManager) {
+      this.audioManager.playSound('score');
+    }
 
     // Actualizar UI
     this.updateUI();

@@ -638,14 +638,14 @@ class AsteroidsGame {
       this.startGameLoop();
 
       // Initialize Universal Systems
-      if (typeof UniversalAudio !== 'undefined') {
-        UniversalAudio.init();
+      if (typeof window.globalAudioManager !== 'undefined') {
+        window.globalAudioManager.init();
       }
-      if (typeof Tournament !== 'undefined') {
-        Tournament.init();
+      if (typeof window.globalTournamentManager !== 'undefined') {
+        window.globalTournamentManager.init();
       }
-      if (typeof Achievements !== 'undefined') {
-        Achievements.init();
+      if (typeof window.globalAchievementSystem !== 'undefined') {
+        window.globalAchievementSystem.init();
       }
 
       // Enhanced audit integration for development
@@ -786,10 +786,10 @@ class AsteroidsGame {
     
     // Universal Systems Integration
     if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameStart();
+      window.globalAudioManager.playGameStart();
     }
     if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_start', { game: 'asteroids' });
+      window.globalAchievementSystem.updatePlayerProgress('asteroids', this.score, this.level, { game: 'asteroids' });
     }
     
     console.log('🚀 Game started!');
@@ -819,16 +819,15 @@ class AsteroidsGame {
     
     // Universal Systems Integration
     if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playGameOver();
+      window.globalAudioManager.playGameOver();
     }
     if (typeof Tournament !== 'undefined') {
-      Tournament.submitScore('asteroids', this.score, { level: this.level });
+      window.globalTournamentManager.submitScore('asteroids', this.score, this.level, { level: this.level });
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('game_over', { 
-        game: 'asteroids', 
-        score: this.score, 
-        level: this.level 
+    if (typeof Achievements !== 'undefined') {      window.globalAchievementSystem.updatePlayerProgress('asteroids', this.score, this.level, {
+        game: 'asteroids',
+        score: this.score,
+        level: this.level
       });
     }
     
@@ -839,11 +838,7 @@ class AsteroidsGame {
       this.saveHighScore();
       newHighScore = true;
       
-      if (typeof Achievements !== 'undefined') {
-        Achievements.trackEvent('high_score', { 
-          game: 'asteroids', 
-          score: this.score 
-        });
+      if (typeof Achievements !== 'undefined') {        // High score achievement already tracked in updatePlayerProgress
       }
     }
     
@@ -945,16 +940,11 @@ class AsteroidsGame {
     this.audioManager.playExplosion();
     
     // Universal Systems Integration
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.playPointScore();
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.playPointScore();
     }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.trackEvent('asteroid_destroyed', { 
-        game: 'asteroids', 
-        size: asteroid.size,
-        points: asteroid.points,
-        score: this.score
-      });
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      // Asteroid destruction tracked in game over
     }
     
     // Split asteroid
@@ -1124,15 +1114,11 @@ class AsteroidsGame {
           this.audioManager.playExplosion();
           
           // Universal Systems Integration
-          if (typeof UniversalAudio !== 'undefined') {
-            UniversalAudio.playPointScore();
+          if (typeof window.globalAudioManager !== 'undefined') {
+            window.globalAudioManager.playPointScore();
           }
-          if (typeof Achievements !== 'undefined') {
-            Achievements.trackEvent('ufo_destroyed', { 
-              game: 'asteroids', 
-              points: ufo.points,
-              score: this.score
-            });
+          if (typeof window.globalAchievementSystem !== 'undefined') {
+            // UFO destruction tracked in game over
           }
           
           ufo.active = false;

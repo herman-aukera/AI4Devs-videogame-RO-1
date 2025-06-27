@@ -1725,15 +1725,9 @@ class MsPacManGameEngine {
     this.resetGame();
     
     // Initialize Universal Systems
-    if (typeof UniversalAudio !== 'undefined') {
-      UniversalAudio.init();
-    }
-    if (typeof Tournament !== 'undefined') {
-      Tournament.init();
-    }
-    if (typeof Achievements !== 'undefined') {
-      Achievements.init();
-    }
+    this.audioManager = window.globalAudioManager;
+    this.tournamentManager = window.globalTournamentManager;
+    this.achievementSystem = window.globalAchievementSystem;
     
     // TDD Audit setup
     if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
@@ -1780,6 +1774,14 @@ class MsPacManGameEngine {
     this.gameState = 'PLAYING';
     this.gameStartTime = Date.now();
     this.overlay.style.display = 'none';
+    
+    // Universal Systems Integration
+    if (this.audioManager) {
+      this.audioManager.playSound('gameStart');
+    }
+    if (this.achievementSystem) {
+      this.achievementSystem.updateAchievement('game_start', { game: 'mspacman' });
+    }
   }
 
   gameLoop() {
@@ -1886,6 +1888,12 @@ class MsPacManGameEngine {
     if (consumed) {
       this.score += consumed.points;
       this.audio.playSound('pellet');
+      
+      // Universal Systems Integration - Score sound
+      if (this.audioManager) {
+        this.audioManager.playSound('score');
+      }
+      
       if (consumed.type === 'powerPellet') {
         this.activatePowerPellet();
       }
@@ -1940,9 +1948,32 @@ class MsPacManGameEngine {
     if (this.lives <= 0) {
       this.gameState = 'GAME_OVER';
       this.gameOver = true;
+      
+      // Universal Systems Integration
+      if (this.audioManager) {
+        this.audioManager.playSound('gameOver');
+      }
+      if (this.tournamentManager) {
+        this.tournamentManager.submitScore('mspacman', this.score, { maze: this.mazeNumber });
+      }
+      if (this.achievementSystem) {
+        this.achievementSystem.updateAchievement('game_over', { 
+          game: 'mspacman', 
+          score: this.score, 
+          maze: this.mazeNumber 
+        });
+      }
+      
       if (this.score > this.highScore) {
         this.highScore = this.score;
         localStorage.setItem('mspacmanHighScore', this.highScore);
+        
+        if (this.achievementSystem) {
+          this.achievementSystem.updateAchievement('high_score', { 
+            game: 'mspacman', 
+            score: this.score 
+          });
+        }
       }
       this.overlay.style.display = 'flex';
       document.getElementById('overlayTitle').textContent = 'GAME OVER';
