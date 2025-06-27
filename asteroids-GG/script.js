@@ -637,6 +637,17 @@ class AsteroidsGame {
       this.updateUI();
       this.startGameLoop();
 
+      // Initialize Universal Systems
+      if (typeof UniversalAudio !== 'undefined') {
+        UniversalAudio.init();
+      }
+      if (typeof Tournament !== 'undefined') {
+        Tournament.init();
+      }
+      if (typeof Achievements !== 'undefined') {
+        Achievements.init();
+      }
+
       // Enhanced audit integration for development
       if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
         console.log('🔍 Running ASTEROIDS development audit...');
@@ -773,6 +784,14 @@ class AsteroidsGame {
     this.hideAllOverlays();
     this.updateUI();
     
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameStart();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_start', { game: 'asteroids' });
+    }
+    
     console.log('🚀 Game started!');
   }
 
@@ -798,12 +817,34 @@ class AsteroidsGame {
   gameOver() {
     this.gameState = 'gameOver';
     
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameOver();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.submitScore('asteroids', this.score, { level: this.level });
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_over', { 
+        game: 'asteroids', 
+        score: this.score, 
+        level: this.level 
+      });
+    }
+    
     // Check for high score
     let newHighScore = false;
     if (this.score > this.highScore) {
       this.highScore = this.score;
       this.saveHighScore();
       newHighScore = true;
+      
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('high_score', { 
+          game: 'asteroids', 
+          score: this.score 
+        });
+      }
     }
     
     // Update game over screen
@@ -902,6 +943,19 @@ class AsteroidsGame {
     this.score += asteroid.points;
     this.explosions.push(new Explosion(asteroid.position.x, asteroid.position.y, 1));
     this.audioManager.playExplosion();
+    
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playPointScore();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('asteroid_destroyed', { 
+        game: 'asteroids', 
+        size: asteroid.size,
+        points: asteroid.points,
+        score: this.score
+      });
+    }
     
     // Split asteroid
     const fragments = asteroid.split();
@@ -1068,6 +1122,19 @@ class AsteroidsGame {
           this.score += ufo.points;
           this.explosions.push(new Explosion(ufo.position.x, ufo.position.y, 1.5));
           this.audioManager.playExplosion();
+          
+          // Universal Systems Integration
+          if (typeof UniversalAudio !== 'undefined') {
+            UniversalAudio.playPointScore();
+          }
+          if (typeof Achievements !== 'undefined') {
+            Achievements.trackEvent('ufo_destroyed', { 
+              game: 'asteroids', 
+              points: ufo.points,
+              score: this.score
+            });
+          }
+          
           ufo.active = false;
           bullet.active = false;
           this.updateUI();

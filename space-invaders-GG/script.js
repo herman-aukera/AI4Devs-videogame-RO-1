@@ -861,6 +861,17 @@ class SpaceInvadersGame {
   async initialize() {
     this.gameLoop();
     
+    // Initialize Universal Systems
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.init();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.init();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.init();
+    }
+    
     // Auto-run audit in development
     if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
       console.log('🔍 Running development audit...');
@@ -960,6 +971,19 @@ class SpaceInvadersGame {
           this.score += hitInvader.points;
           this.audioManager.playHit();
           this.particleSystem.addExplosion(hitInvader.x, hitInvader.y, hitInvader.color);
+          
+          // Universal Systems Integration
+          if (typeof UniversalAudio !== 'undefined') {
+            UniversalAudio.playPointScore();
+          }
+          if (typeof Achievements !== 'undefined') {
+            Achievements.trackEvent('invader_destroyed', { 
+              game: 'space_invaders', 
+              points: hitInvader.points,
+              score: this.score
+            });
+          }
+          
           this.projectiles.splice(i, 1);
           continue;
         }
@@ -969,6 +993,19 @@ class SpaceInvadersGame {
           this.score += this.ufo.points;
           this.audioManager.playHit();
           this.particleSystem.addExplosion(this.ufo.x + this.ufo.width / 2, this.ufo.y + this.ufo.height / 2);
+          
+          // Universal Systems Integration
+          if (typeof UniversalAudio !== 'undefined') {
+            UniversalAudio.playPointScore();
+          }
+          if (typeof Achievements !== 'undefined') {
+            Achievements.trackEvent('ufo_destroyed', { 
+              game: 'space_invaders', 
+              points: this.ufo.points,
+              score: this.score
+            });
+          }
+          
           this.projectiles.splice(i, 1);
           continue;
         }
@@ -1052,9 +1089,31 @@ class SpaceInvadersGame {
     this.gameState = GAME_STATES.GAME_OVER;
     this.audioManager.playGameOver();
     
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameOver();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.submitScore('space_invaders', this.score, { level: this.level });
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_over', { 
+        game: 'space_invaders', 
+        score: this.score, 
+        level: this.level 
+      });
+    }
+    
     if (this.score > this.highScore) {
       this.highScore = this.score;
       localStorage.setItem('space_invaders_highScore', this.highScore.toString());
+      
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('high_score', { 
+          game: 'space_invaders', 
+          score: this.score 
+        });
+      }
     }
     
     this.updateHUD();
@@ -1073,6 +1132,14 @@ class SpaceInvadersGame {
     this.projectiles = [];
     this.particleSystem.clear();
     this.ufo = new UFO();
+    
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameStart();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_start', { game: 'space_invaders' });
+    }
     
     this.updateHUD();
     this.hideOverlay();

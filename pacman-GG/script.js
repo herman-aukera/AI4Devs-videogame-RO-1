@@ -1582,6 +1582,17 @@ class GameEngine {
     await this.audio.initialize();
     this.resetGame();
     
+    // Initialize Universal Systems
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.init();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.init();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.init();
+    }
+    
     // Run audit tasks in development mode
     if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
       console.log('🔍 Running development audit...');
@@ -1632,6 +1643,15 @@ class GameEngine {
     this.gameState = 'PLAYING';
     this.gameStartTime = Date.now(); // Track when game actually started
     this.overlay.style.display = 'none';
+    
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameStart();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_start', { game: 'pacman' });
+    }
+    
     console.log(`Game started at ${this.gameStartTime} with ${this.ghosts.length} ghosts`);
   }
 
@@ -1763,6 +1783,20 @@ class GameEngine {
     if (consumed) {
       this.score += consumed.points;
       this.audio.playSound('pellet');
+      
+      // Universal Systems Integration
+      if (typeof UniversalAudio !== 'undefined') {
+        UniversalAudio.playPointScore();
+      }
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('pellet_eaten', { 
+          game: 'pacman', 
+          type: consumed.type,
+          points: consumed.points,
+          score: this.score
+        });
+      }
+      
       if (consumed.type === 'powerPellet') {
         this.activatePowerPellet();
       }
@@ -1773,6 +1807,17 @@ class GameEngine {
     if (fruitConsumed) {
       this.score += fruitConsumed.points;
       this.audio.playSound('fruit');
+      
+      // Universal Systems Integration
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('fruit_eaten', { 
+          game: 'pacman', 
+          type: fruitConsumed.fruitType,
+          points: fruitConsumed.points,
+          score: this.score
+        });
+      }
+      
       console.log(`🍎 Fruit eaten: ${fruitConsumed.fruitType} (+${fruitConsumed.points} points)`);
     }
 
@@ -1809,6 +1854,17 @@ class GameEngine {
     this.audio.playSound('eatGhost');
     ghost.getEaten();
     
+    // Universal Systems Integration
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('ghost_eaten', { 
+        game: 'pacman', 
+        ghost: ghost.name,
+        points: points,
+        score: this.score,
+        sequenceCount: this.ghostEatenCount
+      });
+    }
+    
     console.log(`Ghost eaten! Points: ${points} (${this.ghostEatenCount} in sequence)`);
   }
 
@@ -1820,9 +1876,32 @@ class GameEngine {
       console.log('Game Over!');
       this.gameState = 'GAME_OVER';
       this.gameOver = true;
+      
+      // Universal Systems Integration
+      if (typeof UniversalAudio !== 'undefined') {
+        UniversalAudio.playGameOver();
+      }
+      if (typeof Tournament !== 'undefined') {
+        Tournament.submitScore('pacman', this.score, { level: this.level });
+      }
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('game_over', { 
+          game: 'pacman', 
+          score: this.score, 
+          level: this.level 
+        });
+      }
+      
       if (this.score > this.highScore) {
         this.highScore = this.score;
         localStorage.setItem('pacmanHighScore', this.highScore);
+        
+        if (typeof Achievements !== 'undefined') {
+          Achievements.trackEvent('high_score', { 
+            game: 'pacman', 
+            score: this.score 
+          });
+        }
       }
        this.overlay.style.display = 'flex';
        document.getElementById('overlayTitle').textContent = 'GAME OVER';
