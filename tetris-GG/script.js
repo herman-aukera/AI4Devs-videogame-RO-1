@@ -507,14 +507,14 @@ class TetrisGame {
 
   async initialize() {
     // Initialize Universal Game Systems
-    if (typeof UniversalAudio !== 'undefined') {
-      this.universalAudio = new UniversalAudio();
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.init();
     }
-    if (typeof TournamentMode !== 'undefined') {
-      this.tournament = new TournamentMode();
+    if (typeof window.globalTournamentManager !== 'undefined') {
+      window.globalTournamentManager.init();
     }
-    if (typeof AchievementSystem !== 'undefined') {
-      this.achievements = new AchievementSystem();
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      window.globalAchievementSystem.init();
     }
     
     await this.setupCanvas();
@@ -916,6 +916,11 @@ class TetrisGame {
     this.spawnNewPiece();
     this.updateUI();
     
+    // Universal Systems Integration - Game Start
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.playGameStart();
+    }
+    
     document.body.className = 'game-playing';
   }
 
@@ -943,26 +948,25 @@ class TetrisGame {
     this.gameState = 'gameOver';
     this.audioManager.playGameOver();
     
-    // Universal Audio System
-    if (this.universalAudio) {
-      this.universalAudio.play('gameOver');
+    // Universal Systems Integration - Game Over
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.playGameOver();
     }
     
-    // Tournament Mode - Submit Score
-    if (this.tournament) {
-      this.tournament.submitScore('tetris', this.score, {
+    if (typeof window.globalTournamentManager !== 'undefined') {
+      window.globalTournamentManager.submitScore('tetris', this.score, this.level, {
         level: this.level,
         lines: this.lines,
         timestamp: Date.now()
       });
     }
     
-    // Achievement System - Track game completion
-    if (this.achievements) {
-      this.achievements.updateProgress('games_played', 1);
-      this.achievements.updateProgress('tetris_score', this.score);
-      this.achievements.updateProgress('tetris_level', this.level);
-      this.achievements.updateProgress('tetris_lines', this.lines);
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      window.globalAchievementSystem.updatePlayerProgress('tetris', this.score, this.level, {
+        level: this.level,
+        lines: this.lines,
+        timestamp: Date.now()
+      });
     }
     
     document.body.className = 'game-over';
