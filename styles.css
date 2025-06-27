@@ -461,6 +461,15 @@ body {
   background: radial-gradient(circle, var(--primary-cyan) 0%, transparent 70%);
 }
 
+.galaga-theme .game-title {
+  color: var(--accent-green);
+  text-shadow: 0 0 15px var(--accent-green);
+}
+
+.galaga-theme .card-glow {
+  background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
+}
+
 /* ===================================================================
    8.1. PATRONES DE TARJETAS
 ================================================================== */

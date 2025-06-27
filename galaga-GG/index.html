@@ -1,0 +1,218 @@
+<!-- © GG, MIT License -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GALAGA - Classic arcade space shooter with enemy formations and bonus stages">
+    <meta name="keywords" content="galaga, retro game, space shooter, arcade, html5, canvas">
+    <meta name="author" content="AI4Devs Students - GG">
+    <meta name="theme-color" content="#00FF00">
+    
+    <!-- License Information for TDD Audit -->
+    <meta name="license" content="© GG, MIT License">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="GALAGA - Formation Flying Space Shooter">
+    <meta property="og:description" content="Classic Galaga arcade game with enemy formation patterns and challenging stages">
+    <meta property="og:type" content="game">
+    
+    <title>🚀 GALAGA - Formation Flying Space Shooter</title>
+    <!-- Unified Design System -->
+    <link rel="stylesheet" href="../shared-styles.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    
+    <main class="game-container">
+        <!-- Navigation -->
+        <nav class="game-navigation">
+            <a href="../index.html" class="back-button" tabindex="1">
+                <span class="back-arrow">←</span>
+                <span class="back-text">INICIO</span>
+            </a>
+        </nav>
+
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1 class="game-title">🚀 GALAGA</h1>
+            <p class="game-subtitle">Formation Flying Space Shooter</p>
+        </header>
+
+        <!-- Game HUD -->
+        <section class="game-hud">
+            <div class="hud-left">
+                <div class="hud-item">
+                    <span class="hud-label">SCORE</span>
+                    <span class="hud-value" id="score">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">HIGH SCORE</span>
+                    <span class="hud-value" id="highScore">0</span>
+                </div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-item">
+                    <span class="hud-label">STAGE</span>
+                    <span class="hud-value" id="stage">1</span>
+                </div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-item">
+                    <span class="hud-label">SHIPS</span>
+                    <div class="lives-display" id="lives">
+                        <span class="ship-icon">🚀</span>
+                        <span class="ship-icon">🚀</span>
+                        <span class="ship-icon">🚀</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <canvas id="gameCanvas" tabindex="3" aria-label="Galaga game area">
+                Su navegador no soporta el elemento Canvas necesario para este juego.
+            </canvas>
+        </div>
+
+        <!-- Game Controls Info -->
+        <details class="instructions" tabindex="2">
+            <summary class="instructions-toggle">¿Cómo jugar? 🎮</summary>
+            <div class="instructions-content">
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <h3>🎯 CONTROLES</h3>
+                        <div class="control-item">
+                            <kbd>←</kbd><kbd>→</kbd> Mover nave
+                        </div>
+                        <div class="control-item">
+                            <kbd>ESPACIO</kbd> Disparar
+                        </div>
+                        <div class="control-item">
+                            <kbd>P</kbd> Pausa
+                        </div>
+                        <div class="control-item">
+                            <kbd>M</kbd> Activar/Desactivar audio
+                        </div>
+                        <div class="control-item">
+                            <kbd>T</kbd> Torneo
+                        </div>
+                        <div class="control-item">
+                            <kbd>A</kbd> Logros
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <h3>🎯 OBJETIVO</h3>
+                        <p>Destruye las formaciones enemigas que atacan en patrones específicos. Evita ser capturado por el Galaga Boss.</p>
+                        
+                        <h3>🎮 MECÁNICAS ESPECIALES</h3>
+                        <ul>
+                            <li><strong>Captura de Nave:</strong> El Galaga Boss puede capturar tu nave</li>
+                            <li><strong>Rescate:</strong> Destruye al Boss para recuperar tu nave</li>
+                            <li><strong>Doble Disparo:</strong> Con dos naves obtienes doble potencia de fuego</li>
+                            <li><strong>Formaciones:</strong> Los enemigos atacan en patrones específicos</li>
+                            <li><strong>Etapas Bonus:</strong> Etapas especiales para puntos extra</li>
+                        </ul>
+                    </div>
+                    <div class="control-group">
+                        <h3>💯 PUNTUACIÓN</h3>
+                        <ul>
+                            <li>Bee (Abeja): 50 puntos</li>
+                            <li>Butterfly (Mariposa): 80 puntos</li>
+                            <li>Galaga Boss: 150 puntos</li>
+                            <li>Formación completa: Bonus x2</li>
+                            <li>Rescate de nave: 1000 puntos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Game Start Screen -->
+        <section class="game-overlay" id="startScreen">
+            <div class="overlay-content">
+                <h2 class="overlay-title">🚀 GALAGA</h2>
+                <p class="overlay-message">Formation Flying Space Shooter</p>
+                <div class="overlay-controls">
+                    <p>Presiona <kbd>ENTER</kbd> para comenzar</p>
+                </div>
+                <button class="play-button" id="startButton" tabindex="4">
+                    <span class="button-text">INICIAR MISIÓN</span>
+                    <div class="button-glow"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Pause Screen -->
+        <section class="game-overlay" id="pauseScreen" style="display: none;">
+            <div class="overlay-content">
+                <h2 class="overlay-title">⏸️ PAUSA</h2>
+                <p class="overlay-message">El juego está pausado</p>
+                <div class="overlay-controls">
+                    <p>Presiona <kbd>P</kbd> para continuar</p>
+                </div>
+                <button class="play-button" id="resumeButton" tabindex="5">
+                    <span class="button-text">CONTINUAR</span>
+                    <div class="button-glow"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Over Screen -->
+        <section class="game-overlay" id="gameOverScreen" style="display: none;">
+            <div class="overlay-content">
+                <h2 class="overlay-title">💥 MISIÓN FALLIDA</h2>
+                <div class="game-over-stats">
+                    <p>Puntuación Final: <span class="score-highlight" id="finalScore">0</span></p>
+                    <p>Etapa Alcanzada: <span class="stage-highlight" id="finalStage">1</span></p>
+                    <p id="newHighScore" style="display: none;" class="new-record">🏆 ¡NUEVO RÉCORD!</p>
+                </div>
+                <div class="overlay-controls">
+                    <p>Presiona <kbd>ENTER</kbd> para nueva misión</p>
+                </div>
+                <button class="play-button" id="restartButton" tabindex="6">
+                    <span class="button-text">NUEVA MISIÓN</span>
+                    <div class="button-glow"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Mobile Touch Controls -->
+        <div class="mobile-controls">
+            <div class="touch-controls-left">
+                <button class="touch-btn move-btn" id="moveLeft" aria-label="Mover izquierda">
+                    <span class="btn-icon">←</span>
+                </button>
+                <button class="touch-btn move-btn" id="moveRight" aria-label="Mover derecha">
+                    <span class="btn-icon">→</span>
+                </button>
+            </div>
+            <div class="touch-controls-right">
+                <button class="touch-btn fire-btn" id="fireBtn" aria-label="Disparar">
+                    <span class="btn-icon">💥</span>
+                </button>
+                <button class="touch-btn pause-btn" id="pauseBtn" aria-label="Pausa">
+                    <span class="btn-icon">⏸️</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <p class="footer-text">
+            🎮 <span class="highlight">GALAGA</span> | 
+            Formation Flying Engine | 
+            © AI4Devs Students
+        </p>
+    </footer>
+
+    <!-- Universal Systems -->
+    <script src="../shared-audio.js"></script>
+    <script src="../shared-tournament.js"></script>
+    <script src="../shared-achievements.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

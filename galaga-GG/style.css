@@ -1,0 +1,601 @@
+/* © GG, MIT License */
+/* GALAGA - Formation Flying Space Shooter Styles */
+
+:root {
+  --galaga-primary: #00ff00;
+  --galaga-secondary: #ffff00;
+  --galaga-accent: #ff6600;
+  --galaga-enemy: #ff0040;
+  --galaga-bg: #000011;
+  --galaga-text: #ffffff;
+}
+
+/* Game Container */
+.game-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--galaga-bg) 0%, #001122 100%);
+  border-radius: 20px;
+  box-shadow: 
+    0 0 50px rgba(0, 255, 0, 0.3),
+    inset 0 0 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stars Background */
+.stars-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: twinkle 4s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+/* Game Header */
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-title {
+  font-size: 3rem;
+  color: var(--galaga-primary);
+  text-shadow: 
+    0 0 20px var(--galaga-primary),
+    0 0 40px var(--galaga-primary),
+    0 0 60px var(--galaga-primary);
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 4px;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+.game-subtitle {
+  font-size: 1.2rem;
+  color: var(--galaga-secondary);
+  margin: 10px 0 0 0;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px var(--galaga-secondary);
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px var(--galaga-primary), 0 0 40px var(--galaga-primary); }
+  100% { text-shadow: 0 0 30px var(--galaga-primary), 0 0 60px var(--galaga-primary), 0 0 80px var(--galaga-primary); }
+}
+
+/* Game HUD */
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--galaga-primary);
+  border-radius: 10px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.3),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hud-left,
+.hud-center,
+.hud-right {
+  display: flex;
+  gap: 30px;
+}
+
+.hud-item {
+  text-align: center;
+}
+
+.hud-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--galaga-secondary);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.hud-value {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--galaga-primary);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--galaga-primary);
+  min-width: 80px;
+}
+
+.lives-display {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.ship-icon {
+  font-size: 1.2rem;
+  color: var(--galaga-primary);
+  text-shadow: 0 0 10px var(--galaga-primary);
+  animation: shipPulse 2s ease-in-out infinite;
+}
+
+@keyframes shipPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Canvas Container */
+.canvas-container {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+}
+
+#gameCanvas {
+  border: 3px solid var(--galaga-primary);
+  border-radius: 10px;
+  background: #000;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 0, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+#gameCanvas:focus {
+  outline: 3px solid var(--galaga-secondary);
+  outline-offset: 3px;
+}
+
+/* Instructions */
+.instructions {
+  margin: 20px 0;
+  border: 2px solid var(--galaga-primary);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.instructions-toggle {
+  padding: 15px;
+  background: var(--galaga-primary);
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.instructions-toggle:hover {
+  background: var(--galaga-secondary);
+  box-shadow: 0 0 20px var(--galaga-secondary);
+}
+
+.instructions-content {
+  padding: 20px;
+  color: var(--galaga-text);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.control-group h3 {
+  color: var(--galaga-secondary);
+  margin-bottom: 15px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px var(--galaga-secondary);
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: 'Courier New', monospace;
+}
+
+.control-item kbd {
+  background: var(--galaga-primary);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  margin-right: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+/* Game Overlays */
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.overlay-content {
+  text-align: center;
+  padding: 40px;
+  border: 3px solid var(--galaga-primary);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 
+    0 0 50px rgba(0, 255, 0, 0.5),
+    inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.overlay-title {
+  font-size: 3rem;
+  color: var(--galaga-primary);
+  margin-bottom: 20px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 
+    0 0 20px var(--galaga-primary),
+    0 0 40px var(--galaga-primary);
+  animation: overlayGlow 2s ease-in-out infinite alternate;
+}
+
+.overlay-message {
+  font-size: 1.2rem;
+  color: var(--galaga-text);
+  margin-bottom: 30px;
+  font-family: 'Courier New', monospace;
+}
+
+.overlay-controls {
+  margin-bottom: 30px;
+}
+
+.overlay-controls kbd {
+  background: var(--galaga-secondary);
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+}
+
+@keyframes overlayGlow {
+  0% { text-shadow: 0 0 20px var(--galaga-primary); }
+  100% { text-shadow: 0 0 30px var(--galaga-primary), 0 0 50px var(--galaga-primary); }
+}
+
+/* Game Over Stats */
+.game-over-stats {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid var(--galaga-primary);
+  border-radius: 10px;
+  background: rgba(0, 255, 0, 0.1);
+}
+
+.score-highlight {
+  color: var(--galaga-secondary);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--galaga-secondary);
+}
+
+.stage-highlight {
+  color: var(--galaga-accent);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--galaga-accent);
+}
+
+.new-record {
+  color: var(--galaga-accent);
+  font-weight: bold;
+  font-size: 1.3rem;
+  animation: recordBlink 1s ease-in-out infinite;
+  text-shadow: 0 0 20px var(--galaga-accent);
+}
+
+@keyframes recordBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Play Buttons */
+.play-button {
+  position: relative;
+  background: linear-gradient(45deg, var(--galaga-primary), #00dd00);
+  color: #000;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.play-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+}
+
+.play-button:active {
+  transform: scale(0.95);
+}
+
+.button-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.play-button:hover .button-glow {
+  left: 100%;
+}
+
+/* Mobile Controls */
+.mobile-controls {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 200;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.touch-controls-left,
+.touch-controls-right {
+  display: flex;
+  gap: 15px;
+}
+
+.touch-btn {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--galaga-primary);
+  border-radius: 50%;
+  background: rgba(0, 255, 0, 0.2);
+  color: var(--galaga-primary);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.touch-btn:active {
+  background: rgba(0, 255, 0, 0.4);
+  transform: scale(0.9);
+  box-shadow: 0 0 25px rgba(0, 255, 0, 0.6);
+}
+
+.move-btn {
+  background: rgba(255, 255, 0, 0.2);
+  border-color: var(--galaga-secondary);
+  color: var(--galaga-secondary);
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+}
+
+.move-btn:active {
+  background: rgba(255, 255, 0, 0.4);
+  box-shadow: 0 0 25px rgba(255, 255, 0, 0.6);
+}
+
+.fire-btn {
+  background: rgba(255, 102, 0, 0.2);
+  border-color: var(--galaga-accent);
+  color: var(--galaga-accent);
+  box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+}
+
+.fire-btn:active {
+  background: rgba(255, 102, 0, 0.4);
+  box-shadow: 0 0 25px rgba(255, 102, 0, 0.6);
+}
+
+/* Navigation */
+.game-navigation {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--galaga-primary);
+  border-radius: 10px;
+  color: var(--galaga-primary);
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+.back-button:hover {
+  background: rgba(0, 255, 0, 0.1);
+  transform: translateX(-5px);
+  box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+}
+
+.back-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover .back-arrow {
+  transform: translateX(-3px);
+}
+
+/* Footer */
+.game-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid var(--galaga-primary);
+  color: var(--galaga-text);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.highlight {
+  color: var(--galaga-primary);
+  text-shadow: 0 0 10px var(--galaga-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 10px;
+    border-radius: 0;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .game-hud {
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .hud-left,
+  .hud-center,
+  .hud-right {
+    gap: 15px;
+  }
+  
+  #gameCanvas {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .overlay-content {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .overlay-title {
+    font-size: 2rem;
+  }
+  
+  .mobile-controls {
+    display: flex;
+  }
+  
+  .instructions {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .hud-value {
+    font-size: 1.1rem;
+    min-width: 60px;
+  }
+  
+  .overlay-title {
+    font-size: 1.5rem;
+  }
+  
+  .touch-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .game-title,
+  .ship-icon,
+  .new-record,
+  .stars-bg,
+  .button-glow {
+    animation: none;
+  }
+  
+  .play-button:hover {
+    transform: none;
+  }
+  
+  .back-button:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --galaga-primary: #00ff00;
+    --galaga-secondary: #ffff00;
+    --galaga-accent: #ff6600;
+    --galaga-text: #ffffff;
+    --galaga-bg: #000000;
+  }
+  
+  .game-container {
+    border: 3px solid var(--galaga-primary);
+  }
+  
+  #gameCanvas {
+    border-width: 4px;
+  }
+}
