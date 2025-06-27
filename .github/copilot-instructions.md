@@ -333,4 +333,4 @@ Every time I prompt you. Your mission is to **analyze** and **enhance** it so th
 
 Use these standards to maintain consistency and quality across the entire AI4Devs Retro Web Games collection.
 
-Any modification to this instruction should be approve manually  
+Any modification to this instruction should be approved manually  

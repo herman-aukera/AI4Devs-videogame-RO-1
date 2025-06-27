@@ -146,14 +146,14 @@ class BreakoutGame {
         console.log('🎮 Inicializando Breakout Retro GG...');
         
         // Initialize Universal Game Systems
-        if (typeof UniversalAudio !== 'undefined') {
-            this.universalAudio = new UniversalAudio();
+        if (typeof window.globalAudioManager !== 'undefined') {
+            window.globalAudioManager.init();
         }
-        if (typeof TournamentMode !== 'undefined') {
-            this.tournament = new TournamentMode();
+        if (typeof window.globalTournamentManager !== 'undefined') {
+            window.globalTournamentManager.init();
         }
-        if (typeof AchievementSystem !== 'undefined') {
-            this.achievements = new AchievementSystem();
+        if (typeof window.globalAchievementSystem !== 'undefined') {
+            window.globalAchievementSystem.init();
         }
         
         // Configurar canvas
@@ -700,24 +700,23 @@ class BreakoutGame {
         
         this.audioSystem.playGameOver();
         
-        // Universal Audio System
-        if (this.universalAudio) {
-            this.universalAudio.play('gameOver');
+        // Universal Systems Integration - Game Over
+        if (typeof window.globalAudioManager !== 'undefined') {
+            window.globalAudioManager.playGameOver();
         }
         
-        // Tournament Mode - Submit Score
-        if (this.tournament) {
-            this.tournament.submitScore('breakout', this.score, {
+        if (typeof window.globalTournamentManager !== 'undefined') {
+            window.globalTournamentManager.submitScore('breakout', this.score, this.level, {
                 level: this.level,
                 timestamp: Date.now()
             });
         }
         
-        // Achievement System - Track game completion
-        if (this.achievements) {
-            this.achievements.updateProgress('games_played', 1);
-            this.achievements.updateProgress('breakout_score', this.score);
-            this.achievements.updateProgress('breakout_level', this.level);
+        if (typeof window.globalAchievementSystem !== 'undefined') {
+            window.globalAchievementSystem.updatePlayerProgress('breakout', this.score, this.level, {
+                level: this.level,
+                timestamp: Date.now()
+            });
         }
         
         this.showMessage(
@@ -741,6 +740,12 @@ class BreakoutGame {
         this.gameState = GAME_STATES.PLAYING;
         this.hideOverlay();
         this.ball.isActive = true;
+        
+        // Universal Systems Integration - Game Start
+        if (typeof window.globalAudioManager !== 'undefined') {
+            window.globalAudioManager.playGameStart();
+        }
+        
         console.log('🚀 ¡Juego iniciado!');
     }
     

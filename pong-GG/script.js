@@ -711,6 +711,17 @@ class PongGameEngine {
       this.loadSettings();
       this.updateUI();
       
+      // Initialize Universal Systems
+      if (typeof window.globalAudioManager !== 'undefined') {
+        window.globalAudioManager.init();
+      }
+      if (typeof window.globalTournamentManager !== 'undefined') {
+        window.globalTournamentManager.init();
+      }
+      if (typeof window.globalAchievementSystem !== 'undefined') {
+        window.globalAchievementSystem.init();
+      }
+      
       // Ensure menu screen is visible on startup
       this.showScreen('menuScreen');
       
@@ -973,7 +984,12 @@ class PongGameEngine {
         this.announceScore('Player scored!');
       }
       
+      // Sound effects for scoring
       this.audio.playScore();
+      if (typeof window.globalAudioManager !== 'undefined') {
+        window.globalAudioManager.playPointScore();
+      }
+      
       this.updateScoreDisplay();
       
       // Check for game over
@@ -1001,6 +1017,29 @@ class PongGameEngine {
     
     document.getElementById('winnerText').textContent = winnerText;
     document.getElementById('finalScoreValue').textContent = finalScore;
+    
+    // Universal Systems Integration - Game Over
+    const gameScore = this.score.player * 100; // Convert to meaningful score
+    
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.playGameOver();
+    }
+    
+    if (typeof window.globalTournamentManager !== 'undefined') {
+      window.globalTournamentManager.submitScore('pong', gameScore, 1, { 
+        playerScore: this.score.player,
+        cpuScore: this.score.cpu,
+        won: playerWon
+      });
+    }
+    
+    if (typeof window.globalAchievementSystem !== 'undefined') {
+      window.globalAchievementSystem.updatePlayerProgress('pong', gameScore, 1, {
+        playerScore: this.score.player,
+        cpuScore: this.score.cpu,
+        won: playerWon
+      });
+    }
     
     // Save high score (sum of both scores)
     const totalScore = this.score.player + this.score.cpu;
@@ -1126,6 +1165,12 @@ class PongGameEngine {
     this.serveTimer = 1.0;
     this.showScreen('gameHUD');
     this.announceScore('Game started!');
+    
+    // Universal Systems Integration - Game Start
+    if (typeof window.globalAudioManager !== 'undefined') {
+      window.globalAudioManager.playGameStart();
+    }
+    
     console.log('Game state:', this.gameState);
   }
   
