@@ -1724,6 +1724,17 @@ class MsPacManGameEngine {
     await this.audio.initialize();
     this.resetGame();
     
+    // Initialize Universal Systems
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.init();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.init();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.init();
+    }
+    
     // TDD Audit setup
     if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
       console.log('🔍 Ms. Pac-Man: Running development audit...');

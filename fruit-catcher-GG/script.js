@@ -88,6 +88,17 @@ class FruitCatcherGame {
     // Configurar canvas para responsividad
     this.setupCanvas();
 
+    // Initialize Universal Systems
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.init();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.init();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.init();
+    }
+
     console.log('🍎 Fruit Catcher inicializado correctamente');
   }
 
@@ -253,6 +264,14 @@ class FruitCatcherGame {
     // Resetear posición del jugador
     this.player.reset();
 
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameStart();
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_start', { game: 'fruit_catcher' });
+    }
+
     // Actualizar UI
     this.updateUI();
     this.updatePlayPauseButton();
@@ -304,11 +323,33 @@ class FruitCatcherGame {
   endGame() {
     this.gameState = 'gameOver';
 
+    // Universal Systems Integration
+    if (typeof UniversalAudio !== 'undefined') {
+      UniversalAudio.playGameOver();
+    }
+    if (typeof Tournament !== 'undefined') {
+      Tournament.submitScore('fruit_catcher', this.score, { level: this.level });
+    }
+    if (typeof Achievements !== 'undefined') {
+      Achievements.trackEvent('game_over', { 
+        game: 'fruit_catcher', 
+        score: this.score, 
+        level: this.level 
+      });
+    }
+
     // Verificar y guardar high score
     if (this.score > this.highScore) {
       this.highScore = this.score;
       this.saveHighScore();
       this.effectsManager.createCelebration();
+      
+      if (typeof Achievements !== 'undefined') {
+        Achievements.trackEvent('high_score', { 
+          game: 'fruit_catcher', 
+          score: this.score 
+        });
+      }
     }
 
     // Mostrar modal de game over
