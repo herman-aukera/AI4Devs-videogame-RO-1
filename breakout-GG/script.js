@@ -145,6 +145,17 @@ class BreakoutGame {
     init() {
         console.log('🎮 Inicializando Breakout Retro GG...');
         
+        // Initialize Universal Game Systems
+        if (typeof UniversalAudio !== 'undefined') {
+            this.universalAudio = new UniversalAudio();
+        }
+        if (typeof TournamentMode !== 'undefined') {
+            this.tournament = new TournamentMode();
+        }
+        if (typeof AchievementSystem !== 'undefined') {
+            this.achievements = new AchievementSystem();
+        }
+        
         // Configurar canvas
         this.setupCanvas();
         
@@ -503,6 +514,11 @@ class BreakoutGame {
         // Sonido
         this.audioSystem.playBrickBreak();
         
+        // Universal Audio System
+        if (this.universalAudio) {
+            this.universalAudio.play('hit');
+        }
+        
         console.log(`🧱 Ladrillo destruido! +${brick.points} puntos. Ladrillos restantes: ${this.bricks.length}`);
     }
     
@@ -635,6 +651,17 @@ class BreakoutGame {
         this.audioSystem.playLevelComplete();
         this.particleSystem.createCelebration();
         
+        // Universal Audio System
+        if (this.universalAudio) {
+            this.universalAudio.play('levelUp');
+        }
+        
+        // Achievement System - Track level completion
+        if (this.achievements) {
+            this.achievements.updateProgress('levels_completed', 1);
+            this.achievements.updateProgress('breakout_level_completed', this.level - 1);
+        }
+        
         // Mostrar mensaje
         this.showMessage(
             `¡NIVEL ${this.level - 1} COMPLETADO!`,
@@ -672,6 +699,26 @@ class BreakoutGame {
         console.log(`💀 Game Over! Puntuación final: ${this.score}`);
         
         this.audioSystem.playGameOver();
+        
+        // Universal Audio System
+        if (this.universalAudio) {
+            this.universalAudio.play('gameOver');
+        }
+        
+        // Tournament Mode - Submit Score
+        if (this.tournament) {
+            this.tournament.submitScore('breakout', this.score, {
+                level: this.level,
+                timestamp: Date.now()
+            });
+        }
+        
+        // Achievement System - Track game completion
+        if (this.achievements) {
+            this.achievements.updateProgress('games_played', 1);
+            this.achievements.updateProgress('breakout_score', this.score);
+            this.achievements.updateProgress('breakout_level', this.level);
+        }
         
         this.showMessage(
             '¡GAME OVER!',

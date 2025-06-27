@@ -287,6 +287,32 @@ class SnakeGame {
             window.globalAudioManager.playGameOver();
         }
         
+        // Tournament: Submit score
+        if (window.globalTournamentManager) {
+            window.globalTournamentManager.submitScore(
+                'snake', 
+                this.gameState.score, 
+                this.gameState.level,
+                { 
+                    snakeLength: this.snake.body.length,
+                    gameSpeed: this.gameState.speed
+                }
+            );
+        }
+        
+        // Achievements: Update progress
+        if (window.globalAchievementSystem) {
+            window.globalAchievementSystem.updatePlayerProgress(
+                'snake',
+                this.gameState.score,
+                this.gameState.level,
+                {
+                    snakeLength: this.snake.body.length,
+                    gameSpeed: this.gameState.speed
+                }
+            );
+        }
+        
         this.hidePauseButton();
         this.showGameOverScreen();
         this.updateFinalScore();

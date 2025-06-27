@@ -506,6 +506,17 @@ class TetrisGame {
   }
 
   async initialize() {
+    // Initialize Universal Game Systems
+    if (typeof UniversalAudio !== 'undefined') {
+      this.universalAudio = new UniversalAudio();
+    }
+    if (typeof TournamentMode !== 'undefined') {
+      this.tournament = new TournamentMode();
+    }
+    if (typeof AchievementSystem !== 'undefined') {
+      this.achievements = new AchievementSystem();
+    }
+    
     await this.setupCanvas();
     this.setupEventListeners();
     this.generateNextPiece();
@@ -931,6 +942,29 @@ class TetrisGame {
   gameOver() {
     this.gameState = 'gameOver';
     this.audioManager.playGameOver();
+    
+    // Universal Audio System
+    if (this.universalAudio) {
+      this.universalAudio.play('gameOver');
+    }
+    
+    // Tournament Mode - Submit Score
+    if (this.tournament) {
+      this.tournament.submitScore('tetris', this.score, {
+        level: this.level,
+        lines: this.lines,
+        timestamp: Date.now()
+      });
+    }
+    
+    // Achievement System - Track game completion
+    if (this.achievements) {
+      this.achievements.updateProgress('games_played', 1);
+      this.achievements.updateProgress('tetris_score', this.score);
+      this.achievements.updateProgress('tetris_level', this.level);
+      this.achievements.updateProgress('tetris_lines', this.lines);
+    }
+    
     document.body.className = 'game-over';
     
     // Save high score
