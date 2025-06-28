@@ -457,7 +457,6 @@ body::before {
 .instructions-content {
   padding: 0 var(--spacing-md) var(--spacing-md);
   color: var(--text-primary);
-  text-shadow: var(--glow-cyan);
 }
 
 .instruction-group {
