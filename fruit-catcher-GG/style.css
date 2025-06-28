@@ -179,6 +179,8 @@ body::before {
   gap: var(--spacing-lg);
   position: relative;
   z-index: var(--z-content);
+  /* Ensure header content doesn't get clipped */
+  overflow: visible;
 }
 
 /* Header del juego */
@@ -187,7 +189,10 @@ body::before {
   margin-bottom: var(--spacing-lg);
   position: relative;
   z-index: var(--z-content);
-  margin-top: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  /* Ensure glow effects don't get clipped */
+  overflow: visible !important;
 }
 
 .game-title {
@@ -207,12 +212,25 @@ body::before {
   background: transparent !important;
   -webkit-text-fill-color: var(--neon-yellow) !important;
   -webkit-text-stroke: none !important;
+  /* Prevent text and glow from being clipped */
+  padding-top: 20px;
+  padding-bottom: 15px;
+  margin-top: 0;
+  line-height: 1.2;
+  position: relative;
+  overflow: visible;
 }
 
 .title-icon {
   font-size: 1.2em;
   margin-right: var(--spacing-sm);
   animation: bounce 2s infinite;
+  /* Ensure icon doesn't get clipped */
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
 }
 
 @keyframes bounce {
