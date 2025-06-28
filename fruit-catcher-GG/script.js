@@ -505,15 +505,19 @@ class FruitCatcherGame {
     // Incrementar score
     this.score += GAME_CONFIG.scoring.pointsPerFruit;
 
-    // Crear efectos visuales
-    this.createCollectionEffects(
-      fruit.x + fruit.width / 2,
-      fruit.y + fruit.height / 2
-    );
+    // Crear efectos visuales - TEMPORARILY DISABLED FOR DEBUGGING
+    // this.createCollectionEffects(
+    //   fruit.x + fruit.width / 2,
+    //   fruit.y + fruit.height / 2
+    // );
 
     // Reproducir sonido (si está disponible)
-    if (this.audioManager) {
-      this.audioManager.playSound('score');
+    if (this.audioManager && this.audioManager.playSound) {
+      try {
+        this.audioManager.playSound('score');
+      } catch (e) {
+        console.warn('Audio error:', e);
+      }
     }
 
     // Actualizar UI
@@ -544,8 +548,8 @@ class FruitCatcherGame {
       this.level = newLevel;
       this.gameSpeed *= GAME_CONFIG.scoring.speedIncrease;
 
-      // Efectos de level up
-      this.effectsManager.levelUpEffect();
+      // Efectos de level up - TEMPORARILY DISABLED FOR DEBUGGING
+      // this.effectsManager.levelUpEffect();
 
       console.log(
         `📈 ¡Level Up! Nivel ${this.level}, Velocidad: ${this.gameSpeed.toFixed(
