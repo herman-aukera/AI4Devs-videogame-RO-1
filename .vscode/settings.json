@@ -186,5 +186,6 @@
   "typescript.suggest.autoImports": true,
   "javascript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "javascript.updateImportsOnFileMove.enabled": "always"
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "CodeGPT.apiKey": "Anthropic"
 }
