@@ -4,10 +4,6 @@
    Extends unified CSS tokens for consistent retro fruit catcher game
    ============================================== */
 
-/* Import unified design tokens */
-@import url('../css-tokens.css');
-@import url('../game-shell.css');
-
 /* ===== FRUIT CATCHER-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
   /* Override theme colors with Fruit Catcher-specific palette */
@@ -195,12 +191,9 @@ body::before {
   font-family: var(--font-retro);
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--neon-green);
+  text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
   margin-bottom: var(--spacing-sm);
-  text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
   animation: glow 2s ease-in-out infinite alternate;
 }
 
@@ -278,11 +271,12 @@ body::before {
 .level-label,
 .lives-label {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--neon-cyan);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
   margin-bottom: var(--spacing-xs);
+  text-shadow: 0 0 8px var(--neon-cyan);
 }
 
 .score-value,
@@ -551,7 +545,9 @@ body::before {
 }
 
 .stat-label {
-  color: var(--text-secondary);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan);
+  font-weight: bold;
 }
 
 .stat-value {

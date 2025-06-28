@@ -26,6 +26,12 @@
   --snake-food: var(--neon-red);
   --snake-glow: var(--glow-green);
   
+  /* Fruit Catcher theme tokens */
+  --fruit-primary: var(--neon-green);
+  --fruit-secondary: var(--neon-orange);
+  --fruit-accent: var(--neon-yellow);
+  --fruit-glow: var(--glow-green);
+  
   --breakout-primary: var(--neon-cyan);
   --pacman-primary: var(--neon-yellow);
   --tetris-primary: var(--neon-magenta);
