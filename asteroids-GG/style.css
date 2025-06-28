@@ -19,12 +19,13 @@
   --canvas-max-width: var(--canvas-width-lg);
   --canvas-max-height: var(--canvas-height-lg);
 
-  /* Legacy variable mapping for compatibility */
-  --vector-green: var(--asteroids-secondary);
+  /* ===== LEGACY COMPATIBILITY LAYER ===== */
+  /* Map old variables to new design tokens for backwards compatibility */
+  --vector-green: var(--neon-green);
   --vector-white: var(--text-primary);
-  --vector-cyan: var(--asteroids-primary);
+  --vector-cyan: var(--neon-cyan);
   --vector-yellow: var(--neon-yellow);
-  --vector-red: var(--asteroids-danger);
+  --vector-red: var(--neon-red);
   --vector-blue: var(--neon-blue);
   --space-black: var(--bg-primary);
   --space-dark: var(--bg-secondary);
@@ -142,6 +143,8 @@ body {
   background: rgba(0, 255, 255, 0.2);
   box-shadow: var(--glow-subtle);
   transform: translateX(-5px);
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 .back-arrow {
@@ -189,6 +192,7 @@ body {
   margin-bottom: var(--space-8);
   border: 2px solid var(--vector-cyan);
   background: rgba(0, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -361,6 +365,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 10;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
@@ -485,6 +490,7 @@ body {
   right: 0;
   padding: var(--space-4);
   background: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   z-index: 5;
 }
@@ -510,6 +516,7 @@ body {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
+  -webkit-user-select: none;
   user-select: none;
   touch-action: manipulation;
 }

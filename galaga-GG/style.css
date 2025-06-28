@@ -1,13 +1,35 @@
 /* © GG, MIT License */
 /* GALAGA - Formation Flying Space Shooter Styles */
 
+/* ===== DESIGN TOKEN MAPPINGS ===== */
 :root {
-  --galaga-primary: #00ff00;
-  --galaga-secondary: #ffff00;
-  --galaga-accent: #ff6600;
-  --galaga-enemy: #ff0040;
-  --galaga-bg: #000011;
-  --galaga-text: #ffffff;
+  /* Map to unified design tokens */
+  --galaga-primary: var(--neon-green);
+  --galaga-secondary: var(--neon-yellow);
+  --galaga-accent: var(--neon-orange);
+  --galaga-enemy: var(--neon-red);
+  --galaga-bg: var(--bg-primary);
+  --galaga-text: var(--text-primary);
+  
+  /* Game-specific overrides */
+  --color-primary: var(--galaga-primary);
+  --color-secondary: var(--galaga-secondary);
+  
+  /* Typography consistency */
+  --font-main: var(--font-retro);
+  --font-game: var(--font-retro);
+  
+  /* Spacing consistency */
+  --space-xs: var(--spacing-xs);
+  --space-sm: var(--spacing-sm);
+  --space-md: var(--spacing-md);
+  --space-lg: var(--spacing-lg);
+  --space-xl: var(--spacing-xl);
+  
+  /* Glow effects */
+  --glow-main: var(--glow-md);
+  --glow-subtle: var(--glow-sm);
+  --glow-intense: var(--glow-lg);
 }
 
 /* Game Container */
@@ -243,6 +265,7 @@
   align-items: center;
   justify-content: center;
   z-index: 100;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
@@ -400,6 +423,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 

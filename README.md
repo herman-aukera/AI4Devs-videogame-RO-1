@@ -17,6 +17,7 @@ A collection of classic arcade games reimagined with HTML5, CSS3, and JavaScript
 | 🟣 **Ms. Pac-Man** | ✅ Complete | Enhanced maze navigation gameplay |
 | 🧩 **Tetris** | ✅ Complete | Classic puzzle with tetromino physics |
 | 🏓 **Pong** | ✅ Complete | Original arcade tennis classic |
+| 🚀 **Galaga** | ✅ Complete | Formation flying space shooter with enemy capture |
 
 ## 🚀 Quick Start
 

@@ -1,0 +1,137 @@
+/* © GG, MIT License */
+/* ==============================================
+   AI4DEVS RETRO GAMES - Unified Design Tokens
+   Foundation design system for all games
+   ============================================== */
+
+:root {
+  /* ===== CORE NEON COLOR PALETTE ===== */
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-yellow: #ffff00;
+  --neon-green: #00ff00;
+  --neon-red: #ff0040;
+  --neon-blue: #0080ff;
+  --neon-orange: #ffb852;
+  --neon-pink: #ffb8ff;
+  
+  /* ===== GAME-SPECIFIC COLOR MAPPINGS ===== */
+  --asteroids-primary: var(--neon-green);
+  --asteroids-secondary: var(--neon-cyan);
+  --asteroids-danger: var(--neon-red);
+  --asteroids-glow: var(--glow-green);
+  
+  --snake-primary: var(--neon-green);
+  --snake-secondary: var(--neon-yellow);
+  --snake-food: var(--neon-red);
+  --snake-glow: var(--glow-green);
+  
+  --breakout-primary: var(--neon-cyan);
+  --pacman-primary: var(--neon-yellow);
+  --tetris-primary: var(--neon-magenta);
+  
+  /* ===== BACKGROUND SYSTEM ===== */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #1a1a1a;
+  --bg-overlay: rgba(0, 0, 0, 0.9);
+  --bg-glass: rgba(0, 255, 255, 0.1);
+  
+  /* ===== TEXT HIERARCHY ===== */
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #888888;
+  --text-accent: var(--neon-cyan);
+  
+  /* ===== TYPOGRAPHY SCALE ===== */
+  --font-retro: 'Courier New', 'Press Start 2P', monospace;
+  --font-pixel: 'VT323', monospace;
+  
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-md: 1rem;       /* 16px */
+  --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 2rem;      /* 32px */
+  --font-size-3xl: 2.5rem;    /* 40px */
+  --font-size-4xl: 3rem;      /* 48px */
+  
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  --letter-spacing-tight: -0.05em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.1em;
+  --letter-spacing-wider: 0.2em;
+  
+  /* ===== SPACING SCALE ===== */
+  --spacing-xs: 0.25rem;      /* 4px */
+  --spacing-sm: 0.5rem;       /* 8px */
+  --spacing-md: 1rem;         /* 16px */
+  --spacing-lg: 1.5rem;       /* 24px */
+  --spacing-xl: 2rem;         /* 32px */
+  --spacing-2xl: 3rem;        /* 48px */
+  --spacing-3xl: 4rem;        /* 64px */
+  --spacing-4xl: 6rem;        /* 96px */
+  
+  /* ===== GLOW EFFECTS SYSTEM ===== */
+  --glow-sm: 0 0 4px currentColor, 0 0 8px currentColor;
+  --glow-md: 0 0 8px currentColor, 0 0 16px currentColor;
+  --glow-lg: 0 0 12px currentColor, 0 0 24px currentColor;
+  --glow-xl: 0 0 16px currentColor, 0 0 32px currentColor;
+  
+  --glow-cyan: 0 0 8px var(--neon-cyan), 0 0 16px var(--neon-cyan);
+  --glow-green: 0 0 8px var(--neon-green), 0 0 16px var(--neon-green);
+  --glow-yellow: 0 0 8px var(--neon-yellow), 0 0 16px var(--neon-yellow);
+  --glow-magenta: 0 0 8px var(--neon-magenta), 0 0 16px var(--neon-magenta);
+  --glow-red: 0 0 8px var(--neon-red), 0 0 16px var(--neon-red);
+  
+  /* ===== BORDER SYSTEM ===== */
+  --border-width-thin: 1px;
+  --border-width-base: 2px;
+  --border-width-thick: 3px;
+  --border-width-thicker: 4px;
+  
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 50%;
+  
+  /* ===== SHADOW SYSTEM ===== */
+  --shadow-sm: 0 2px 4px rgba(0, 255, 255, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 255, 255, 0.2);
+  --shadow-lg: 0 8px 16px rgba(0, 255, 255, 0.3);
+  --shadow-xl: 0 16px 32px rgba(0, 255, 255, 0.4);
+  
+  /* ===== TRANSITION SYSTEM ===== */
+  --transition-fast: 0.15s ease-out;
+  --transition-medium: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+  --transition-all: all var(--transition-medium);
+  
+  /* ===== LAYOUT SYSTEM ===== */
+  --container-max-width: 1200px;
+  --canvas-width-sm: 400px;
+  --canvas-width-md: 600px;  
+  --canvas-width-lg: 800px;
+  --canvas-height-sm: 300px;
+  --canvas-height-md: 450px;
+  --canvas-height-lg: 600px;
+  
+  /* ===== BREAKPOINTS ===== */
+  --mobile-max: 768px;
+  --tablet-max: 1024px;
+  --desktop-min: 1025px;
+  
+  /* ===== Z-INDEX SCALE ===== */
+  --z-background: -1;
+  --z-base: 0;
+  --z-overlay: 10;
+  --z-modal: 20;
+  --z-toast: 30;
+  --z-tooltip: 40;
+}

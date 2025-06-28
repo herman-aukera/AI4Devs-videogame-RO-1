@@ -99,8 +99,10 @@ body {
 
 .subtitle {
   font-size: var(--font-size-normal);
-  color: var(--text-secondary);
+  color: var(--neon-yellow);
   letter-spacing: 1px;
+  text-shadow: var(--glow-yellow);
+  font-weight: bold;
 }
 
 /* ===== PANEL DE INFORMACIÓN ===== */
@@ -199,13 +201,15 @@ body {
 .instructions {
   margin-bottom: var(--spacing-lg);
   text-align: left;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  text-shadow: var(--glow-cyan);
 }
 
 .instructions h3 {
   color: var(--accent-yellow);
   margin-bottom: var(--spacing-sm);
   text-align: center;
+  text-shadow: var(--glow-yellow);
 }
 
 .instructions ul {
@@ -217,6 +221,8 @@ body {
   margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-small);
   line-height: 1.4;
+  color: var(--text-primary);
+  text-shadow: 0 0 5px var(--neon-cyan);
 }
 
 /* ===== BOTONES ===== */
@@ -311,8 +317,14 @@ body {
 
 .controls-text {
   font-size: var(--font-size-small);
-  color: var(--text-secondary);
+  color: var(--neon-cyan);
   margin-bottom: var(--spacing-md);
+  text-shadow: 0 0 15px var(--neon-cyan), 0 0 25px var(--neon-cyan);
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.8);
+  padding: var(--spacing-sm);
+  border-radius: 5px;
+  border: 1px solid var(--neon-cyan);
 }
 
 /* ===== NAVEGACIÓN ===== */

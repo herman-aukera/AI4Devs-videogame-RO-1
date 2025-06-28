@@ -237,8 +237,10 @@ body::before {
 
 .game-subtitle {
   font-size: 1.2rem;
-  color: var(--text-secondary);
+  color: var(--neon-yellow);
   font-weight: 300;
+  text-shadow: var(--glow-yellow);
+  letter-spacing: 1px;
 }
 
 /* Panel de información del juego */
@@ -454,7 +456,8 @@ body::before {
 
 .instructions-content {
   padding: 0 var(--spacing-md) var(--spacing-md);
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  text-shadow: var(--glow-cyan);
 }
 
 .instruction-group {
@@ -625,8 +628,10 @@ body::before {
 }
 
 .pause-text {
-  color: var(--text-secondary);
+  color: var(--neon-yellow);
   font-size: 1.1rem;
+  text-shadow: var(--glow-yellow);
+  font-weight: bold;
 }
 
 /* Footer */
