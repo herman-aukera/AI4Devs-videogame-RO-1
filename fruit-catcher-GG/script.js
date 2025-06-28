@@ -93,6 +93,9 @@ class FruitCatcherGame {
     this.tournamentManager = window.globalTournamentManager;
     this.achievementSystem = window.globalAchievementSystem;
 
+    // Start the game loop immediately to render the menu
+    this.gameLoop();
+
     console.log('🍎 Fruit Catcher inicializado correctamente');
   }
 
