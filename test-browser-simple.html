@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Tournament Models Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #4CAF50;
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .test-section {
+      background: #f9f9f9;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>🏆 Tournament Models Test Suite</h1>
+    <p>Simple browser test for tournament data models and validation</p>
+  </div>
+
+  <div class="test-section">
+    <h3>📊 Test Status</h3>
+    <div id="status" class="status">Loading...</div>
+    <button onclick="runAllTests()" id="runBtn" disabled>Run All Tests</button>
+    <button onclick="runBasicTests()" id="basicBtn">Run Basic Tests</button>
+    <button onclick="clearOutput()">Clear Output</button>
+  </div>
+
+  <div class="test-section">
+    <h3>📝 Test Output</h3>
+    <div class="output" id="output">Initializing...</div>
+  </div>
+
+  <div class="test-section">
+    <h3>🔧 Interactive Validation</h3>
+    <textarea id="configInput" rows="8" style="width: 100%; font-family: monospace;">
+{
+  "name": "Test Tournament",
+  "games": ["snake-GG", "tetris-GG"],
+  "format": "round-robin",
+  "settings": {
+    "maxParticipants": 8,
+    "scoreNormalization": true,
+    "autoAdvance": true
+  }
+}</textarea>
+    <br>
+    <button onclick="validateConfig()">Validate Configuration</button>
+    <div class="output" id="validationOutput" style="margin-top: 10px; max-height: 200px;"></div>
+  </div>
+
+  <!-- Load the scripts -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="test-tournament-models.js"></script>
+  <script src="fix-test-runner.js"></script>
+  <script src="test-browser-compatibility.js"></script>
+
+  <script>
+    let testRunner = null;
+    let output = null;
+
+    function log(message) {
+      if (output) {
+        output.textContent += message + '\n';
+        output.scrollTop = output.scrollHeight;
+      }
+      console.log(message);
+    }
+
+    function clearOutput() {
+      if (output) {
+        output.textContent = '';
+      }
+    }
+
+    function updateStatus(message, isError = false) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = 'status ' + (isError ? 'error' : 'success');
+    }
+
+    function runBasicTests() {
+      clearOutput();
+      log('🧪 Running basic functionality tests...\n');
+
+      try {
+        const results = testBasicFunctionality();
+        results.forEach(result => log(result));
+
+        const passed = results.filter(r => r.startsWith('✅')).length;
+        const failed = results.filter(r => r.startsWith('❌')).length;
+
+        log(`\n📊 Basic Tests: ${passed} passed, ${failed} failed`);
+
+        if (failed === 0) {
+          log('🎉 All basic tests passed!');
+          updateStatus('Basic tests passed successfully');
+        } else {
+          log('⚠️ Some basic tests failed');
+          updateStatus('Some basic tests failed', true);
+        }
+      } catch (error) {
+        log('❌ Error running basic tests: ' + error.message);
+        updateStatus('Error running basic tests', true);
+      }
+    }
+
+    async function runAllTests() {
+      if (!testRunner) {
+        log('❌ Test runner not available');
+        updateStatus('Test runner not available', true);
+        return;
+      }
+
+      clearOutput();
+      log('🏆 Running full test suite...\n');
+
+      const runBtn = document.getElementById('runBtn');
+      runBtn.disabled = true;
+      runBtn.textContent = 'Running...';
+
+      try {
+        // Capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = (...args) => {
+          log(args.join(' '));
+        };
+
+        console.error = (...args) => {
+          log('ERROR: ' + args.join(' '));
+        };
+
+        const success = await testRunner.run();
+
+        if (success) {
+          log('\n🎉 All tests passed!');
+          updateStatus(`All ${testRunner.passed} tests passed successfully`);
+        } else {
+          log('\n⚠️ Some tests failed');
+          updateStatus(`${testRunner.passed} passed, ${testRunner.failed} failed`, true);
+        }
+
+        // Restore console
+        console.log = originalLog;
+        console.error = originalError;
+
+      } catch (error) {
+        log('❌ Fatal error: ' + error.message);
+        updateStatus('Fatal error running tests', true);
+      } finally {
+        runBtn.disabled = false;
+        runBtn.textContent = 'Run All Tests';
+      }
+    }
+
+    function validateConfig() {
+      const input = document.getElementById('configInput').value;
+      const output = document.getElementById('validationOutput');
+
+      try {
+        const config = JSON.parse(input);
+        const result = validateTournamentConfig(config);
+
+        let resultText = `Validation Result:\n`;
+        resultText += `Valid: ${result.isValid}\n`;
+        resultText += `Errors: ${result.errors.length}\n`;
+
+        if (result.errors.length > 0) {
+          resultText += `\nError Details:\n`;
+          result.errors.forEach(error => {
+            resultText += `• ${error}\n`;
+          });
+        }
+
+        // Test sanitization too
+        if (result.isValid) {
+          const sanitized = sanitizeTournamentConfig(config);
+          resultText += `\nSanitized Config:\n${JSON.stringify(sanitized, null, 2)}`;
+        }
+
+        output.textContent = resultText;
+
+      } catch (error) {
+        output.textContent = `JSON Parse Error: ${error.message}`;
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      output = document.getElementById('output');
+
+      setTimeout(() => {
+        log('🔍 Checking for test runner...');
+
+        // Try to find the test runner
+        if (typeof window.TournamentModelTests !== 'undefined') {
+          testRunner = window.TournamentModelTests;
+          log('✅ Found window.TournamentModelTests');
+        } else if (typeof window.testRunner !== 'undefined') {
+          testRunner = window.testRunner;
+          log('✅ Found window.testRunner');
+        } else if (typeof TournamentModelTests !== 'undefined') {
+          testRunner = TournamentModelTests;
+          log('✅ Found TournamentModelTests');
+        }
+
+        if (testRunner) {
+          log(`✅ Test runner loaded with ${testRunner.tests.length} tests`);
+          updateStatus(`Test runner ready with ${testRunner.tests.length} tests`);
+          document.getElementById('runBtn').disabled = false;
+        } else {
+          log('❌ Test runner not found');
+          updateStatus('Test runner not found - only basic tests available', true);
+        }
+
+        // Always enable basic tests
+        document.getElementById('basicBtn').disabled = false;
+
+        log('\n📋 Available functions:');
+        const funcs = ['validateTournamentConfig', 'validateTournamentSettings', 'validateParticipant',
+          'sanitizeTournamentConfig', 'TournamentStorageManager'];
+        funcs.forEach(func => {
+          log(`  ${typeof window[func] !== 'undefined' ? '✅' : '❌'} ${func}`);
+        });
+
+      }, 200);
+    });
+  </script>
+</body>
+
+</html>

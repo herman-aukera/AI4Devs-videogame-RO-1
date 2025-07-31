@@ -2,7 +2,7 @@
 
 /**
  * Achievement System for AI4Devs Retro Games
- * 
+ *
  * Cross-game achievement tracking featuring:
  * - Progressive unlocks across all games
  * - Skill-based achievements
@@ -17,10 +17,10 @@ class AchievementSystem {
     this.playerAchievements = this.loadAchievements();
     this.achievementDefinitions = this.initializeAchievements();
     this.notificationQueue = [];
-    
+
     console.log('🏅 Achievement System initialized');
   }
-  
+
   initializeAchievements() {
     return {
       // ===== SCORE ACHIEVEMENTS =====
@@ -32,25 +32,25 @@ class AchievementSystem {
         condition: (data) => data.gamesPlayed >= 1,
         points: 10
       },
-      
+
       'score-hunter': {
-        id: 'score-hunter', 
+        id: 'score-hunter',
         name: '🎯 Score Hunter',
         description: 'Reach 1,000 points in any game',
         category: 'score',
         condition: (data) => data.bestScore >= 1000,
         points: 25
       },
-      
+
       'high-roller': {
         id: 'high-roller',
-        name: '💎 High Roller', 
+        name: '💎 High Roller',
         description: 'Reach 5,000 points in any game',
         category: 'score',
         condition: (data) => data.bestScore >= 5000,
         points: 50
       },
-      
+
       'legendary': {
         id: 'legendary',
         name: '👑 Legendary',
@@ -59,7 +59,7 @@ class AchievementSystem {
         condition: (data) => data.bestScore >= 10000,
         points: 100
       },
-      
+
       // ===== GAME-SPECIFIC ACHIEVEMENTS =====
       'snake-master': {
         id: 'snake-master',
@@ -70,7 +70,7 @@ class AchievementSystem {
         condition: (data) => data.gameStats?.snake?.bestLevel >= 10,
         points: 30
       },
-      
+
       'brick-breaker': {
         id: 'brick-breaker',
         name: '🧱 Brick Breaker',
@@ -80,7 +80,7 @@ class AchievementSystem {
         condition: (data) => data.gameStats?.breakout?.bestLevel >= 5,
         points: 30
       },
-      
+
       'ghost-hunter': {
         id: 'ghost-hunter',
         name: '👻 Ghost Hunter',
@@ -90,7 +90,7 @@ class AchievementSystem {
         condition: (data) => data.gameStats?.pacman?.bestScore >= 2000,
         points: 40
       },
-      
+
       'space-ace': {
         id: 'space-ace',
         name: '🚀 Space Ace',
@@ -104,7 +104,7 @@ class AchievementSystem {
         },
         points: 35
       },
-      
+
       'puzzle-solver': {
         id: 'puzzle-solver',
         name: '🧩 Puzzle Solver',
@@ -114,7 +114,7 @@ class AchievementSystem {
         condition: (data) => data.gameStats?.tetris?.linesCleared >= 100,
         points: 40
       },
-      
+
       // ===== COLLECTION ACHIEVEMENTS =====
       'game-explorer': {
         id: 'game-explorer',
@@ -127,7 +127,7 @@ class AchievementSystem {
         },
         points: 20
       },
-      
+
       'completionist': {
         id: 'completionist',
         name: '🎖️ Completionist',
@@ -139,7 +139,7 @@ class AchievementSystem {
         },
         points: 75
       },
-      
+
       'arcade-veteran': {
         id: 'arcade-veteran',
         name: '🕹️ Arcade Veteran',
@@ -148,7 +148,7 @@ class AchievementSystem {
         condition: (data) => data.totalGames >= 50,
         points: 50
       },
-      
+
       'gaming-marathon': {
         id: 'gaming-marathon',
         name: '⏰ Gaming Marathon',
@@ -157,7 +157,7 @@ class AchievementSystem {
         condition: (data) => data.totalGames >= 100,
         points: 100
       },
-      
+
       // ===== SKILL ACHIEVEMENTS =====
       'multitasker': {
         id: 'multitasker',
@@ -171,7 +171,7 @@ class AchievementSystem {
         },
         points: 60
       },
-      
+
       'consistent-player': {
         id: 'consistent-player',
         name: '📈 Consistent Player',
@@ -180,7 +180,7 @@ class AchievementSystem {
         condition: (data) => data.playStreak >= 7,
         points: 40
       },
-      
+
       'perfectionist': {
         id: 'perfectionist',
         name: '✨ Perfectionist',
@@ -192,17 +192,17 @@ class AchievementSystem {
         },
         points: 80
       },
-      
+
       // ===== SPECIAL ACHIEVEMENTS =====
       'early-adopter': {
         id: 'early-adopter',
         name: '🌟 Early Adopter',
         description: 'One of the first 100 players',
         category: 'special',
-        condition: (data) => data.playerId && parseInt(data.playerId.split('-')[1]) < Date.now() - 30*24*60*60*1000,
+        condition: (data) => data.playerId && parseInt(data.playerId.split('-')[1]) < Date.now() - 30 * 24 * 60 * 60 * 1000,
         points: 25
       },
-      
+
       'tournament-participant': {
         id: 'tournament-participant',
         name: '🏆 Tournament Participant',
@@ -211,7 +211,7 @@ class AchievementSystem {
         condition: (data) => data.tournamentsJoined >= 1,
         points: 30
       },
-      
+
       'tournament-winner': {
         id: 'tournament-winner',
         name: '🥇 Tournament Champion',
@@ -222,46 +222,46 @@ class AchievementSystem {
       }
     };
   }
-  
+
   // ===== ACHIEVEMENT CHECKING =====
-  
+
   checkAchievements(playerData) {
     const newAchievements = [];
-    
+
     Object.values(this.achievementDefinitions).forEach(achievement => {
       // Skip if already unlocked
       if (this.playerAchievements.includes(achievement.id)) return;
-      
+
       // Check condition
       if (achievement.condition(playerData)) {
         this.unlockAchievement(achievement.id);
         newAchievements.push(achievement);
       }
     });
-    
+
     return newAchievements;
   }
-  
+
   unlockAchievement(achievementId) {
     if (this.playerAchievements.includes(achievementId)) return;
-    
+
     this.playerAchievements.push(achievementId);
     this.saveAchievements();
-    
+
     const achievement = this.achievementDefinitions[achievementId];
     if (achievement) {
       this.showAchievementNotification(achievement);
       console.log('🏅 Achievement unlocked:', achievement.name);
     }
   }
-  
+
   // ===== PLAYER DATA INTEGRATION =====
-  
+
   updatePlayerProgress(gameId, score, level, additionalData = {}) {
     // Get current player data
     const playerId = this.getPlayerId();
     const playerData = this.getPlayerData(playerId);
-    
+
     // Update game statistics
     if (!playerData.gameStats) playerData.gameStats = {};
     if (!playerData.gameStats[gameId]) {
@@ -272,40 +272,40 @@ class AchievementSystem {
         totalScore: 0
       };
     }
-    
+
     const gameStats = playerData.gameStats[gameId];
     gameStats.played++;
     gameStats.bestScore = Math.max(gameStats.bestScore, score);
     gameStats.bestLevel = Math.max(gameStats.bestLevel, level);
     gameStats.totalScore += score;
-    
+
     // Update global statistics
     playerData.totalGames = (playerData.totalGames || 0) + 1;
     playerData.bestScore = Math.max(playerData.bestScore || 0, score);
     playerData.lastPlayed = new Date().toISOString();
-    
+
     // Add additional data
     Object.assign(gameStats, additionalData);
-    
+
     // Update play streak
     this.updatePlayStreak(playerData);
-    
+
     // Save updated data
     this.savePlayerData(playerId, playerData);
-    
+
     // Check for new achievements
     const newAchievements = this.checkAchievements(playerData);
-    
+
     return newAchievements;
   }
-  
+
   updatePlayStreak(playerData) {
     const today = new Date().toDateString();
     const lastPlayed = playerData.lastPlayed ? new Date(playerData.lastPlayed).toDateString() : null;
-    
+
     if (lastPlayed !== today) {
-      const yesterday = new Date(Date.now() - 24*60*60*1000).toDateString();
-      
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
+
       if (lastPlayed === yesterday) {
         playerData.playStreak = (playerData.playStreak || 0) + 1;
       } else {
@@ -313,9 +313,9 @@ class AchievementSystem {
       }
     }
   }
-  
+
   // ===== ACHIEVEMENT DISPLAY =====
-  
+
   showAchievementNotification(achievement) {
     const notification = document.createElement('div');
     notification.style.cssText = `
@@ -333,7 +333,7 @@ class AchievementSystem {
       animation: achievementSlide 4s ease-in-out;
       max-width: 300px;
     `;
-    
+
     notification.innerHTML = `
       <div style="font-size: 1.2em; margin-bottom: 5px;">
         🏅 Achievement Unlocked!
@@ -348,7 +348,7 @@ class AchievementSystem {
         +${achievement.points} points
       </div>
     `;
-    
+
     // Add animation if not present
     if (!document.querySelector('#achievement-notification-style')) {
       const style = document.createElement('style');
@@ -362,22 +362,22 @@ class AchievementSystem {
       `;
       document.head.appendChild(style);
     }
-    
+
     document.body.appendChild(notification);
     setTimeout(() => {
       if (document.body.contains(notification)) {
         document.body.removeChild(notification);
       }
     }, 4000);
-    
+
     // Play achievement sound
     if (window.globalAudioManager) {
       window.globalAudioManager.playPowerUp();
     }
   }
-  
+
   // ===== ACHIEVEMENT BROWSER =====
-  
+
   createAchievementBrowser() {
     const browser = document.createElement('div');
     browser.id = 'achievement-browser';
@@ -397,11 +397,11 @@ class AchievementSystem {
       max-height: 80vh;
       overflow-y: auto;
     `;
-    
+
     const totalPoints = this.getTotalAchievementPoints();
     const unlockedCount = this.playerAchievements.length;
     const totalCount = Object.keys(this.achievementDefinitions).length;
-    
+
     browser.innerHTML = `
       <div style="text-align: center; margin-bottom: 20px;">
         <h2>🏅 Achievement Gallery</h2>
@@ -411,25 +411,25 @@ class AchievementSystem {
         ${this.renderAchievementList()}
       </div>
       <div style="text-align: center; margin-top: 20px;">
-        <button onclick="document.body.removeChild(this.parentElement)" 
+        <button onclick="document.body.removeChild(this.parentElement)"
                 style="background: var(--primary-cyan, #00ffff); color: black; border: none; padding: 10px 20px; border-radius: 5px; font-family: monospace; cursor: pointer;">
           Close
         </button>
       </div>
     `;
-    
+
     return browser;
   }
-  
+
   renderAchievementList() {
     const categories = ['milestone', 'score', 'mastery', 'collection', 'skill', 'dedication', 'tournament', 'special'];
-    
+
     return categories.map(category => {
       const categoryAchievements = Object.values(this.achievementDefinitions)
         .filter(a => a.category === category);
-      
+
       if (categoryAchievements.length === 0) return '';
-      
+
       return `
         <div style="margin-bottom: 15px;">
           <h3 style="color: var(--primary-cyan, #00ffff); margin-bottom: 10px;">
@@ -440,12 +440,12 @@ class AchievementSystem {
       `;
     }).join('');
   }
-  
+
   renderAchievement(achievement) {
     const isUnlocked = this.playerAchievements.includes(achievement.id);
     const opacity = isUnlocked ? '1' : '0.3';
     const lockIcon = isUnlocked ? '🔓' : '🔒';
-    
+
     return `
       <div style="display: flex; align-items: center; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; opacity: ${opacity};">
         <div style="font-size: 1.5em; margin-right: 15px;">${lockIcon}</div>
@@ -457,7 +457,7 @@ class AchievementSystem {
       </div>
     `;
   }
-  
+
   showAchievementBrowser() {
     // Remove existing browser
     const existing = document.getElementById('achievement-browser');
@@ -465,31 +465,31 @@ class AchievementSystem {
       document.body.removeChild(existing);
       return;
     }
-    
+
     const browser = this.createAchievementBrowser();
     document.body.appendChild(browser);
   }
-  
+
   // ===== UTILITY METHODS =====
-  
+
   getTotalAchievementPoints() {
     return this.playerAchievements.reduce((total, achievementId) => {
       const achievement = this.achievementDefinitions[achievementId];
       return total + (achievement ? achievement.points : 0);
     }, 0);
   }
-  
+
   getPlayerData(playerId) {
     const key = `ai4devs-player-data-${playerId}`;
     const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : { playerId };
   }
-  
+
   savePlayerData(playerId, data) {
     const key = `ai4devs-player-data-${playerId}`;
     localStorage.setItem(key, JSON.stringify(data));
   }
-  
+
   getPlayerId() {
     let playerId = localStorage.getItem('ai4devs-player-id');
     if (!playerId) {
@@ -498,27 +498,27 @@ class AchievementSystem {
     }
     return playerId;
   }
-  
+
   loadAchievements() {
     const saved = localStorage.getItem(this.storageKey);
     return saved ? JSON.parse(saved) : [];
   }
-  
+
   saveAchievements() {
     localStorage.setItem(this.storageKey, JSON.stringify(this.playerAchievements));
   }
-  
+
   // ===== PUBLIC API =====
-  
+
   getPlayerAchievements() {
     return this.playerAchievements.map(id => this.achievementDefinitions[id]).filter(Boolean);
   }
-  
+
   getAchievementProgress() {
     const unlocked = this.playerAchievements.length;
     const total = Object.keys(this.achievementDefinitions).length;
     const points = this.getTotalAchievementPoints();
-    
+
     return { unlocked, total, points, percentage: Math.round((unlocked / total) * 100) };
   }
 }
@@ -526,7 +526,7 @@ class AchievementSystem {
 // Create global instance
 if (typeof window !== 'undefined' && !window.globalAchievementSystem) {
   window.globalAchievementSystem = new AchievementSystem();
-  
+
   // Add achievement browser toggle (A key)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'A' || e.key === 'a') {
@@ -539,4 +539,9 @@ if (typeof window !== 'undefined' && !window.globalAchievementSystem) {
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = AchievementSystem;
+}
+
+// Global export for browser
+if (typeof window !== 'undefined') {
+  window.UniversalAchievements = new AchievementSystem();
 }

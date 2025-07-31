@@ -1,0 +1,159 @@
+[
+  // ========================
+  // GAME DEVELOPMENT SHORTCUTS
+  // ========================
+  {
+    "key": "cmd+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Start Development Server",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "cmd+shift+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Mobile Testing Server"
+  },
+  {
+    "key": "cmd+shift+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Generate Game Template"
+  },
+  // ========================
+  // QUICK DEBUGGING
+  // ========================
+  {
+    "key": "cmd+shift+d",
+    "command": "workbench.action.debug.start",
+    "args": "Debug Current Game"
+  },
+  {
+    "key": "cmd+alt+d",
+    "command": "workbench.action.debug.start",
+    "args": "Debug Main Index"
+  },
+  // ========================
+  // FILE NAVIGATION
+  // ========================
+  {
+    "key": "cmd+shift+o",
+    "command": "workbench.action.quickOpen",
+    "args": "index.html"
+  },
+  {
+    "key": "cmd+shift+s",
+    "command": "workbench.action.quickOpen",
+    "args": "script.js"
+  },
+  {
+    "key": "cmd+shift+c",
+    "command": "workbench.action.quickOpen",
+    "args": "style.css"
+  },
+  // ========================
+  // VALIDATION & TESTING
+  // ========================
+  {
+    "key": "cmd+shift+v",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Validate HTML5"
+  },
+  {
+    "key": "cmd+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Lint JavaScript"
+  },
+  {
+    "key": "cmd+shift+p",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Performance Benchmark"
+  },
+  {
+    "key": "cmd+shift+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Accessibility Check"
+  },
+  // ========================
+  // COPILOT & AI ASSISTANCE
+  // ========================
+  {
+    "key": "cmd+i",
+    "command": "github.copilot.interactiveEditor.explain"
+  },
+  {
+    "key": "cmd+shift+i",
+    "command": "github.copilot.generateInlineCompletion"
+  },
+  {
+    "key": "cmd+alt+c",
+    "command": "github.copilot.chat.newChat"
+  },
+  // ========================
+  // CANVAS & GAME DEVELOPMENT
+  // ========================
+  {
+    "key": "cmd+g cmd+c",
+    "command": "editor.action.insertSnippet",
+    "args": {
+      "name": "canvas-context"
+    }
+  },
+  {
+    "key": "cmd+g cmd+l",
+    "command": "editor.action.insertSnippet",
+    "args": {
+      "name": "game-loop"
+    }
+  },
+  {
+    "key": "cmd+g cmd+a",
+    "command": "editor.action.insertSnippet",
+    "args": {
+      "name": "audit-tasks"
+    }
+  },
+  // ========================
+  // LIVE SERVER CONTROL
+  // ========================
+  {
+    "key": "cmd+alt+l",
+    "command": "extension.liveServer.goOnline"
+  },
+  {
+    "key": "cmd+alt+shift+l",
+    "command": "extension.liveServer.goOffline"
+  },
+  // ========================
+  // CUSTOM GAME COMMANDS
+  // ========================
+  {
+    "key": "cmd+alt+n",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Create New Game"
+  },
+  {
+    "key": "cmd+alt+o",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Optimize Assets"
+  },
+  {
+    "key": "cmd+alt+shift+d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Deploy to GitHub Pages"
+  },
+  // ========================
+  // IMPROVED NAVIGATION
+  // ========================
+  {
+    "key": "cmd+shift+f",
+    "command": "workbench.action.findInFiles",
+    "args": {
+      "query": "",
+      "triggerSearch": false,
+      "isCaseSensitive": false,
+      "matchWholeWord": false,
+      "isRegex": false,
+      "filesToInclude": "**/*.{js,html,css,md}",
+      "filesToExclude": "**/node_modules"
+    }
+  }
+]

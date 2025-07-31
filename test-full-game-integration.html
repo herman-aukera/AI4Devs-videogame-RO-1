@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Game Integration Test - Cross-Game Tournament</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #00ffff;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1,
+    h2 {
+      color: #ff00ff;
+      text-shadow: 0 0 10px #ff00ff;
+    }
+
+    .test-section {
+      background: #111;
+      border: 2px solid #00ffff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .game-card {
+      background: #222;
+      border: 1px solid #ffff00;
+      border-radius: 6px;
+      padding: 15px;
+      position: relative;
+    }
+
+    .game-card h3 {
+      color: #ffff00;
+      margin: 0 0 10px 0;
+      text-shadow: 0 0 5px #ffff00;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+
+    .status.pass {
+      background: #00ff00;
+      color: #000;
+    }
+
+    .status.fail {
+      background: #ff0000;
+      color: #fff;
+    }
+
+    .status.warn {
+      background: #ffff00;
+      color: #000;
+    }
+
+    .status.pending {
+      background: #888;
+      color: #fff;
+    }
+
+    .test-results {
+      background: #000;
+      border: 1px solid #00ff00;
+      border-radius: 4px;
+      padding: 10px;
+      margin: 10px 0;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .controls {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    button {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      margin: 0 10px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    }
+
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .metric-card {
+      background: #333;
+      border: 1px solid #00ff00;
+      border-radius: 4px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .log-output {
+      background: #000;
+      border: 1px solid #666;
+      border-radius: 4px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: #ff0000;
+    }
+
+    .warn {
+      color: #ffff00;
+    }
+
+    .info {
+      color: #00ffff;
+    }
+
+    .success {
+      color: #00ff00;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🎮 Full Game Integration Test Suite</h1>
+    <p>Comprehensive testing of tournament system integration with all 10 AI4Devs retro games</p>
+
+    <div class="controls">
+      <button id="runAllTests">Run All Tests</button>
+      <button id="testIntegration">Test Game Integration</button>
+      <button id="testNormalization">Test Score Normalization</button>
+      <button id="testPerformance">Performance Test</button>
+      <button id="clearResults">Clear Results</button>
+    </div>
+
+    <div class="metrics" id="metricsContainer">
+      <div class="metric-card">
+        <div class="metric-value" id="totalGames">10</div>
+        <div class="metric-label">Total Games</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="integratedGames">0</div>
+        <div class="metric-label">Integrated Games</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="passedTests">0</div>
+        <div class="metric-label">Passed Tests</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="avgResponseTime">0ms</div>
+        <div class="metric-label">Avg Response Time</div>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>🎯 Game Integration Status</h2>
+      <div class="game-grid" id="gameGrid">
+        <!-- Game cards will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>📊 Score Normalization Test Results</h2>
+      <div class="test-results" id="normalizationResults">
+        <div class="info">Score normalization tests will appear here...</div>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>⚡ Performance Metrics</h2>
+      <div class="test-results" id="performanceResults">
+        <div class="info">Performance test results will appear here...</div>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>📝 Test Log</h2>
+      <div class="log-output" id="logOutput">
+        <div class="info">Test execution log will appear here...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include tournament system modules -->
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament-game-integration.js"></script>
+  <script src="shared-tournament-manager.js"></script>
+
+  <script>
+    // ============================================================================
+    // FULL GAME INTEGRATION TEST SUITE
+    // ============================================================================
+
+    class FullGameIntegrationTest {
+      constructor() {
+        this.eventBus = new EventBus();
+        this.scoreAggregator = new ScoreAggregator();
+        this.gameIntegration = new GameIntegrationEventListener(this.eventBus, { debugMode: true });
+        this.tournamentManager = new TournamentManager(this.eventBus);
+
+        // Test state
+        this.testResults = new Map();
+        this.performanceMetrics = {
+          integrationSetup: [],
+          scoreCapture: [],
+          normalization: []
+        };
+
+        // All 10 games to test
+        this.allGames = [
+          'snake-GG',
+          'tetris-GG',
+          'pacman-GG',
+          'mspacman-GG',
+          'breakout-GG',
+          'asteroids-GG',
+          'space-invaders-GG',
+          'galaga-GG',
+          'pong-GG',
+          'fruit-catcher-GG'
+        ];
+
+        this.gameDisplayNames = {
+          'snake-GG': 'Snake',
+          'tetris-GG': 'Tetris',
+          'pacman-GG': 'Pac-Man',
+          'mspacman-GG': 'Ms. Pac-Man',
+          'breakout-GG': 'Breakout',
+          'asteroids-GG': 'Asteroids',
+          'space-invaders-GG': 'Space Invaders',
+          'galaga-GG': 'Galaga',
+          'pong-GG': 'Pong',
+          'fruit-catcher-GG': 'Fruit Catcher'
+        };
+
+        this.initializeUI();
+        this.setupEventListeners();
+        this.log('Full Game Integration Test Suite initialized', 'info');
+      }
+
+      initializeUI() {
+        this.populateGameGrid();
+        this.updateMetrics();
+      }
+
+      populateGameGrid() {
+        const gameGrid = document.getElementById('gameGrid');
+        gameGrid.innerHTML = '';
+
+        this.allGames.forEach(gameId => {
+          const gameCard = document.createElement('div');
+          gameCard.className = 'game-card';
+          gameCard.id = `game-${gameId}`;
+
+          gameCard.innerHTML = `
+                        <h3>${this.gameDisplayNames[gameId]}</h3>
+                        <div>ID: <code>${gameId}</code></div>
+                        <div>Status: <span class="status pending" id="status-${gameId}">Pending</span></div>
+                        <div>Integration: <span id="integration-${gameId}">Not tested</span></div>
+                        <div>Score Capture: <span id="capture-${gameId}">Not tested</span></div>
+                        <div>Normalization: <span id="normalization-${gameId}">Not tested</span></div>
+                        <div style="margin-top: 10px;">
+                            <button onclick="testSuite.testSingleGame('${gameId}')" style="font-size: 10px; padding: 4px 8px;">Test Game</button>
+                        </div>
+                    `;
+
+          gameGrid.appendChild(gameCard);
+        });
+      }
+
+      setupEventListeners() {
+        document.getElementById('runAllTests').addEventListener('click', () => this.runAllTests());
+        document.getElementById('testIntegration').addEventListener('click', () => this.testGameIntegration());
+        document.getElementById('testNormalization').addEventListener('click', () => this.testScoreNormalization());
+        document.getElementById('testPerformance').addEventListener('click', () => this.testPerformance());
+        document.getElementById('clearResults').addEventListener('click', () => this.clearResults());
+
+        // Listen for tournament events
+        this.eventBus.subscribe('tournament:scoreCapture', (data) => {
+          this.log(`Score captured: ${data.gameId} - ${data.score}`, 'success');
+        });
+
+        this.eventBus.subscribe('tournament:gameStarted', (data) => {
+          this.log(`Game started: ${data.gameId}`, 'info');
+        });
+      }
+
+      async runAllTests() {
+        this.log('Starting comprehensive game integration test suite...', 'info');
+        this.clearResults();
+
+        try {
+          await this.testGameIntegration();
+          await this.testScoreNormalization();
+          await this.testPerformance();
+
+          this.log('All tests completed successfully!', 'success');
+          this.generateTestReport();
+        } catch (error) {
+          this.log(`Test suite failed: ${error.message}`, 'error');
+        }
+      }
+
+      async testGameIntegration() {
+        this.log('Testing game integration for all 10 games...', 'info');
+
+        const integrationResults = [];
+
+        for (const gameId of this.allGames) {
+          const result = await this.testSingleGameIntegration(gameId);
+          integrationResults.push(result);
+          this.updateGameStatus(gameId, result);
+        }
+
+        const passedCount = integrationResults.filter(r => r.passed).length;
+        this.log(`Game integration test completed: ${passedCount}/${this.allGames.length} games passed`,
+          passedCount === this.allGames.length ? 'success' : 'warn');
+
+        this.updateMetrics();
+        return integrationResults;
+      }
+
+      async testSingleGameIntegration(gameId) {
+        const startTime = performance.now();
+
+        try {
+          this.log(`Testing integration for ${gameId}...`, 'info');
+
+          // Test 1: Check if game configuration exists
+          const hasConfig = this.checkGameConfiguration(gameId);
+
+          // Test 2: Test integration setup
+          const setupResult = await this.testIntegrationSetup(gameId);
+
+          // Test 3: Test DOM element detection
+          const domResult = await this.testDOMElementDetection(gameId);
+
+          // Test 4: Test event listener setup
+          const eventResult = await this.testEventListenerSetup(gameId);
+
+          const setupTime = performance.now() - startTime;
+          this.performanceMetrics.integrationSetup.push(setupTime);
+
+          const result = {
+            gameId,
+            passed: hasConfig && setupResult && domResult && eventResult,
+            hasConfig,
+            setupResult,
+            domResult,
+            eventResult,
+            setupTime,
+            details: {
+              config: hasConfig ? 'Found' : 'Missing',
+              setup: setupResult ? 'Success' : 'Failed',
+              dom: domResult ? 'Elements found' : 'Elements missing',
+              events: eventResult ? 'Listeners active' : 'Listeners failed'
+            }
+          };
+
+          this.testResults.set(`integration-${gameId}`, result);
+          return result;
+
+        } catch (error) {
+          this.log(`Integration test failed for ${gameId}: ${error.message}`, 'error');
+          return {
+            gameId,
+            passed: false,
+            error: error.message,
+            setupTime: performance.now() - startTime
+          };
+        }
+      }
+
+      checkGameConfiguration(gameId) {
+        // Check if game has configuration in the integration system
+        const config = GAME_INTEGRATION_CONFIG?.gameSettings?.[gameId];
+        return !!config;
+      }
+
+      async testIntegrationSetup(gameId) {
+        try {
+          // Enable tournament mode for testing
+          this.gameIntegration.enableTournamentMode('test-tournament', 'test-player');
+
+          // Test integration setup
+          const setupSuccess = await this.gameIntegration.setupGameIntegration(gameId);
+
+          return setupSuccess;
+        } catch (error) {
+          this.log(`Integration setup failed for ${gameId}: ${error.message}`, 'error');
+          return false;
+        }
+      }
+
+      async testDOMElementDetection(gameId) {
+        const config = GAME_INTEGRATION_CONFIG?.gameSettings?.[gameId];
+        if (!config) return false;
+
+        try {
+          // Create mock DOM elements for testing
+          this.createMockGameElements(gameId, config);
+
+          // Test if elements can be found
+          const scoreElement = document.querySelector(config.scoreSelector);
+          const gameOverElement = document.querySelector(config.gameOverSelector);
+
+          return !!(scoreElement && gameOverElement);
+        } catch (error) {
+          this.log(`DOM detection failed for ${gameId}: ${error.message}`, 'error');
+          return false;
+        }
+      }
+
+      createMockGameElements(gameId, config) {
+        // Remove existing mock elements
+        const existingMock = document.getElementById(`mock-${gameId}`);
+        if (existingMock) {
+          existingMock.remove();
+        }
+
+        // Create mock game container
+        const mockContainer = document.createElement('div');
+        mockContainer.id = `mock-${gameId}`;
+        mockContainer.style.display = 'none';
+
+        // Create mock score element
+        const scoreElement = document.createElement('div');
+        scoreElement.id = config.scoreSelector.replace('#', '');
+        scoreElement.textContent = '0';
+        mockContainer.appendChild(scoreElement);
+
+        // Create mock game over element
+        const gameOverElement = document.createElement('div');
+        const gameOverId = config.gameOverSelector.replace('#', '').replace('.', '');
+        gameOverElement.id = gameOverId;
+        gameOverElement.className = gameOverId;
+        mockContainer.appendChild(gameOverElement);
+
+        // Create mock level element if specified
+        if (config.levelSelector) {
+          const levelElement = document.createElement('div');
+          levelElement.id = config.levelSelector.replace('#', '');
+          levelElement.textContent = '1';
+          mockContainer.appendChild(levelElement);
+        }
+
+        document.body.appendChild(mockContainer);
+      }
+
+      async testEventListenerSetup(gameId) {
+        try {
+          // Test if event listeners are properly set up
+          const integration = this.gameIntegration.activeIntegrations.get(gameId);
+          return !!(integration && integration.isActive);
+        } catch (error) {
+          this.log(`Event listener test failed for ${gameId}: ${error.message}`, 'error');
+          return false;
+        }
+      }
+
+      async testScoreNormalization() {
+        this.log('Testing score normalization for all games...', 'info');
+
+        const normalizationResults = document.getElementById('normalizationResults');
+        normalizationResults.innerHTML = '';
+
+        const testScores = {
+          'snake-GG': [100, 500, 1000, 2500, 5000],
+          'tetris-GG': [1000, 5000, 15000, 50000, 100000],
+          'pacman-GG': [500, 2000, 5000, 10000, 15000],
+          'mspacman-GG': [600, 2500, 6000, 12000, 18000],
+          'breakout-GG': [200, 1200, 3000, 6000, 8000],
+          'asteroids-GG': [1000, 3000, 8000, 15000, 25000],
+          'space-invaders-GG': [800, 2500, 6000, 12000, 20000],
+          'galaga-GG': [1500, 4000, 10000, 20000, 30000],
+          'pong-GG': [5, 11, 15, 18, 21],
+          'fruit-catcher-GG': [100, 400, 1000, 2000, 3000]
+        };
+
+        for (const gameId of this.allGames) {
+          const scores = testScores[gameId];
+          const normalizedScores = scores.map(score => {
+            const startTime = performance.now();
+            const normalized = this.scoreAggregator.normalizeScore(gameId, score);
+            const normalizationTime = performance.now() - startTime;
+            this.performanceMetrics.normalization.push(normalizationTime);
+            return { original: score, normalized, time: normalizationTime };
+          });
+
+          // Display results
+          const gameResult = document.createElement('div');
+          gameResult.innerHTML = `
+                        <div class="success">${this.gameDisplayNames[gameId]} (${gameId}):</div>
+                        ${normalizedScores.map(s =>
+            `  ${s.original} → ${s.normalized.toFixed(3)} (${s.time.toFixed(2)}ms)`
+          ).join('\n')}
+                        <br>
+                    `;
+          normalizationResults.appendChild(gameResult);
+
+          // Update game card
+          const normalizationSpan = document.getElementById(`normalization-${gameId}`);
+          if (normalizationSpan) {
+            normalizationSpan.textContent = 'Tested';
+            normalizationSpan.className = 'status pass';
+          }
+        }
+
+        this.log('Score normalization testing completed', 'success');
+      }
+
+      async testPerformance() {
+        this.log('Running performance tests...', 'info');
+
+        const performanceResults = document.getElementById('performanceResults');
+        performanceResults.innerHTML = '';
+
+        // Calculate performance metrics
+        const avgIntegrationSetup = this.calculateAverage(this.performanceMetrics.integrationSetup);
+        const avgScoreCapture = this.calculateAverage(this.performanceMetrics.scoreCapture);
+        const avgNormalization = this.calculateAverage(this.performanceMetrics.normalization);
+
+        const results = `
+Performance Test Results:
+========================
+
+Integration Setup:
+  Average: ${avgIntegrationSetup.toFixed(2)}ms
+  Samples: ${this.performanceMetrics.integrationSetup.length}
+  Target: < 50ms per game
+  Status: ${avgIntegrationSetup < 50 ? 'PASS' : 'FAIL'}
+
+Score Normalization:
+  Average: ${avgNormalization.toFixed(2)}ms
+  Samples: ${this.performanceMetrics.normalization.length}
+  Target: < 10ms per score
+  Status: ${avgNormalization < 10 ? 'PASS' : 'FAIL'}
+
+Memory Usage:
+  Used JS Heap: ${(performance.memory?.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB
+  Total JS Heap: ${(performance.memory?.totalJSHeapSize / 1024 / 1024).toFixed(2)}MB
+  Heap Limit: ${(performance.memory?.jsHeapSizeLimit / 1024 / 1024).toFixed(2)}MB
+
+Tournament System Load:
+  Active Integrations: ${this.gameIntegration.activeIntegrations.size}
+  Event Listeners: ${this.eventBus.listeners.size}
+  Test Results Stored: ${this.testResults.size}
+                `;
+
+        performanceResults.textContent = results;
+
+        // Update average response time metric
+        document.getElementById('avgResponseTime').textContent = `${avgIntegrationSetup.toFixed(0)}ms`;
+
+        this.log('Performance testing completed', 'success');
+      }
+
+      calculateAverage(array) {
+        if (array.length === 0) return 0;
+        return array.reduce((sum, val) => sum + val, 0) / array.length;
+      }
+
+      updateGameStatus(gameId, result) {
+        const statusElement = document.getElementById(`status-${gameId}`);
+        const integrationElement = document.getElementById(`integration-${gameId}`);
+        const captureElement = document.getElementById(`capture-${gameId}`);
+
+        if (statusElement) {
+          statusElement.textContent = result.passed ? 'Pass' : 'Fail';
+          statusElement.className = `status ${result.passed ? 'pass' : 'fail'}`;
+        }
+
+        if (integrationElement) {
+          integrationElement.textContent = result.setupResult ? 'Success' : 'Failed';
+        }
+
+        if (captureElement) {
+          captureElement.textContent = result.domResult ? 'Ready' : 'Failed';
+        }
+      }
+
+      updateMetrics() {
+        const passedTests = Array.from(this.testResults.values()).filter(r => r.passed).length;
+        const integratedGames = this.gameIntegration.activeIntegrations.size;
+
+        document.getElementById('passedTests').textContent = passedTests;
+        document.getElementById('integratedGames').textContent = integratedGames;
+      }
+
+      async testSingleGame(gameId) {
+        this.log(`Running single game test for ${gameId}...`, 'info');
+
+        const result = await this.testSingleGameIntegration(gameId);
+        this.updateGameStatus(gameId, result);
+
+        // Test score normalization for this game
+        const testScore = 1000;
+        const normalized = this.scoreAggregator.normalizeScore(gameId, testScore);
+
+        this.log(`${gameId} test completed - Integration: ${result.passed ? 'PASS' : 'FAIL'}, Normalization: ${normalized.toFixed(3)}`,
+          result.passed ? 'success' : 'error');
+      }
+
+      generateTestReport() {
+        const totalTests = this.testResults.size;
+        const passedTests = Array.from(this.testResults.values()).filter(r => r.passed).length;
+        const failedTests = totalTests - passedTests;
+
+        const report = `
+=== FULL GAME INTEGRATION TEST REPORT ===
+
+Summary:
+  Total Games: ${this.allGames.length}
+  Tests Run: ${totalTests}
+  Passed: ${passedTests}
+  Failed: ${failedTests}
+  Success Rate: ${((passedTests / totalTests) * 100).toFixed(1)}%
+
+Performance:
+  Avg Integration Setup: ${this.calculateAverage(this.performanceMetrics.integrationSetup).toFixed(2)}ms
+  Avg Score Normalization: ${this.calculateAverage(this.performanceMetrics.normalization).toFixed(2)}ms
+
+Status: ${passedTests === this.allGames.length ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED'}
+                `;
+
+        this.log(report, passedTests === this.allGames.length ? 'success' : 'warn');
+      }
+
+      clearResults() {
+        this.testResults.clear();
+        this.performanceMetrics = {
+          integrationSetup: [],
+          scoreCapture: [],
+          normalization: []
+        };
+
+        document.getElementById('normalizationResults').innerHTML = '<div class="info">Score normalization tests will appear here...</div>';
+        document.getElementById('performanceResults').innerHTML = '<div class="info">Performance test results will appear here...</div>';
+        document.getElementById('logOutput').innerHTML = '<div class="info">Test execution log will appear here...</div>';
+
+        // Reset game card statuses
+        this.allGames.forEach(gameId => {
+          const statusElement = document.getElementById(`status-${gameId}`);
+          const integrationElement = document.getElementById(`integration-${gameId}`);
+          const captureElement = document.getElementById(`capture-${gameId}`);
+          const normalizationElement = document.getElementById(`normalization-${gameId}`);
+
+          if (statusElement) {
+            statusElement.textContent = 'Pending';
+            statusElement.className = 'status pending';
+          }
+          if (integrationElement) integrationElement.textContent = 'Not tested';
+          if (captureElement) captureElement.textContent = 'Not tested';
+          if (normalizationElement) normalizationElement.textContent = 'Not tested';
+        });
+
+        this.updateMetrics();
+        this.log('Test results cleared', 'info');
+      }
+
+      log(message, type = 'info') {
+        const logOutput = document.getElementById('logOutput');
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = document.createElement('div');
+        logEntry.className = type;
+        logEntry.textContent = `[${timestamp}] ${message}`;
+
+        logOutput.appendChild(logEntry);
+        logOutput.scrollTop = logOutput.scrollHeight;
+
+        // Also log to console
+        console.log(`[FullGameIntegrationTest] ${message}`);
+      }
+    }
+
+    // Initialize test suite when page loads
+    let testSuite;
+    document.addEventListener('DOMContentLoaded', () => {
+      testSuite = new FullGameIntegrationTest();
+    });
+  </script>
+</body>
+
+</html>

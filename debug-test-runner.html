@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Test Runner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .debug {
+      background: #f0f0f0;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    .output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Debug Test Runner</h1>
+
+  <div class="debug">
+    <h3>Loading Scripts...</h3>
+    <div id="loadStatus">Loading...</div>
+  </div>
+
+  <div class="debug">
+    <h3>Available Globals</h3>
+    <div id="globals"></div>
+  </div>
+
+  <div class="debug">
+    <h3>Test Runner Status</h3>
+    <div id="runnerStatus"></div>
+  </div>
+
+  <button onclick="runDebugTests()" id="runBtn">Run Tests</button>
+  <div class="output" id="output"></div>
+
+  <!-- Load the scripts -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="test-tournament-models.js"></script>
+
+  <script>
+    function updateStatus() {
+      // Check what's available
+      const globals = [];
+      for (let key in window) {
+        if (key.includes('Tournament') || key.includes('tournament') || key.includes('test') || key.includes('Test')) {
+          globals.push(`${key}: ${typeof window[key]}`);
+        }
+      }
+
+      document.getElementById('globals').innerHTML = globals.length > 0 ? globals.join('<br>') : 'No tournament-related globals found';
+
+      // Check for test runner
+      let runnerFound = false;
+      let runnerInfo = [];
+
+      if (typeof window.TournamentModelTests !== 'undefined') {
+        runnerFound = true;
+        runnerInfo.push('✅ window.TournamentModelTests found');
+      }
+
+      if (typeof window.testRunner !== 'undefined') {
+        runnerFound = true;
+        runnerInfo.push('✅ window.testRunner found');
+      }
+
+      if (typeof TournamentModelTests !== 'undefined') {
+        runnerFound = true;
+        runnerInfo.push('✅ TournamentModelTests (global) found');
+      }
+
+      if (!runnerFound) {
+        runnerInfo.push('❌ No test runner found');
+      }
+
+      document.getElementById('runnerStatus').innerHTML = runnerInfo.join('<br>');
+      document.getElementById('loadStatus').innerHTML = runnerFound ? '✅ Scripts loaded successfully' : '❌ Test runner not found';
+
+      return runnerFound;
+    }
+
+    function runDebugTests() {
+      const output = document.getElementById('output');
+      output.textContent = 'Starting debug tests...\n';
+
+      // Try to find and run the test runner
+      let runner = null;
+
+      if (typeof window.TournamentModelTests !== 'undefined') {
+        runner = window.TournamentModelTests;
+        output.textContent += 'Using window.TournamentModelTests\n';
+      } else if (typeof window.testRunner !== 'undefined') {
+        runner = window.testRunner;
+        output.textContent += 'Using window.testRunner\n';
+      } else if (typeof TournamentModelTests !== 'undefined') {
+        runner = TournamentModelTests;
+        output.textContent += 'Using TournamentModelTests\n';
+      }
+
+      if (!runner) {
+        output.textContent += 'ERROR: No test runner found!\n';
+        return;
+      }
+
+      // Capture console output
+      const originalLog = console.log;
+      const originalError = console.error;
+
+      console.log = (...args) => {
+        output.textContent += args.join(' ') + '\n';
+      };
+
+      console.error = (...args) => {
+        output.textContent += 'ERROR: ' + args.join(' ') + '\n';
+      };
+
+      // Run the tests
+      runner.run().then(success => {
+        output.textContent += success ? '\n🎉 All tests completed successfully!' : '\n⚠️ Some tests failed';
+
+        // Restore console
+        console.log = originalLog;
+        console.error = originalError;
+      }).catch(error => {
+        output.textContent += '\nFATAL ERROR: ' + error.message;
+        console.log = originalLog;
+        console.error = originalError;
+      });
+    }
+
+    // Check status when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(() => {
+        const found = updateStatus();
+        if (found) {
+          document.getElementById('runBtn').style.background = '#28a745';
+          document.getElementById('runBtn').style.color = 'white';
+        } else {
+          document.getElementById('runBtn').style.background = '#dc3545';
+          document.getElementById('runBtn').style.color = 'white';
+          document.getElementById('runBtn').disabled = true;
+        }
+      }, 100);
+    });
+  </script>
+</body>
+
+</html>

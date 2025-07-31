@@ -33,6 +33,9 @@
   --fruit-glow: var(--glow-green);
   
   --breakout-primary: var(--neon-cyan);
+  --breakout-secondary: var(--neon-orange);
+  --breakout-brick: var(--neon-magenta);
+  --breakout-glow: var(--glow-cyan);
   --pacman-primary: var(--neon-yellow);
   --tetris-primary: var(--neon-magenta);
   

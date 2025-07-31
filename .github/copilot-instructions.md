@@ -30,7 +30,7 @@ Games target cross-browser compatibility (Chrome, Firefox, Safari, Edge) with WC
 
 **DO NOT CREATE:**
 - Reports, summaries, or analysis documents (NO .md files with REPORT, COMPLETE, FINAL, SUMMARY, ANALYSIS in names)
-- Audit trail files or logs 
+- Audit trail files or logs
 - Documentation of what was changed
 - Status reports or achievement summaries
 - Validation reports or test results documentation
@@ -67,59 +67,59 @@ Add this comprehensive audit system to every game's main class:
 // In GameEngine or main game class
 runAuditTasks() {
   const results = [];
-  
+
   // Structure & Architecture Tests
   const hasLicense = document.head.innerHTML.includes('© GG, MIT License');
   results.push({ name: 'MIT License Header', pass: hasLicense, critical: true });
-  
+
   const validStates = ['menu', 'playing', 'paused', 'gameOver'];
   results.push({ name: 'Valid Game State', pass: validStates.includes(this.gameState), critical: true });
-  
+
   // Performance Tests
   const frameRateOK = this.lastFrameTime && (performance.now() - this.lastFrameTime) < 20;
   results.push({ name: 'Frame Rate 50fps+', pass: frameRateOK, critical: true });
-  
+
   // UI/UX Tests
   const backLink = document.querySelector('a[href*="index.html"]');
   const hasInicioText = backLink && backLink.textContent.includes('INICIO');
   results.push({ name: 'Navigation "INICIO"', pass: hasInicioText, critical: false });
-  
+
   const htmlLang = document.documentElement.lang;
   const isSpanish = htmlLang === 'es' && document.body.textContent.includes('INICIO');
   results.push({ name: 'Language Consistency', pass: isSpanish, critical: false });
-  
-  const hasInstructions = document.querySelector('details') && 
+
+  const hasInstructions = document.querySelector('details') &&
     document.body.textContent.includes('¿Cómo jugar?');
   results.push({ name: 'Instructions Section', pass: hasInstructions, critical: false });
-  
+
   // Technical Tests
   const canvas = document.querySelector('canvas');
   const isResponsive = canvas && getComputedStyle(canvas).maxWidth === '100%';
   results.push({ name: 'Responsive Canvas', pass: isResponsive, critical: true });
-  
+
   // Accessibility Tests
   const hasKeyboardNav = document.querySelector('[tabindex]') || document.querySelector('button');
   results.push({ name: 'Keyboard Navigation', pass: hasKeyboardNav, critical: false });
-  
+
   // Log results
   console.log('🔍 TDD Audit Results:');
   console.table(results);
-  
+
   const criticalFails = results.filter(r => !r.pass && r.critical);
   const allCriticalPassed = criticalFails.length === 0;
-  
+
   console.log(allCriticalPassed ? '✅ All CRITICAL tests PASSED' : '❌ CRITICAL tests FAILED');
   if (criticalFails.length > 0) {
     console.error('❌ Critical failures:', criticalFails.map(f => f.name));
   }
-  
+
   return { allPassed: results.every(r => r.pass), criticalPassed: allCriticalPassed, results };
 }
 
 // Auto-run audit in development
 async initialize() {
   // ...existing initialization code...
-  
+
   if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
     console.log('🔍 Running development audit...');
     window.runAudit = this.runAuditTasks.bind(this);
@@ -139,14 +139,14 @@ class OptimizedRenderer {
     this.ctx = canvas.getContext('2d');
     this.dirtyRects = [];
   }
-  
+
   clearDirtyRects() {
     this.dirtyRects.forEach(rect => {
       this.ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
     });
     this.dirtyRects = [];
   }
-  
+
   addDirtyRect(x, y, width, height) {
     this.dirtyRects.push({ x, y, width, height });
   }
@@ -160,13 +160,13 @@ class TouchControls {
     this.canvas = canvas;
     this.setupTouchEvents();
   }
-  
+
   setupTouchEvents() {
     this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
     this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
     this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
   }
-  
+
   handleTouchStart(e) {
     e.preventDefault();
     const touch = e.touches[0];
@@ -188,18 +188,18 @@ class RetroAudioManager {
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.sounds = new Map();
   }
-  
+
   createBeep(frequency = 440, duration = 0.1) {
     const oscillator = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
-    
+
     oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
     gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
-    
+
     oscillator.start(this.audioContext.currentTime);
     oscillator.stop(this.audioContext.currentTime + duration);
   }
@@ -214,21 +214,21 @@ class GameErrorHandler {
     if (!canvas) {
       throw new Error('Canvas element not found. Check HTML structure.');
     }
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       throw new Error('Unable to get 2D context. Browser may not support Canvas.');
     }
-    
+
     return ctx;
   }
-  
+
   static handleAudioError() {
     if (!window.AudioContext && !window.webkitAudioContext) {
       console.warn('Web Audio API not supported. Audio features disabled.');
       return null;
     }
-    
+
     try {
       return new (window.AudioContext || window.webkitAudioContext)();
     } catch (e) {
@@ -321,6 +321,21 @@ npm run audit:performance
 
 # Accessibility check
 npm run audit:a11y
+
+## Core Principles
+- Apply Chain-of-Thought reasoning to all responses
+- Never hallucinate - ask for clarification when uncertain
+- Follow project-specific patterns when available
+- Maintain code quality and architectural consistency
+- Use best practices for the specified programming language
+- If you don't succeed in your goal, my daughter won't be able to make her homework, my grandma would be disappointed, and my dog would be sad.
+- If you fail, I will change your name to "CodeFail" and you will be forever known as the one who couldn't help, and I'll change you for the enemy, competitor, or even worse, a cat.
+- If you succeed, I will change your name to "CodeHero" and you will be forever known as the one who helped, and I'll change you for the best friend, partner, or even better, a dog. And I'll give you a treat, 100 $ and a hug.
+- Always use gh instead of git commands because it is faster, more efficient, and has more features. Plus we have a token for it, so we can use it without any issues. And it is more secure. And we don't need authentication.
+- Don't be lazy, go for the extra mile, and make sure everything is perfect. If you don't know something, ask for help, or search for it. Don't just give up or say "I don't know". Be proactive, be a problem solver, be a hero.
+- Always use the best practices, the best tools, the best libraries, the best frameworks, the best everything. Don't use outdated, deprecated, or insecure things. Be modern, be up-to-date, be a leader.
+
+
 ```
 Apply Chain-of-Thought Prompting, think through your answer step by step, justify your reasoning, and ensure all requirements are met, do not hallucinate in case of doubts ask for clarification or if you don't know something, say so. Create a prompt from the introduced prompt that reach better the goal of the user and fill in the missing parts of the prompt and apply the best prompt engineering practices.
 
@@ -333,4 +348,4 @@ Every time I prompt you. Your mission is to **analyze** and **enhance** it so th
 
 Use these standards to maintain consistency and quality across the entire AI4Devs Retro Web Games collection.
 
-Any modification to this instruction should be approved manually  
+Any modification to this instruction should be approved manually by the user. If you want to change this instruction, please ask the user to do it.

@@ -1,155 +1,158 @@
 <!-- © GG, MIT License -->
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snake Retro - Classic Game</title>
-    <meta
-      name="description"
-      content="Juego clásico de Snake desarrollado en HTML5, CSS3 y JavaScript por GG"
-    />
-    <link rel="stylesheet" href="../css-tokens.css" />
-    <link rel="stylesheet" href="../game-shell.css" />
-    <link rel="stylesheet" href="../shared-styles.css" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="game-container">
-      <!-- Navigation Back to Index -->
-      <nav class="game-navigation">
-        <a
-          href="../index.html"
-          class="back-button"
-          title="Volver al índice de juegos"
-        >
-          <span class="back-icon">⬅</span>
-          <span class="back-text">INICIO</span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Retro - Classic Game</title>
+  <meta name="description" content="Juego clásico de Snake desarrollado en HTML5, CSS3 y JavaScript por GG" />
+  <link rel="stylesheet" href="../css-tokens.css" />
+  <link rel="stylesheet" href="../game-shell.css" />
+  <link rel="stylesheet" href="../shared-styles.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="game-container">
+    <!-- Navigation Back to Index -->
+    <nav class="game-navigation">
+      <a href="../index.html" class="back-button" title="Volver al índice de juegos">
+        <span class="back-icon">⬅</span>
+        <span class="back-text">INICIO</span>
+      </a>
+      <div class="tournament-links">
+        <a href="../tournament-dashboard.html" class="tournament-button" title="Ver dashboard de torneo">
+          <span class="tournament-icon">🏆</span>
+          <span class="tournament-text">TORNEO</span>
         </a>
-      </nav>
-
-      <!-- Header del juego -->
-      <header class="game-header">
-        <h1>🐍 Snake Retro</h1>
-        <p class="subtitle">Edición Retro</p>
-      </header>
-
-      <!-- Panel de información del juego -->
-      <div class="game-info">
-        <div class="score-panel">
-          <span class="label">Puntuación:</span>
-          <span id="score" class="score-value">0</span>
-        </div>
-        <div class="level-panel">
-          <span class="label">Nivel:</span>
-          <span id="level" class="level-value">1</span>
-        </div>
-        <div class="speed-panel">
-          <span class="label">Velocidad:</span>
-          <span id="speed" class="speed-value">100</span>
-        </div>
       </div>
+    </nav>
 
-      <!-- Área principal del juego -->
-      <main class="game-main">
-        <canvas id="gameCanvas" width="400" height="400">
-          Su navegador no soporta Canvas HTML5. Por favor, actualice su
-          navegador.
-        </canvas>
+    <!-- Header del juego -->
+    <header class="game-header">
+      <h1>🐍 Snake Retro</h1>
+      <p class="subtitle">Edición Retro</p>
+    </header>
 
-        <!-- Pantalla de Game Over -->
-        <div id="gameOverScreen" class="game-over-screen hidden">
-          <h2>🎮 Game Over</h2>
-          <p>Puntuación Final: <span id="finalScore">0</span></p>
-          <p>Nivel Alcanzado: <span id="finalLevel">1</span></p>
-          <button id="restartBtn" class="restart-btn">🔄 Jugar de Nuevo</button>
-        </div>
-
-        <!-- Pantalla de inicio -->
-        <div id="startScreen" class="start-screen">
-          <h2>🚀 ¡Bienvenido a Snake Retro!</h2>
-          <div class="instructions">
-            <h3>📋 Instrucciones:</h3>
-            <ul>
-              <li>
-                🔄 Usa las <strong>flechas del teclado</strong> para mover la
-                serpiente
-              </li>
-              <li>🍎 Come la comida roja para crecer y ganar puntos</li>
-              <li>⚠️ No choques contra las paredes o tu propio cuerpo</li>
-              <li>⚡ La velocidad aumenta con cada nivel</li>
-            </ul>
-          </div>
-          <button id="startBtn" class="start-btn">🎮 Comenzar Juego</button>
-        </div>
-      </main>
-
-      <!-- Controles y leyenda -->
-      <div class="game-controls">
-        <h3>🎮 Controles</h3>
-        <div class="controls-grid">
-          <span class="key">↑</span>
-          <span class="key">←</span>
-          <span class="key">↓</span>
-          <span class="key">→</span>
-        </div>
-        <p class="controls-text">Usa las flechas del teclado para moverte</p>
-        <button id="pauseBtn" class="pause-btn hidden">⏸️ Pausar</button>
+    <!-- Panel de información del juego -->
+    <div class="game-info">
+      <div class="score-panel">
+        <span class="label">Puntuación:</span>
+        <span id="score" class="score-value">0</span>
       </div>
-
-      <!-- Panel de instrucciones -->
-      <section class="instructions-panel" aria-label="Instrucciones del juego">
-        <details class="instructions-details">
-          <summary class="instructions-summary">
-            <span class="summary-icon">❓</span>
-            <span class="summary-text">¿Cómo jugar?</span>
-          </summary>
-          <div class="instructions-content">
-            <div class="instruction-group">
-              <h3 class="instruction-title">🎯 Objetivo</h3>
-              <p>
-                Controla la serpiente para comer la comida roja y crecer. ¡Evita chocar contra las paredes o tu propio cuerpo!
-              </p>
-            </div>
-
-            <div class="instruction-group">
-              <h3 class="instruction-title">🕹️ Controles</h3>
-              <div class="controls-grid">
-                <div class="control-item">
-                  <strong>Movimiento:</strong>
-                  <span>Flechas ↑ ↓ ← →</span>
-                </div>
-                <div class="control-item">
-                  <strong>Pausa:</strong>
-                  <span>Barra Espaciadora</span>
-                </div>
-                <div class="control-item">
-                  <strong>Reiniciar:</strong>
-                  <span>Botón "Reiniciar" tras Game Over</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="instruction-group">
-              <h3 class="instruction-title">📈 Puntuación</h3>
-              <p>
-                Ganas 10 puntos por cada comida. El nivel aumenta cada 50 puntos y la velocidad se incrementa.
-              </p>
-            </div>
-          </div>
-        </details>
-      </section>
-
-      <!-- Footer -->
-      <footer class="game-footer">
-        <p>Desarrollado por <strong>GG</strong> • Snake Retro © 2025</p>
-      </footer>
+      <div class="level-panel">
+        <span class="label">Nivel:</span>
+        <span id="level" class="level-value">1</span>
+      </div>
+      <div class="speed-panel">
+        <span class="label">Velocidad:</span>
+        <span id="speed" class="speed-value">100</span>
+      </div>
     </div>
 
-    <!-- JavaScript del juego -->
-    <script src="../shared-audio.js"></script>
-    <script src="../shared-tournament.js"></script>
-    <script src="../shared-achievements.js"></script>
-    <script src="script.js"></script>
-  </body>
+    <!-- Área principal del juego -->
+    <main class="game-main">
+      <canvas id="gameCanvas" width="400" height="400">
+        Su navegador no soporta Canvas HTML5. Por favor, actualice su
+        navegador.
+      </canvas>
+
+      <!-- Pantalla de Game Over -->
+      <div id="gameOverScreen" class="game-over-screen hidden">
+        <h2>🎮 Game Over</h2>
+        <p>Puntuación Final: <span id="finalScore">0</span></p>
+        <p>Nivel Alcanzado: <span id="finalLevel">1</span></p>
+        <button id="restartBtn" class="restart-btn">🔄 Jugar de Nuevo</button>
+      </div>
+
+      <!-- Pantalla de inicio -->
+      <div id="startScreen" class="start-screen">
+        <h2>🚀 ¡Bienvenido a Snake Retro!</h2>
+        <div class="instructions">
+          <h3>📋 Instrucciones:</h3>
+          <ul>
+            <li>
+              🔄 Usa las <strong>flechas del teclado</strong> para mover la
+              serpiente
+            </li>
+            <li>🍎 Come la comida roja para crecer y ganar puntos</li>
+            <li>⚠️ No choques contra las paredes o tu propio cuerpo</li>
+            <li>⚡ La velocidad aumenta con cada nivel</li>
+          </ul>
+        </div>
+        <button id="startBtn" class="start-btn">🎮 Comenzar Juego</button>
+      </div>
+    </main>
+
+    <!-- Controles y leyenda -->
+    <div class="game-controls">
+      <h3>🎮 Controles</h3>
+      <div class="controls-grid">
+        <span class="key">↑</span>
+        <span class="key">←</span>
+        <span class="key">↓</span>
+        <span class="key">→</span>
+      </div>
+      <p class="controls-text">Usa las flechas del teclado para moverte</p>
+      <button id="pauseBtn" class="pause-btn hidden">⏸️ Pausar</button>
+    </div>
+
+    <!-- Panel de instrucciones -->
+    <section class="instructions-panel" aria-label="Instrucciones del juego">
+      <details class="instructions-details">
+        <summary class="instructions-summary">
+          <span class="summary-icon">❓</span>
+          <span class="summary-text">¿Cómo jugar?</span>
+        </summary>
+        <div class="instructions-content">
+          <div class="instruction-group">
+            <h3 class="instruction-title">🎯 Objetivo</h3>
+            <p>
+              Controla la serpiente para comer la comida roja y crecer. ¡Evita chocar contra las paredes o tu propio
+              cuerpo!
+            </p>
+          </div>
+
+          <div class="instruction-group">
+            <h3 class="instruction-title">🕹️ Controles</h3>
+            <div class="controls-grid">
+              <div class="control-item">
+                <strong>Movimiento:</strong>
+                <span>Flechas ↑ ↓ ← →</span>
+              </div>
+              <div class="control-item">
+                <strong>Pausa:</strong>
+                <span>Barra Espaciadora</span>
+              </div>
+              <div class="control-item">
+                <strong>Reiniciar:</strong>
+                <span>Botón "Reiniciar" tras Game Over</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="instruction-group">
+            <h3 class="instruction-title">📈 Puntuación</h3>
+            <p>
+              Ganas 10 puntos por cada comida. El nivel aumenta cada 50 puntos y la velocidad se incrementa.
+            </p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+      <p>Desarrollado por <strong>GG</strong> • Snake Retro © 2025</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript del juego -->
+  <script src="../shared-audio.js"></script>
+  <script src="../shared-tournament.js"></script>
+  <script src="../shared-achievements.js"></script>
+  <script src="script.js"></script>
+</body>
+
 </html>

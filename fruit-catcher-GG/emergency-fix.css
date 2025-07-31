@@ -1,0 +1,53 @@
+/* EMERGENCY ANTI-CLIPPING OVERRIDE */
+.game-header {
+  text-align: center !important;
+  margin-bottom: var(--spacing-lg) !important;
+  position: relative !important;
+  z-index: 999 !important;
+  margin-top: 100px !important;
+  padding-top: 80px !important;
+  padding-bottom: 40px !important;
+  overflow: visible !important;
+  min-height: 250px !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.game-title {
+  font-family: var(--font-retro) !important;
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  font-weight: 900 !important;
+  color: var(--neon-yellow) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  text-shadow: 
+    0 0 5px var(--neon-yellow),
+    0 0 10px var(--neon-yellow),
+    0 0 15px var(--neon-yellow),
+    0 0 20px #ffff00,
+    0 0 25px #ffff00 !important;
+  background: transparent !important;
+  -webkit-text-fill-color: var(--neon-yellow) !important;
+  -webkit-text-stroke: none !important;
+  padding: 60px 40px 40px 40px !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  position: relative !important;
+  overflow: visible !important;
+  min-height: 180px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+}
+
+.title-icon {
+  font-size: 1.2em !important;
+  margin-right: var(--spacing-sm) !important;
+  animation: bounce 2s infinite !important;
+  position: relative !important;
+  z-index: 1000 !important;
+  display: inline-block !important;
+  margin-top: 0 !important;
+  vertical-align: top !important;
+}

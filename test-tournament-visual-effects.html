@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Tournament Visual Effects - AI4Devs</title>
+  <link rel="stylesheet" href="css-tokens.css">
+  <link rel="stylesheet" href="shared-styles.css">
+  <link rel="stylesheet" href="tournament-creation.css">
+  <link rel="stylesheet" href="tournament-dashboard.css">
+  <style>
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-retro);
+      padding: var(--spacing-lg);
+    }
+
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-lg);
+      border: var(--border-width-base) solid var(--neon-cyan);
+      border-radius: var(--border-radius-lg);
+      background: var(--bg-secondary);
+      position: relative;
+    }
+
+    .demo-title {
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .effect-demo {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+      margin: var(--spacing-md) 0;
+    }
+
+    .demo-button {
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--bg-primary);
+      border: var(--border-width-base) solid var(--neon-yellow);
+      border-radius: var(--border-radius-md);
+      color: var(--neon-yellow);
+      text-shadow: var(--glow-yellow);
+      font-family: var(--font-retro);
+      font-size: var(--font-size-sm);
+      cursor: pointer;
+      transition: var(--transition-all);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .demo-button:hover {
+      box-shadow: 0 0 15px var(--neon-yellow);
+      transform: translateY(-2px);
+    }
+
+    .demo-element {
+      padding: var(--spacing-md);
+      background: var(--bg-primary);
+      border: var(--border-width-base) solid var(--text-secondary);
+      border-radius: var(--border-radius-md);
+      margin: var(--spacing-sm);
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .leaderboard-demo {
+      width: 100%;
+      max-width: 600px;
+      margin: var(--spacing-md) 0;
+    }
+
+    .demo-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--bg-primary);
+      border: 1px solid var(--text-secondary);
+      margin-bottom: var(--spacing-xs);
+      border-radius: var(--border-radius-sm);
+    }
+
+    .demo-rank {
+      color: var(--neon-yellow);
+      text-shadow: var(--glow-yellow);
+      font-weight: var(--font-weight-bold);
+      min-width: 30px;
+    }
+
+    .demo-name {
+      color: var(--neon-cyan);
+      flex: 1;
+      text-align: left;
+      margin-left: var(--spacing-md);
+    }
+
+    .demo-score {
+      color: var(--neon-green);
+      text-shadow: var(--glow-green);
+      font-weight: var(--font-weight-bold);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .progress-demo {
+      width: 100%;
+      height: 24px;
+      background: var(--bg-primary);
+      border: var(--border-width-base) solid var(--neon-cyan);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      position: relative;
+      margin: var(--spacing-md) 0;
+    }
+
+    .progress-fill-demo {
+      height: 100%;
+      background: var(--neon-green);
+      width: 0%;
+      transition: width 2s ease-out;
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .game-grid-demo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+    }
+
+    .game-card-demo {
+      background: var(--bg-primary);
+      border: var(--border-width-base) solid var(--text-secondary);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-md);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-all);
+    }
+
+    .game-icon-demo {
+      font-size: var(--font-size-2xl);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .game-name-demo {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <main>
+    <header style="text-align: center; margin-bottom: var(--spacing-3xl);">
+      <h1 class="neon-title">
+        <span class="title-line-1">TOURNAMENT</span>
+        <span class="title-line-2">VISUAL EFFECTS</span>
+      </h1>
+      <p class="subtitle">🎮 Demostración de efectos visuales retro 🎮</p>
+    </header>
+
+    <!-- Tournament Progress Animations -->
+    <section class="demo-section">
+      <h2 class="demo-title">Animaciones de Progreso del Torneo</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="triggerTournamentCreating()">CREAR TORNEO</button>
+        <button class="demo-button" onclick="triggerProgressAnimation()">PROGRESO</button>
+        <button class="demo-button" onclick="triggerMilestone()">HITO ALCANZADO</button>
+      </div>
+
+      <div id="tournament-progress-demo" class="demo-element">
+        <div class="progress-demo">
+          <div class="progress-fill-demo" id="progress-fill"></div>
+        </div>
+        <div>Estado: <span id="tournament-status">Preparando...</span></div>
+      </div>
+    </section>
+
+    <!-- Participant Joining Effects -->
+    <section class="demo-section">
+      <h2 class="demo-title">Efectos de Participantes</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="addParticipant()">AGREGAR PARTICIPANTE</button>
+        <button class="demo-button" onclick="clearParticipants()">LIMPIAR</button>
+      </div>
+
+      <div id="participants-demo" class="demo-element">
+        <div id="participants-list">
+          <!-- Participants will be added here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Selection Effects -->
+    <section class="demo-section">
+      <h2 class="demo-title">Selección de Juegos</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="selectRandomGame()">SELECCIONAR JUEGO</button>
+        <button class="demo-button" onclick="resetGameSelection()">RESETEAR</button>
+      </div>
+
+      <div class="game-grid-demo" id="games-demo">
+        <div class="game-card-demo snake-theme" data-game="snake">
+          <div class="game-icon-demo" style="color: var(--neon-green); text-shadow: var(--glow-green);">🐍</div>
+          <div class="game-name-demo">SNAKE</div>
+        </div>
+        <div class="game-card-demo pacman-theme" data-game="pacman">
+          <div class="game-icon-demo" style="color: var(--neon-yellow); text-shadow: var(--glow-yellow);">🟡</div>
+          <div class="game-name-demo">PAC-MAN</div>
+        </div>
+        <div class="game-card-demo tetris-theme" data-game="tetris">
+          <div class="game-icon-demo" style="color: var(--neon-magenta); text-shadow: var(--glow-magenta);">🧩</div>
+          <div class="game-name-demo">TETRIS</div>
+        </div>
+        <div class="game-card-demo asteroids-theme" data-game="asteroids">
+          <div class="game-icon-demo" style="color: var(--neon-cyan); text-shadow: var(--glow-cyan);">🚀</div>
+          <div class="game-name-demo">ASTEROIDS</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Updates -->
+    <section class="demo-section">
+      <h2 class="demo-title">Actualizaciones del Leaderboard</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="updateLeaderboard()">ACTUALIZAR PUNTUACIONES</button>
+        <button class="demo-button" onclick="changeRanks()">CAMBIAR RANKINGS</button>
+        <button class="demo-button" onclick="completeGame()">COMPLETAR JUEGO</button>
+      </div>
+
+      <div class="leaderboard-demo" id="leaderboard-demo">
+        <div class="demo-row">
+          <div class="demo-rank">1</div>
+          <div class="demo-name">PLAYER_ONE</div>
+          <div class="demo-score" id="score-1">1500</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-rank">2</div>
+          <div class="demo-name">PLAYER_TWO</div>
+          <div class="demo-score" id="score-2">1200</div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-rank">3</div>
+          <div class="demo-name">PLAYER_THREE</div>
+          <div class="demo-score" id="score-3">900</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading States -->
+    <section class="demo-section">
+      <h2 class="demo-title">Estados de Carga</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="showLoading()">MOSTRAR CARGA</button>
+        <button class="demo-button" onclick="showDataProcessing()">PROCESANDO DATOS</button>
+        <button class="demo-button" onclick="hideLoading()">OCULTAR CARGA</button>
+      </div>
+
+      <div id="loading-demo" class="demo-element">
+        <div id="loading-text">Listo para cargar...</div>
+      </div>
+    </section>
+
+    <!-- Achievement Notifications -->
+    <section class="demo-section">
+      <h2 class="demo-title">Notificaciones de Logros</h2>
+      <div class="effect-demo">
+        <button class="demo-button" onclick="showAchievement('TORNEO CREADO!')">TORNEO CREADO</button>
+        <button class="demo-button" onclick="showAchievement('¡PRIMER LUGAR!')">PRIMER LUGAR</button>
+        <button class="demo-button" onclick="showAchievement('¡TORNEO COMPLETADO!')">TORNEO COMPLETADO</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let participantCount = 0;
+
+    function triggerTournamentCreating() {
+      const demo = document.getElementById('tournament-progress-demo');
+      demo.classList.add('tournament-creating');
+      document.getElementById('tournament-status').textContent = 'Creando torneo...';
+
+      setTimeout(() => {
+        demo.classList.remove('tournament-creating');
+        document.getElementById('tournament-status').textContent = 'Torneo creado';
+      }, 3000);
+    }
+
+    function triggerProgressAnimation() {
+      const fill = document.getElementById('progress-fill');
+      const currentWidth = parseInt(fill.style.width) || 0;
+      const newWidth = Math.min(currentWidth + 25, 100);
+      fill.style.width = newWidth + '%';
+      document.getElementById('tournament-status').textContent = `Progreso: ${newWidth}%`;
+    }
+
+    function triggerMilestone() {
+      const demo = document.getElementById('tournament-progress-demo');
+      demo.classList.add('milestone-achieved');
+      showAchievement('¡HITO ALCANZADO!');
+
+      setTimeout(() => {
+        demo.classList.remove('milestone-achieved');
+      }, 2000);
+    }
+
+    function addParticipant() {
+      participantCount++;
+      const participantsList = document.getElementById('participants-list');
+      const participant = document.createElement('div');
+      participant.className = 'participant-joining';
+      participant.style.cssText = `
+                padding: var(--spacing-sm);
+                background: var(--bg-primary);
+                border: 1px solid var(--neon-cyan);
+                border-radius: var(--border-radius-sm);
+                margin-bottom: var(--spacing-xs);
+                color: var(--neon-cyan);
+                text-shadow: var(--glow-cyan);
+            `;
+      participant.textContent = `JUGADOR_${participantCount.toString().padStart(2, '0')}`;
+      participantsList.appendChild(participant);
+    }
+
+    function clearParticipants() {
+      document.getElementById('participants-list').innerHTML = '';
+      participantCount = 0;
+    }
+
+    function selectRandomGame() {
+      const games = document.querySelectorAll('.game-card-demo');
+      const randomGame = games[Math.floor(Math.random() * games.length)];
+
+      // Remove previous selections
+      games.forEach(game => game.classList.remove('game-selecting'));
+
+      // Add selection effect
+      randomGame.classList.add('game-selecting');
+
+      setTimeout(() => {
+        randomGame.classList.remove('game-selecting');
+      }, 600);
+    }
+
+    function resetGameSelection() {
+      const games = document.querySelectorAll('.game-card-demo');
+      games.forEach(game => game.classList.remove('game-selecting'));
+    }
+
+    function updateLeaderboard() {
+      const scores = ['score-1', 'score-2', 'score-3'];
+      scores.forEach(scoreId => {
+        const scoreElement = document.getElementById(scoreId);
+        const currentScore = parseInt(scoreElement.textContent);
+        const newScore = currentScore + Math.floor(Math.random() * 500) + 100;
+        scoreElement.textContent = newScore;
+        scoreElement.classList.add('score-updated');
+
+        setTimeout(() => {
+          scoreElement.classList.remove('score-updated');
+        }, 800);
+      });
+    }
+
+    function changeRanks() {
+      const rows = document.querySelectorAll('.demo-row');
+      rows.forEach(row => {
+        row.classList.add('rank-changed');
+        setTimeout(() => {
+          row.classList.remove('rank-changed');
+        }, 600);
+      });
+    }
+
+    function completeGame() {
+      const leaderboard = document.getElementById('leaderboard-demo');
+      leaderboard.classList.add('game-completed');
+      showAchievement('¡JUEGO COMPLETADO!');
+
+      setTimeout(() => {
+        leaderboard.classList.remove('game-completed');
+      }, 1500);
+    }
+
+    function showLoading() {
+      const loadingDemo = document.getElementById('loading-demo');
+      const loadingText = document.getElementById('loading-text');
+
+      loadingDemo.classList.add('loading-state');
+      loadingText.textContent = '';
+
+      setTimeout(() => {
+        loadingDemo.classList.remove('loading-state');
+        loadingText.textContent = 'Carga completada';
+      }, 3000);
+    }
+
+    function showDataProcessing() {
+      const loadingDemo = document.getElementById('loading-demo');
+      const loadingText = document.getElementById('loading-text');
+
+      loadingDemo.classList.add('data-processing');
+      loadingText.textContent = 'Procesando datos del torneo...';
+
+      setTimeout(() => {
+        loadingDemo.classList.remove('data-processing');
+        loadingText.textContent = 'Datos procesados';
+      }, 4000);
+    }
+
+    function hideLoading() {
+      const loadingDemo = document.getElementById('loading-demo');
+      const loadingText = document.getElementById('loading-text');
+
+      loadingDemo.classList.remove('loading-state', 'data-processing');
+      loadingText.textContent = 'Listo para cargar...';
+    }
+
+    function showAchievement(message) {
+      // Remove existing achievement notifications
+      const existing = document.querySelectorAll('.achievement-notification');
+      existing.forEach(el => el.remove());
+
+      const notification = document.createElement('div');
+      notification.className = 'achievement-notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Add particle effects to milestone celebrations
+    function createParticles(container) {
+      for (let i = 0; i < 10; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 3000);
+      }
+    }
+
+    // Auto-demo mode
+    let autoDemoInterval;
+
+    function startAutoDemo() {
+      const effects = [
+        () => triggerProgressAnimation(),
+        () => addParticipant(),
+        () => selectRandomGame(),
+        () => updateLeaderboard(),
+        () => showAchievement('¡AUTO DEMO!')
+      ];
+
+      autoDemoInterval = setInterval(() => {
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        randomEffect();
+      }, 2000);
+    }
+
+    function stopAutoDemo() {
+      if (autoDemoInterval) {
+        clearInterval(autoDemoInterval);
+        autoDemoInterval = null;
+      }
+    }
+
+    // Add auto demo controls
+    document.addEventListener('DOMContentLoaded', () => {
+      const autoControls = document.createElement('div');
+      autoControls.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: flex;
+                gap: var(--spacing-sm);
+                z-index: 1000;
+            `;
+
+      const startBtn = document.createElement('button');
+      startBtn.className = 'demo-button';
+      startBtn.textContent = 'AUTO DEMO';
+      startBtn.onclick = startAutoDemo;
+
+      const stopBtn = document.createElement('button');
+      stopBtn.className = 'demo-button';
+      stopBtn.textContent = 'PARAR';
+      stopBtn.onclick = stopAutoDemo;
+
+      autoControls.appendChild(startBtn);
+      autoControls.appendChild(stopBtn);
+      document.body.appendChild(autoControls);
+    });
+  </script>
+</body>
+
+</html>

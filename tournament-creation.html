@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Crear Torneo - AI4Devs Retro Games</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tournament-creation.css">
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <main class="tournament-creation-container">
+    <!-- Navigation -->
+    <nav class="tournament-nav">
+      <a href="index.html" class="nav-link back-link">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">INICIO</span>
+      </a>
+      <div class="nav-links">
+        <a href="tournament-creation.html" class="nav-link active">CREAR</a>
+        <a href="tournament-dashboard.html" class="nav-link">DASHBOARD</a>
+        <a href="tournament-history.html" class="nav-link">HISTORIAL</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="tournament-header">
+      <h1 class="neon-title">
+        <span class="title-line-1">CREAR</span>
+        <span class="title-line-2">TORNEO</span>
+      </h1>
+      <p class="subtitle">🏆 Configura tu competición retro 🏆</p>
+    </header>
+
+    <!-- Tournament Creation Form -->
+    <section class="tournament-form-section">
+      <form id="tournament-form" class="tournament-form">
+        <!-- Tournament Name -->
+        <div class="form-group">
+          <label for="tournament-name" class="form-label">
+            🎮 NOMBRE DEL TORNEO
+          </label>
+          <input type="text" id="tournament-name" name="tournamentName" class="form-input"
+            placeholder="Ej: Campeonato de Fin de Semana" maxlength="50" required
+            aria-describedby="tournament-name-help" aria-invalid="false">
+          <div id="tournament-name-help" class="sr-only">Ingresa un nombre descriptivo para tu torneo, máximo 50
+            caracteres</div>
+          <div class="input-glow"></div>
+        </div>
+
+        <!-- Tournament Format -->
+        <div class="form-group">
+          <fieldset>
+            <legend class="form-label">
+              ⚔️ FORMATO DE TORNEO
+            </legend>
+            <div class="format-selection" role="radiogroup" aria-labelledby="format-legend">
+              <div class="format-option">
+                <input type="radio" id="format-round-robin" name="tournamentFormat" value="round-robin" checked
+                  aria-describedby="format-round-robin-desc">
+                <label for="format-round-robin" class="format-label">
+                  <div class="format-icon" aria-hidden="true">🔄</div>
+                  <div class="format-info">
+                    <h3>TODOS CONTRA TODOS</h3>
+                    <p id="format-round-robin-desc">Cada participante juega contra todos los demás</p>
+                  </div>
+                </label>
+              </div>
+              <div class="format-option">
+                <input type="radio" id="format-elimination" name="tournamentFormat" value="elimination"
+                  aria-describedby="format-elimination-desc">
+                <label for="format-elimination" class="format-label">
+                  <div class="format-icon" aria-hidden="true">🏆</div>
+                  <div class="format-info">
+                    <h3>ELIMINACIÓN</h3>
+                    <p id="format-elimination-desc">Los perdedores son eliminados hasta que quede un ganador</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Game Selection -->
+        <div class="form-group">
+          <fieldset>
+            <legend class="form-label" id="games-label">
+              🎯 SELECCIONAR JUEGOS
+              <span class="games-counter">(<span id="selected-count">0</span>/10)</span>
+            </legend>
+            <div class="games-grid" role="group" aria-labelledby="games-label" aria-describedby="games-help">
+              <div id="games-help" class="sr-only">Selecciona al menos un juego para incluir en el torneo. Puedes elegir
+                hasta 10 juegos diferentes. Usa las teclas de flecha para navegar y la barra espaciadora para
+                seleccionar.</div>
+              <div class="game-option" data-game="snake-GG">
+                <input type="checkbox" id="game-snake" name="games" value="snake-GG" aria-describedby="snake-desc">
+                <label for="game-snake" class="game-label snake-theme">
+                  <div class="game-icon" aria-hidden="true">🐍</div>
+                  <div class="game-name">SNAKE</div>
+                  <div id="snake-desc" class="sr-only">Juego clásico de la serpiente que crece</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="breakout-GG">
+                <input type="checkbox" id="game-breakout" name="games" value="breakout-GG">
+                <label for="game-breakout" class="game-label breakout-theme">
+                  <div class="game-icon">🧱</div>
+                  <div class="game-name">BREAKOUT</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="fruit-catcher-GG">
+                <input type="checkbox" id="game-fruit-catcher" name="games" value="fruit-catcher-GG">
+                <label for="game-fruit-catcher" class="game-label fruit-catcher-theme">
+                  <div class="game-icon">🍎</div>
+                  <div class="game-name">FRUIT CATCHER</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="asteroids-GG">
+                <input type="checkbox" id="game-asteroids" name="games" value="asteroids-GG">
+                <label for="game-asteroids" class="game-label asteroids-theme">
+                  <div class="game-icon">🚀</div>
+                  <div class="game-name">ASTEROIDS</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="space-invaders-GG">
+                <input type="checkbox" id="game-space-invaders" name="games" value="space-invaders-GG">
+                <label for="game-space-invaders" class="game-label space-invaders-theme">
+                  <div class="game-icon">👾</div>
+                  <div class="game-name">SPACE INVADERS</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="pacman-GG">
+                <input type="checkbox" id="game-pacman" name="games" value="pacman-GG">
+                <label for="game-pacman" class="game-label pacman-theme">
+                  <div class="game-icon">🟡</div>
+                  <div class="game-name">PAC-MAN</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="mspacman-GG">
+                <input type="checkbox" id="game-mspacman" name="games" value="mspacman-GG">
+                <label for="game-mspacman" class="game-label mspacman-theme">
+                  <div class="game-icon">💗</div>
+                  <div class="game-name">MS. PAC-MAN</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="tetris-GG">
+                <input type="checkbox" id="game-tetris" name="games" value="tetris-GG">
+                <label for="game-tetris" class="game-label tetris-theme">
+                  <div class="game-icon">🧩</div>
+                  <div class="game-name">TETRIS</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="pong-GG">
+                <input type="checkbox" id="game-pong" name="games" value="pong-GG">
+                <label for="game-pong" class="game-label pong-theme">
+                  <div class="game-icon">🏓</div>
+                  <div class="game-name">PONG</div>
+                </label>
+              </div>
+              <div class="game-option" data-game="galaga-GG">
+                <input type="checkbox" id="game-galaga" name="games" value="galaga-GG">
+                <label for="game-galaga" class="game-label galaga-theme">
+                  <div class="game-icon">🚀</div>
+                  <div class="game-name">GALAGA</div>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Tournament Settings -->
+        <div class="form-group">
+          <fieldset>
+            <legend class="form-label">
+              ⚙️ CONFIGURACIÓN
+            </legend>
+            <div class="settings-grid" role="group" aria-labelledby="settings-legend">
+              <div class="setting-item">
+                <label for="max-participants" class="setting-label">
+                  👥 MÁXIMO PARTICIPANTES
+                </label>
+                <select id="max-participants" name="maxParticipants" class="setting-select"
+                  aria-describedby="max-participants-help">
+                  <option value="2">2 Jugadores</option>
+                  <option value="4">4 Jugadores</option>
+                  <option value="8" selected>8 Jugadores</option>
+                  <option value="12">12 Jugadores</option>
+                  <option value="16">16 Jugadores</option>
+                </select>
+                <div id="max-participants-help" class="sr-only">Selecciona el número máximo de participantes permitidos
+                  en el torneo</div>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">
+                  <input type="checkbox" id="score-normalization" name="scoreNormalization" checked
+                    aria-describedby="score-normalization-desc">
+                  📊 NORMALIZACIÓN DE PUNTUACIONES
+                </label>
+                <p class="setting-description" id="score-normalization-desc">Ajusta las puntuaciones para comparar
+                  juegos diferentes de manera justa</p>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">
+                  <input type="checkbox" id="auto-advance" name="autoAdvance" checked
+                    aria-describedby="auto-advance-desc">
+                  ⚡ AVANCE AUTOMÁTICO
+                </label>
+                <p class="setting-description" id="auto-advance-desc">Avanza automáticamente a la siguiente ronda cuando
+                  se completen los juegos</p>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Participant Management -->
+        <div class="form-group">
+          <label class="form-label" id="participants-label">
+            👥 PARTICIPANTES
+            <span class="participants-counter">(<span id="participants-count">0</span>/<span
+                id="max-participants-display">8</span>)</span>
+          </label>
+          <div class="participants-section" role="region" aria-labelledby="participants-label">
+            <div class="add-participant">
+              <input type="text" id="participant-name" placeholder="Nombre del participante" maxlength="30"
+                class="participant-input">
+              <button type="button" id="add-participant-btn" class="add-participant-btn">
+                ➕ AGREGAR
+              </button>
+            </div>
+            <div id="participants-list" class="participants-list">
+              <!-- Participants will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions" role="group" aria-label="Acciones del formulario">
+          <button type="button" id="cancel-btn" class="cancel-btn" aria-describedby="cancel-help">
+            ❌ CANCELAR
+          </button>
+          <div id="cancel-help" class="sr-only">Cancela la creación del torneo y regresa a la página principal</div>
+
+          <button type="submit" id="create-tournament-btn" class="create-tournament-btn" aria-describedby="create-help"
+            aria-live="polite">
+            🏆 CREAR TORNEO
+          </button>
+          <div id="create-help" class="sr-only">Crea el torneo con la configuración especificada</div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament.js"></script>
+  <script src="tournament-creation.js"></script>
+</body>
+
+</html>

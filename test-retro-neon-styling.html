@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Retro Neon Styling - Tournament System</title>
+  <link rel="stylesheet" href="css-tokens.css">
+  <link rel="stylesheet" href="shared-styles.css">
+  <link rel="stylesheet" href="tournament-creation.css">
+  <link rel="stylesheet" href="tournament-dashboard.css">
+  <style>
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-retro);
+      padding: var(--spacing-lg);
+    }
+
+    .test-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-lg);
+      border: var(--border-width-base) solid var(--neon-cyan);
+      border-radius: var(--border-radius-lg);
+      background: var(--bg-secondary);
+    }
+
+    .test-title {
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .color-demo {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+      margin: var(--spacing-md) 0;
+    }
+
+    .color-box {
+      width: 100px;
+      height: 60px;
+      border: var(--border-width-base) solid;
+      border-radius: var(--border-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .cyan {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .magenta {
+      color: var(--neon-magenta);
+      border-color: var(--neon-magenta);
+      text-shadow: var(--glow-magenta);
+      box-shadow: 0 0 10px var(--neon-magenta);
+    }
+
+    .yellow {
+      color: var(--neon-yellow);
+      border-color: var(--neon-yellow);
+      text-shadow: var(--glow-yellow);
+      box-shadow: 0 0 10px var(--neon-yellow);
+    }
+
+    .green {
+      color: var(--neon-green);
+      border-color: var(--neon-green);
+      text-shadow: var(--glow-green);
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <main>
+    <header style="text-align: center; margin-bottom: var(--spacing-3xl);">
+      <h1 class="neon-title">
+        <span class="title-line-1">TEST RETRO</span>
+        <span class="title-line-2">NEON STYLING</span>
+      </h1>
+      <p class="subtitle">🎮 Verificación de la paleta de colores neón 🎮</p>
+    </header>
+
+    <section class="test-section">
+      <h2 class="test-title">Paleta de Colores Neón Establecida</h2>
+      <div class="color-demo">
+        <div class="color-box cyan">CYAN<br>#00ffff</div>
+        <div class="color-box magenta">MAGENTA<br>#ff00ff</div>
+        <div class="color-box yellow">YELLOW<br>#ffff00</div>
+        <div class="color-box green">GREEN<br>#00ff00</div>
+      </div>
+    </section>
+
+    <section class="test-section">
+      <h2 class="test-title">Botones con Estilo Retro</h2>
+      <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+        <button class="action-btn primary">BOTÓN PRIMARIO</button>
+        <button class="action-btn secondary">BOTÓN SECUNDARIO</button>
+        <button class="action-btn danger">BOTÓN PELIGRO</button>
+        <button class="refresh-btn">🔄 ACTUALIZAR</button>
+      </div>
+    </section>
+
+    <section class="test-section">
+      <h2 class="test-title">Campos de Entrada</h2>
+      <div class="form-group">
+        <label class="form-label">🎮 NOMBRE DEL TORNEO</label>
+        <input type="text" class="form-input" placeholder="Ejemplo de texto con fuente monospace"
+          value="RETRO TOURNAMENT 2025">
+      </div>
+    </section>
+
+    <section class="test-section">
+      <h2 class="test-title">Estadísticas con Efectos Neón</h2>
+      <div class="progress-stats">
+        <div class="stat-item">
+          <div class="stat-value">8</div>
+          <div class="stat-label">PARTICIPANTES</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">15</div>
+          <div class="stat-label">JUEGOS COMPLETADOS</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">5</div>
+          <div class="stat-label">JUEGOS RESTANTES</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">75%</div>
+          <div class="stat-label">PROGRESO TOTAL</div>
+        </div>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 75%"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="test-section">
+      <h2 class="test-title">Selección de Juegos</h2>
+      <div class="games-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md);">
+        <div class="game-option">
+          <input type="checkbox" id="test-snake" checked>
+          <label for="test-snake" class="game-label snake-theme">
+            <div class="game-icon">🐍</div>
+            <div class="game-name">SNAKE</div>
+          </label>
+        </div>
+        <div class="game-option">
+          <input type="checkbox" id="test-pacman">
+          <label for="test-pacman" class="game-label pacman-theme">
+            <div class="game-icon">🟡</div>
+            <div class="game-name">PAC-MAN</div>
+          </label>
+        </div>
+        <div class="game-option">
+          <input type="checkbox" id="test-tetris" checked>
+          <label for="test-tetris" class="game-label tetris-theme">
+            <div class="game-icon">🧩</div>
+            <div class="game-name">TETRIS</div>
+          </label>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

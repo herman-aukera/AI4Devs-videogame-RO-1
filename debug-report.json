@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-07-07T09:09:55.640Z",
+  "totalGames": 9,
+  "issuesFound": 2,
+  "issues": [
+    "breakout-GG: CSS missing css-tokens.css import",
+    "fruit-catcher-GG: CSS missing css-tokens.css import"
+  ],
+  "gamesChecked": [
+    "snake-GG",
+    "breakout-GG",
+    "fruit-catcher-GG",
+    "pacman-GG",
+    "mspacman-GG",
+    "tetris-GG",
+    "asteroids-GG",
+    "space-invaders-GG",
+    "pong-GG"
+  ]
+}

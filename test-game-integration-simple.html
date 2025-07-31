@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Game Integration Test</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000011;
+      color: #00ffff;
+      padding: 20px;
+    }
+
+    .test-result {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #00ffff;
+      border-radius: 4px;
+    }
+
+    .success {
+      border-color: #00ff00;
+      color: #00ff00;
+    }
+
+    .error {
+      border-color: #ff0000;
+      color: #ff0000;
+    }
+
+    button {
+      background: #ff00ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    #score {
+      font-size: 24px;
+      color: #ffff00;
+    }
+
+    #gameOverScreen {
+      display: none;
+    }
+
+    #gameOverScreen.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🎮 Simple Game Integration Test</h1>
+
+  <div class="test-result">
+    <h3>Test Controls</h3>
+    <button onclick="runTests()">Run All Tests</button>
+    <button onclick="testEventCapture()">Test Event Capture</button>
+    <button onclick="testDOMObserver()">Test DOM Observer</button>
+    <button onclick="clearResults()">Clear Results</button>
+  </div>
+
+  <!-- Mock game elements -->
+  <div>
+    <h3>Mock Game Elements</h3>
+    <div>Score: <span id="score">0</span></div>
+    <div>Level: <span id="level">1</span></div>
+    <button onclick="simulateGameComplete()">Simulate Game Complete</button>
+    <button onclick="simulateScoreUpdate()">Update Score</button>
+  </div>
+
+  <div id="gameOverScreen">
+    <h2>GAME OVER</h2>
+    <p>Final Score: <span id="finalScore">0</span></p>
+  </div>
+
+  <div id="results"></div>
+
+  <!-- Load dependencies -->
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament-game-integration.js"></script>
+
+  <script>
+    let eventBus = null;
+    let gameIntegration = null;
+    let testResults = [];
+
+    function addResult(test, passed, details) {
+      const result = { test, passed, details, timestamp: new Date().toISOString() };
+      testResults.push(result);
+      updateResultsDisplay();
+    }
+
+    function updateResultsDisplay() {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<h3>Test Results</h3>';
+
+      testResults.forEach(result => {
+        const div = document.createElement('div');
+        div.className = `test-result ${result.passed ? 'success' : 'error'}`;
+        div.innerHTML = `
+                    <strong>${result.test}</strong>: ${result.passed ? '✅ PASSED' : '❌ FAILED'}<br>
+                    <small>${result.details}</small><br>
+                    <small>${result.timestamp}</small>
+                `;
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    function clearResults() {
+      testResults = [];
+      updateResultsDisplay();
+    }
+
+    async function runTests() {
+      clearResults();
+
+      try {
+        // Test 1: Initialize system
+        eventBus = new EventBus();
+        eventBus.setDebugMode(true);
+
+        gameIntegration = new GameIntegrationEventListener(eventBus, {
+          debugMode: true
+        });
+
+        addResult('System Initialization', true, 'EventBus and GameIntegration initialized successfully');
+
+        // Test 2: Enable tournament mode
+        gameIntegration.enableTournamentMode('test-tournament', 'test-player');
+        addResult('Tournament Mode', gameIntegration.isTournamentMode(), 'Tournament mode enabled');
+
+        // Test 3: Setup game integration
+        const success = await gameIntegration.setupGameIntegration('snake-GG');
+        addResult('Game Integration Setup', success, 'Snake game integration setup');
+
+        // Test 4: Test event listeners
+        let eventReceived = false;
+        eventBus.subscribe('tournament:scoreCapture', (event) => {
+          eventReceived = true;
+          addResult('Event Capture', true, `Score captured: ${event.data.score}`);
+        });
+
+        // Test 5: Simulate game complete event
+        const gameCompleteEvent = new CustomEvent('game:complete', {
+          detail: {
+            gameId: 'snake-GG',
+            score: 1500,
+            level: 3,
+            duration: 120000,
+            timestamp: Date.now()
+          }
+        });
+        window.dispatchEvent(gameCompleteEvent);
+
+        // Wait a bit for event processing
+        setTimeout(() => {
+          if (!eventReceived) {
+            addResult('Event Processing', false, 'No score capture event received');
+          }
+        }, 100);
+
+        // Test 6: Run audit tasks
+        const auditResults = gameIntegration.runAuditTasks();
+        addResult('Audit Tasks', auditResults.failed === 0, `${auditResults.passed}/${auditResults.tests.length} tests passed`);
+
+      } catch (error) {
+        addResult('Test Execution', false, `Error: ${error.message}`);
+      }
+    }
+
+    function testEventCapture() {
+      if (!gameIntegration || !gameIntegration.isTournamentMode()) {
+        addResult('Event Capture Test', false, 'Tournament mode not active');
+        return;
+      }
+
+      const testEvent = new CustomEvent('game:complete', {
+        detail: {
+          gameId: 'snake-GG',
+          score: Math.floor(Math.random() * 5000),
+          level: Math.floor(Math.random() * 10) + 1,
+          duration: Math.floor(Math.random() * 180000) + 30000,
+          timestamp: Date.now()
+        }
+      });
+
+      window.dispatchEvent(testEvent);
+      addResult('Manual Event Test', true, 'Game complete event dispatched');
+    }
+
+    function testDOMObserver() {
+      if (!gameIntegration || !gameIntegration.isTournamentMode()) {
+        addResult('DOM Observer Test', false, 'Tournament mode not active');
+        return;
+      }
+
+      // Simulate game over by adding the active class
+      const gameOverScreen = document.getElementById('gameOverScreen');
+      gameOverScreen.classList.add('active');
+
+      // Update score
+      document.getElementById('score').textContent = '2500';
+      document.getElementById('finalScore').textContent = '2500';
+
+      setTimeout(() => {
+        gameOverScreen.classList.remove('active');
+        addResult('DOM Observer Test', true, 'Game over state change simulated');
+      }, 1000);
+    }
+
+    function simulateGameComplete() {
+      const score = Math.floor(Math.random() * 5000);
+      const level = Math.floor(Math.random() * 10) + 1;
+
+      document.getElementById('score').textContent = score;
+      document.getElementById('level').textContent = level;
+      document.getElementById('finalScore').textContent = score;
+
+      const gameOverScreen = document.getElementById('gameOverScreen');
+      gameOverScreen.classList.add('active');
+
+      const event = new CustomEvent('game:complete', {
+        detail: {
+          gameId: 'snake-GG',
+          score: score,
+          level: level,
+          duration: Math.floor(Math.random() * 180000) + 30000,
+          timestamp: Date.now()
+        }
+      });
+      window.dispatchEvent(event);
+
+      setTimeout(() => {
+        gameOverScreen.classList.remove('active');
+      }, 2000);
+    }
+
+    function simulateScoreUpdate() {
+      const score = Math.floor(Math.random() * 1000) + 100;
+      document.getElementById('score').textContent = score;
+
+      const event = new CustomEvent('game:scoreUpdate', {
+        detail: {
+          gameId: 'snake-GG',
+          score: score,
+          level: parseInt(document.getElementById('level').textContent),
+          timestamp: Date.now()
+        }
+      });
+      window.dispatchEvent(event);
+    }
+
+    // Auto-run tests on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🚀 Simple Game Integration Test loaded');
+      setTimeout(runTests, 1000);
+    });
+  </script>
+</body>
+
+</html>

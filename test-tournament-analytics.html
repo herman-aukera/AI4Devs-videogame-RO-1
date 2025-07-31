@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Tournament Analytics System</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #00ffff;
+      padding: 20px;
+    }
+
+    .test-section {
+      border: 2px solid #00ffff;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .test-result {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .test-pass {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+    }
+
+    .test-fail {
+      background: rgba(255, 0, 0, 0.2);
+      border: 1px solid #ff0000;
+      color: #ff0000;
+    }
+
+    .btn {
+      background: transparent;
+      border: 2px solid #00ffff;
+      color: #00ffff;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background: #00ffff;
+      color: #000;
+    }
+
+    .analytics-display {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #00ffff;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      font-size: 12px;
+    }
+
+    .chart-container {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffff;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+      min-height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>📊 Tournament Analytics System Test</h1>
+
+  <div class="test-section">
+    <h2>Test Controls</h2>
+    <button class="btn" onclick="runAllTests()">Run All Tests</button>
+    <button class="btn" onclick="createTestData()">Create Test Data</button>
+    <button class="btn" onclick="testPlayerAnalytics()">Test Player Analytics</button>
+    <button class="btn" onclick="testGameAnalytics()">Test Game Analytics</button>
+    <button class="btn" onclick="testComparativeAnalytics()">Test Comparative Analytics</button>
+    <button class="btn" onclick="clearTestData()">Clear Test Data</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Results</h2>
+    <div id="testResults"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Analytics Display</h2>
+    <div id="analyticsDisplay"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Chart Visualization Test</h2>
+    <div id="chartContainer" class="chart-container">
+      Charts would be rendered here with Chart.js in a real implementation
+    </div>
+  </div>
+
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-history.js"></script>
+  <script src="shared-tournament-analytics.js"></script>
+  <script>
+    let historyManager;
+    let analyticsManager;
+    let testResults = [];
+
+    // Initialize test environment
+    function initializeTests() {
+      try {
+        historyManager = new TournamentHistoryManager();
+        analyticsManager = new TournamentAnalyticsManager(historyManager);
+        addTestResult('Initialization', 'Tournament Analytics Manager initialized successfully', true);
+      } catch (error) {
+        addTestResult('Initialization', `Failed to initialize: ${error.message}`, false);
+      }
+    }
+
+    // Run all tests
+    function runAllTests() {
+      testResults = [];
+      document.getElementById('testResults').innerHTML = '';
+      document.getElementById('analyticsDisplay').innerHTML = '';
+
+      initializeTests();
+      createTestData();
+      testPlayerAnalytics();
+      testGameAnalytics();
+      testComparativeAnalytics();
+      testChartGeneration();
+      testCacheSystem();
+
+      displayTestSummary();
+    }
+
+    // Create comprehensive test tournament data
+    function createTestData() {
+      try {
+        const testTournaments = [
+          {
+            id: 'analytics-test-001',
+            name: 'Snake Masters Championship',
+            games: ['snake-GG', 'tetris-GG'],
+            format: 'elimination',
+            participants: [
+              {
+                id: 'alice',
+                name: 'Alice',
+                rank: 1,
+                totalScore: 250,
+                scores: { 'snake-GG': 1500, 'tetris-GG': 25000 },
+                normalizedScores: { 'snake-GG': 0.8, 'tetris-GG': 0.9 },
+                gamesCompleted: ['snake-GG', 'tetris-GG']
+              },
+              {
+                id: 'bob',
+                name: 'Bob',
+                rank: 2,
+                totalScore: 200,
+                scores: { 'snake-GG': 1200, 'tetris-GG': 20000 },
+                normalizedScores: { 'snake-GG': 0.6, 'tetris-GG': 0.7 },
+                gamesCompleted: ['snake-GG', 'tetris-GG']
+              },
+              {
+                id: 'charlie',
+                name: 'Charlie',
+                rank: 3,
+                totalScore: 150,
+                scores: { 'snake-GG': 800, 'tetris-GG': 15000 },
+                normalizedScores: { 'snake-GG': 0.4, 'tetris-GG': 0.5 },
+                gamesCompleted: ['snake-GG', 'tetris-GG']
+              }
+            ],
+            status: 'completed',
+            startDate: new Date(Date.now() - 7200000).toISOString(),
+            endDate: new Date(Date.now() - 3600000).toISOString(),
+            settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+          },
+          {
+            id: 'analytics-test-002',
+            name: 'Arcade Legends Tournament',
+            games: ['pacman-GG', 'breakout-GG', 'space-invaders-GG'],
+            format: 'round-robin',
+            participants: [
+              {
+                id: 'alice',
+                name: 'Alice',
+                rank: 2,
+                totalScore: 280,
+                scores: { 'pacman-GG': 8500, 'breakout-GG': 12000, 'space-invaders-GG': 15000 },
+                normalizedScores: { 'pacman-GG': 0.7, 'breakout-GG': 0.8, 'space-invaders-GG': 0.9 },
+                gamesCompleted: ['pacman-GG', 'breakout-GG', 'space-invaders-GG']
+              },
+              {
+                id: 'bob',
+                name: 'Bob',
+                rank: 1,
+                totalScore: 320,
+                scores: { 'pacman-GG': 9500, 'breakout-GG': 14000, 'space-invaders-GG': 18000 },
+                normalizedScores: { 'pacman-GG': 0.9, 'breakout-GG': 0.9, 'space-invaders-GG': 1.0 },
+                gamesCompleted: ['pacman-GG', 'breakout-GG', 'space-invaders-GG']
+              },
+              {
+                id: 'diana',
+                name: 'Diana',
+                rank: 3,
+                totalScore: 220,
+                scores: { 'pacman-GG': 7000, 'breakout-GG': 10000, 'space-invaders-GG': 12000 },
+                normalizedScores: { 'pacman-GG': 0.6, 'breakout-GG': 0.7, 'space-invaders-GG': 0.8 },
+                gamesCompleted: ['pacman-GG', 'breakout-GG', 'space-invaders-GG']
+              }
+            ],
+            status: 'completed',
+            startDate: new Date(Date.now() - 14400000).toISOString(),
+            endDate: new Date(Date.now() - 7200000).toISOString(),
+            settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+          },
+          {
+            id: 'analytics-test-003',
+            name: 'Retro Gaming Championship',
+            games: ['snake-GG', 'pacman-GG', 'tetris-GG', 'pong-GG'],
+            format: 'round-robin',
+            participants: [
+              {
+                id: 'alice',
+                name: 'Alice',
+                rank: 1,
+                totalScore: 400,
+                scores: { 'snake-GG': 1800, 'pacman-GG': 9000, 'tetris-GG': 30000, 'pong-GG': 25 },
+                normalizedScores: { 'snake-GG': 0.9, 'pacman-GG': 0.8, 'tetris-GG': 1.0, 'pong-GG': 0.9 },
+                gamesCompleted: ['snake-GG', 'pacman-GG', 'tetris-GG', 'pong-GG']
+              },
+              {
+                id: 'bob',
+                name: 'Bob',
+                rank: 3,
+                totalScore: 300,
+                scores: { 'snake-GG': 1000, 'pacman-GG': 7500, 'tetris-GG': 22000, 'pong-GG': 18 },
+                normalizedScores: { 'snake-GG': 0.5, 'pacman-GG': 0.7, 'tetris-GG': 0.7, 'pong-GG': 0.6 },
+                gamesCompleted: ['snake-GG', 'pacman-GG', 'tetris-GG', 'pong-GG']
+              },
+              {
+                id: 'charlie',
+                name: 'Charlie',
+                rank: 4,
+                totalScore: 250,
+                scores: { 'snake-GG': 900, 'pacman-GG': 6000, 'tetris-GG': 18000, 'pong-GG': 15 },
+                normalizedScores: { 'snake-GG': 0.4, 'pacman-GG': 0.5, 'tetris-GG': 0.6, 'pong-GG': 0.5 },
+                gamesCompleted: ['snake-GG', 'pacman-GG', 'tetris-GG', 'pong-GG']
+              },
+              {
+                id: 'eve',
+                name: 'Eve',
+                rank: 2,
+                totalScore: 350,
+                scores: { 'snake-GG': 1600, 'pacman-GG': 8500, 'tetris-GG': 28000, 'pong-GG': 22 },
+                normalizedScores: { 'snake-GG': 0.8, 'pacman-GG': 0.8, 'tetris-GG': 0.9, 'pong-GG': 0.8 },
+                gamesCompleted: ['snake-GG', 'pacman-GG', 'tetris-GG', 'pong-GG']
+              }
+            ],
+            status: 'completed',
+            startDate: new Date(Date.now() - 21600000).toISOString(),
+            endDate: new Date(Date.now() - 14400000).toISOString(),
+            settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+          }
+        ];
+
+        testTournaments.forEach(tournament => {
+          historyManager.onTournamentCompleted(tournament);
+        });
+
+        addTestResult('Test Data Creation', `Created ${testTournaments.length} test tournaments with comprehensive data`, true);
+
+        // Display created data
+        displayAnalytics('Test Data Summary', {
+          tournaments: testTournaments.length,
+          totalParticipants: new Set(testTournaments.flatMap(t => t.participants.map(p => p.id))).size,
+          gamesIncluded: [...new Set(testTournaments.flatMap(t => t.games))],
+          formats: [...new Set(testTournaments.map(t => t.format))]
+        });
+
+      } catch (error) {
+        addTestResult('Test Data Creation', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test player analytics functionality
+    function testPlayerAnalytics() {
+      try {
+        // Test Alice's stats (should have good performance)
+        const aliceStats = analyticsManager.calculatePlayerStats('alice');
+        const aliceStatsValid = aliceStats && !aliceStats.error && aliceStats.totalTournaments > 0;
+
+        addTestResult('Player Analytics - Alice', 'Player statistics calculated successfully', aliceStatsValid);
+
+        if (aliceStatsValid) {
+          displayAnalytics('Alice Player Stats', aliceStats);
+        }
+
+        // Test Bob's stats
+        const bobStats = analyticsManager.calculatePlayerStats('bob');
+        const bobStatsValid = bobStats && !bobStats.error && bobStats.totalTournaments > 0;
+
+        addTestResult('Player Analytics - Bob', 'Player statistics calculated successfully', bobStatsValid);
+
+        // Test improvement trend calculation
+        const hasTrendData = aliceStats.improvementTrend && aliceStats.improvementTrend.dataPoints;
+        addTestResult('Improvement Trend Analysis', 'Improvement trend calculated successfully', hasTrendData);
+
+        // Test recent performance calculation
+        const hasRecentPerformance = aliceStats.recentPerformance && aliceStats.recentPerformance.tournaments > 0;
+        addTestResult('Recent Performance Analysis', 'Recent performance calculated successfully', hasRecentPerformance);
+
+        // Test game-specific stats
+        const hasGameStats = aliceStats.gameStats && Object.keys(aliceStats.gameStats).length > 0;
+        addTestResult('Game-Specific Statistics', 'Game-specific stats calculated successfully', hasGameStats);
+
+        // Test recommendations generation
+        const hasRecommendations = aliceStats.recommendations && Array.isArray(aliceStats.recommendations);
+        addTestResult('Player Recommendations', 'Player recommendations generated successfully', hasRecommendations);
+
+      } catch (error) {
+        addTestResult('Player Analytics', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test game analytics functionality
+    function testGameAnalytics() {
+      try {
+        // Test Snake game analytics
+        const snakeAnalytics = analyticsManager.calculateGameAnalytics('snake-GG');
+        const snakeAnalyticsValid = snakeAnalytics && !snakeAnalytics.error && snakeAnalytics.totalTournaments > 0;
+
+        addTestResult('Game Analytics - Snake', 'Snake game analytics calculated successfully', snakeAnalyticsValid);
+
+        if (snakeAnalyticsValid) {
+          displayAnalytics('Snake Game Analytics', snakeAnalytics);
+        }
+
+        // Test Pac-Man game analytics
+        const pacmanAnalytics = analyticsManager.calculateGameAnalytics('pacman-GG');
+        const pacmanAnalyticsValid = pacmanAnalytics && !pacmanAnalytics.error && pacmanAnalytics.totalTournaments > 0;
+
+        addTestResult('Game Analytics - Pac-Man', 'Pac-Man game analytics calculated successfully', pacmanAnalyticsValid);
+
+        // Test top players calculation
+        const hasTopPlayers = snakeAnalytics.topPlayers && Array.isArray(snakeAnalytics.topPlayers) && snakeAnalytics.topPlayers.length > 0;
+        addTestResult('Top Players Calculation', 'Top players calculated successfully', hasTopPlayers);
+
+        // Test difficulty rating
+        const hasDifficultyRating = typeof snakeAnalytics.difficultyRating === 'number' && snakeAnalytics.difficultyRating >= 0;
+        addTestResult('Difficulty Rating', 'Difficulty rating calculated successfully', hasDifficultyRating);
+
+        // Test competitive balance
+        const hasCompetitiveBalance = typeof snakeAnalytics.competitiveBalance === 'number' && snakeAnalytics.competitiveBalance >= 0;
+        addTestResult('Competitive Balance', 'Competitive balance calculated successfully', hasCompetitiveBalance);
+
+      } catch (error) {
+        addTestResult('Game Analytics', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test comparative analytics functionality
+    function testComparativeAnalytics() {
+      try {
+        const comparativeAnalytics = analyticsManager.calculateComparativeGameAnalytics();
+        const comparativeValid = comparativeAnalytics && !comparativeAnalytics.error && comparativeAnalytics.totalGames > 0;
+
+        addTestResult('Comparative Analytics', 'Comparative game analytics calculated successfully', comparativeValid);
+
+        if (comparativeValid) {
+          displayAnalytics('Comparative Game Analytics', comparativeAnalytics);
+        }
+
+        // Test game rankings
+        const hasPopularityRanking = comparativeAnalytics.gameRankings && comparativeAnalytics.gameRankings.byPopularity && comparativeAnalytics.gameRankings.byPopularity.length > 0;
+        addTestResult('Popularity Rankings', 'Game popularity rankings calculated successfully', hasPopularityRanking);
+
+        const hasCompetitivenessRanking = comparativeAnalytics.gameRankings && comparativeAnalytics.gameRankings.byCompetitiveness && comparativeAnalytics.gameRankings.byCompetitiveness.length > 0;
+        addTestResult('Competitiveness Rankings', 'Game competitiveness rankings calculated successfully', hasCompetitivenessRanking);
+
+        // Test insights generation
+        const hasInsights = comparativeAnalytics.insights && Array.isArray(comparativeAnalytics.insights) && comparativeAnalytics.insights.length > 0;
+        addTestResult('Comparative Insights', 'Comparative insights generated successfully', hasInsights);
+
+      } catch (error) {
+        addTestResult('Comparative Analytics', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test chart generation functionality
+    function testChartGeneration() {
+      try {
+        // Test player performance chart
+        const playerChart = analyticsManager.generatePlayerPerformanceChart('alice');
+        const playerChartValid = playerChart && !playerChart.error && playerChart.type && playerChart.data;
+
+        addTestResult('Player Performance Chart', 'Player performance chart generated successfully', playerChartValid);
+
+        if (playerChartValid) {
+          displayAnalytics('Player Performance Chart Data', playerChart);
+        }
+
+        // Test game popularity chart
+        const popularityChart = analyticsManager.generateGamePopularityChart();
+        const popularityChartValid = popularityChart && !popularityChart.error && popularityChart.type && popularityChart.data;
+
+        addTestResult('Game Popularity Chart', 'Game popularity chart generated successfully', popularityChartValid);
+
+        // Test retro chart options
+        const chartOptions = analyticsManager.getRetroChartOptions();
+        const hasRetroStyling = chartOptions && chartOptions.plugins && chartOptions.scales;
+
+        addTestResult('Retro Chart Styling', 'Retro chart options configured successfully', hasRetroStyling);
+
+      } catch (error) {
+        addTestResult('Chart Generation', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test cache system functionality
+    function testCacheSystem() {
+      try {
+        // Clear cache first
+        analyticsManager.clearCache();
+
+        // First call should calculate and cache
+        const start1 = performance.now();
+        const stats1 = analyticsManager.calculatePlayerStats('alice');
+        const time1 = performance.now() - start1;
+
+        // Second call should use cache (should be faster)
+        const start2 = performance.now();
+        const stats2 = analyticsManager.calculatePlayerStats('alice');
+        const time2 = performance.now() - start2;
+
+        const cacheWorking = stats1 && stats2 && JSON.stringify(stats1) === JSON.stringify(stats2) && time2 < time1;
+
+        addTestResult('Cache System', `Cache system working (${time1.toFixed(2)}ms vs ${time2.toFixed(2)}ms)`, cacheWorking);
+
+        // Test cache expiration (would need to mock time for full test)
+        const hasCacheTimeout = analyticsManager.cacheTimeout > 0;
+        addTestResult('Cache Timeout', 'Cache timeout configured correctly', hasCacheTimeout);
+
+      } catch (error) {
+        addTestResult('Cache System', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Clear test data
+    function clearTestData() {
+      try {
+        historyManager.historyCache.clear();
+        analyticsManager.clearCache();
+        historyManager.storage.removeItem('tournament-history');
+        historyManager.storage.initializeStorage();
+
+        document.getElementById('analyticsDisplay').innerHTML = '';
+
+        addTestResult('Test Data Cleanup', 'Test data and caches cleared successfully', true);
+      } catch (error) {
+        addTestResult('Test Data Cleanup', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Display analytics data
+    function displayAnalytics(title, data) {
+      const displayDiv = document.getElementById('analyticsDisplay');
+      const analyticsDiv = document.createElement('div');
+      analyticsDiv.className = 'analytics-display';
+      analyticsDiv.innerHTML = `<strong>${title}:</strong>\n${JSON.stringify(data, null, 2)}`;
+      displayDiv.appendChild(analyticsDiv);
+    }
+
+    // Add test result
+    function addTestResult(testName, message, passed) {
+      testResults.push({ testName, message, passed });
+
+      const resultDiv = document.createElement('div');
+      resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+      resultDiv.innerHTML = `<strong>${testName}:</strong> ${message} ${passed ? '✅' : '❌'}`;
+
+      document.getElementById('testResults').appendChild(resultDiv);
+    }
+
+    // Display test summary
+    function displayTestSummary() {
+      const totalTests = testResults.length;
+      const passedTests = testResults.filter(r => r.passed).length;
+      const failedTests = totalTests - passedTests;
+
+      const summaryDiv = document.createElement('div');
+      summaryDiv.className = 'test-result';
+      summaryDiv.style.background = failedTests === 0 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 255, 0, 0.2)';
+      summaryDiv.style.border = failedTests === 0 ? '2px solid #00ff00' : '2px solid #ffff00';
+      summaryDiv.style.color = failedTests === 0 ? '#00ff00' : '#ffff00';
+      summaryDiv.innerHTML = `
+                <strong>Analytics Test Summary:</strong><br>
+                Total Tests: ${totalTests}<br>
+                Passed: ${passedTests}<br>
+                Failed: ${failedTests}<br>
+                Success Rate: ${((passedTests / totalTests) * 100).toFixed(1)}%
+            `;
+
+      document.getElementById('testResults').appendChild(summaryDiv);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('📊 Tournament Analytics Test Page Loaded');
+    });
+  </script>
+</body>
+
+</html>

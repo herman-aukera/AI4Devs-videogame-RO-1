@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament System Comprehensive Audit</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #00ff00;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #00ffff;
+      text-align: center;
+      text-shadow: 0 0 10px #00ffff;
+      margin-bottom: 30px;
+    }
+
+    .audit-controls {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .audit-button {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      border: none;
+      color: #000;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .audit-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff00ff;
+    }
+
+    .audit-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .status-pass {
+      background: #00ff00;
+    }
+
+    .status-fail {
+      background: #ff0000;
+    }
+
+    .status-running {
+      background: #ffff00;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .results-container {
+      margin-top: 30px;
+    }
+
+    .results-section {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #00ffff;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    .results-section h2 {
+      color: #ff00ff;
+      margin-top: 0;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .test-item {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #555;
+      border-radius: 3px;
+      padding: 10px;
+    }
+
+    .test-item.pass {
+      border-color: #00ff00;
+      background: rgba(0, 255, 0, 0.1);
+    }
+
+    .test-item.fail {
+      border-color: #ff0000;
+      background: rgba(255, 0, 0, 0.1);
+    }
+
+    .test-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .test-details {
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .performance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .performance-item {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #555;
+      border-radius: 3px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .performance-item.pass {
+      border-color: #00ff00;
+    }
+
+    .performance-item.fail {
+      border-color: #ff0000;
+    }
+
+    .performance-metric {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .performance-label {
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .performance-requirement {
+      font-size: 10px;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    .game-integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .game-item {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #555;
+      border-radius: 3px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .game-item.pass {
+      border-color: #00ff00;
+    }
+
+    .game-item.fail {
+      border-color: #ff0000;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .stat-item {
+      background: rgba(255, 0, 255, 0.1);
+      border: 1px solid #ff00ff;
+      border-radius: 3px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #00ffff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #ccc;
+      margin-top: 5px;
+    }
+
+    .recommendations {
+      background: rgba(255, 255, 0, 0.1);
+      border: 1px solid #ffff00;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .recommendations h3 {
+      color: #ffff00;
+      margin-top: 0;
+    }
+
+    .recommendations ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .recommendations li {
+      margin-bottom: 5px;
+    }
+
+    .console-output {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+
+    .loading {
+      text-align: center;
+      color: #ffff00;
+      font-size: 18px;
+      margin: 20px 0;
+    }
+
+    .error {
+      color: #ff0000;
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid #ff0000;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🏆 Tournament System Comprehensive Audit</h1>
+
+    <div class="audit-controls">
+      <button id="runAuditBtn" class="audit-button">
+        <span class="status-indicator" id="auditStatus"></span>
+        Run Comprehensive Audit
+      </button>
+    </div>
+
+    <div id="loadingIndicator" class="loading" style="display: none;">
+      🔄 Running comprehensive audit tasks...
+    </div>
+
+    <div id="errorContainer" style="display: none;"></div>
+
+    <div id="resultsContainer" class="results-container" style="display: none;">
+      <!-- Core Tests Section -->
+      <div class="results-section">
+        <h2>🧪 Core Functionality Tests</h2>
+        <div id="coreTestsGrid" class="test-grid"></div>
+      </div>
+
+      <!-- Performance Benchmarks Section -->
+      <div class="results-section">
+        <h2>📊 Performance Benchmarks</h2>
+        <div id="performanceGrid" class="performance-grid"></div>
+      </div>
+
+      <!-- Game Integration Section -->
+      <div class="results-section">
+        <h2>🎮 Game Integration Status</h2>
+        <div id="gameIntegrationInfo"></div>
+        <div id="gameIntegrationGrid" class="game-integration-grid"></div>
+      </div>
+
+      <!-- Memory Usage Section -->
+      <div class="results-section">
+        <h2>🧠 Memory Usage Analysis</h2>
+        <div id="memoryUsageInfo"></div>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="results-section">
+        <h2>📋 Audit Summary</h2>
+        <div id="summaryStats" class="summary-stats"></div>
+        <div id="recommendations" class="recommendations"></div>
+      </div>
+
+      <!-- Console Output Section -->
+      <div class="results-section">
+        <h2>💻 Console Output</h2>
+        <div id="consoleOutput" class="console-output"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load tournament system dependencies -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament-manager.js"></script>
+  <script src="shared-tournament-audit-system.js"></script>
+
+  <script>
+    class AuditUI {
+      constructor() {
+        this.auditSystem = null;
+        this.consoleOutput = [];
+        this.originalConsole = {};
+
+        this.initializeUI();
+        this.setupConsoleCapture();
+      }
+
+      initializeUI() {
+        const runButton = document.getElementById('runAuditBtn');
+        runButton.addEventListener('click', () => this.runAudit());
+      }
+
+      setupConsoleCapture() {
+        // Capture console output
+        ['log', 'error', 'warn', 'info'].forEach(method => {
+          this.originalConsole[method] = console[method];
+          console[method] = (...args) => {
+            this.consoleOutput.push(`[${method.toUpperCase()}] ${args.join(' ')}`);
+            this.originalConsole[method](...args);
+            this.updateConsoleOutput();
+          };
+        });
+      }
+
+      updateConsoleOutput() {
+        const consoleElement = document.getElementById('consoleOutput');
+        if (consoleElement) {
+          consoleElement.textContent = this.consoleOutput.join('\n');
+          consoleElement.scrollTop = consoleElement.scrollHeight;
+        }
+      }
+
+      async runAudit() {
+        const runButton = document.getElementById('runAuditBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        const auditStatus = document.getElementById('auditStatus');
+
+        try {
+          // Reset UI
+          runButton.disabled = true;
+          auditStatus.className = 'status-indicator status-running';
+          loadingIndicator.style.display = 'block';
+          resultsContainer.style.display = 'none';
+          errorContainer.style.display = 'none';
+          this.consoleOutput = [];
+
+          // Initialize audit system
+          this.auditSystem = new TournamentAuditSystem();
+
+          // Run audit with a small delay to show loading
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          const results = this.auditSystem.runAuditTasks();
+
+          // Display results
+          this.displayResults(results);
+
+          // Update status
+          auditStatus.className = `status-indicator ${results.summary.overallStatus === 'PASS' ? 'status-pass' : 'status-fail'}`;
+          loadingIndicator.style.display = 'none';
+          resultsContainer.style.display = 'block';
+
+        } catch (error) {
+          console.error('Audit failed:', error);
+          this.showError(error);
+          auditStatus.className = 'status-indicator status-fail';
+          loadingIndicator.style.display = 'none';
+        } finally {
+          runButton.disabled = false;
+        }
+      }
+
+      displayResults(results) {
+        this.displayCoreTests(results.tests);
+        this.displayPerformanceBenchmarks(results.performance);
+        this.displayGameIntegration(results.integration);
+        this.displayMemoryUsage(results.memory);
+        this.displaySummary(results.summary);
+      }
+
+      displayCoreTests(tests) {
+        const grid = document.getElementById('coreTestsGrid');
+        grid.innerHTML = '';
+
+        tests.forEach(test => {
+          const testItem = document.createElement('div');
+          testItem.className = `test-item ${test.passed ? 'pass' : 'fail'}`;
+          testItem.innerHTML = `
+                        <div class="test-name">${test.passed ? '✅' : '❌'} ${test.name}</div>
+                        <div class="test-details">${test.details}</div>
+                    `;
+          grid.appendChild(testItem);
+        });
+      }
+
+      displayPerformanceBenchmarks(performance) {
+        const grid = document.getElementById('performanceGrid');
+        grid.innerHTML = '';
+
+        const benchmarks = [
+          { key: 'tournamentCreation', label: 'Tournament Creation', unit: 'ms' },
+          { key: 'scoreUpdate', label: 'Score Update', unit: 'ms' },
+          { key: 'leaderboardGeneration', label: 'Leaderboard Generation', unit: 'ms' },
+          { key: 'rankingCalculation', label: 'Ranking Calculation', unit: 'ms' },
+          { key: 'storageOperations', label: 'Storage Operations', unit: 'ms' }
+        ];
+
+        benchmarks.forEach(benchmark => {
+          const data = performance[benchmark.key];
+          if (data && typeof data.avgTime !== 'undefined') {
+            const perfItem = document.createElement('div');
+            perfItem.className = `performance-item ${data.passed ? 'pass' : 'fail'}`;
+            perfItem.innerHTML = `
+                            <div class="performance-metric">${data.avgTime}${benchmark.unit}</div>
+                            <div class="performance-label">${benchmark.label}</div>
+                            <div class="performance-requirement">Requirement: < ${data.requirement}${benchmark.unit}</div>
+                        `;
+            grid.appendChild(perfItem);
+          }
+        });
+      }
+
+      displayGameIntegration(integration) {
+        const infoDiv = document.getElementById('gameIntegrationInfo');
+        const grid = document.getElementById('gameIntegrationGrid');
+
+        infoDiv.innerHTML = `
+                    <p><strong>Total Games:</strong> ${integration.totalGames}</p>
+                    <p><strong>Passed:</strong> ${integration.passedGames}</p>
+                    <p><strong>Success Rate:</strong> ${integration.successRate}</p>
+                `;
+
+        grid.innerHTML = '';
+
+        Object.entries(integration.gameResults || {}).forEach(([gameId, result]) => {
+          const gameItem = document.createElement('div');
+          gameItem.className = `game-item ${result.passed ? 'pass' : 'fail'}`;
+          gameItem.innerHTML = `
+                        <div>${result.passed ? '✅' : '❌'}</div>
+                        <div><strong>${gameId}</strong></div>
+                        <div style="font-size: 10px; color: #ccc;">
+                            ${result.passed ? 'Integration OK' : result.error}
+                        </div>
+                    `;
+          grid.appendChild(gameItem);
+        });
+      }
+
+      displayMemoryUsage(memory) {
+        const infoDiv = document.getElementById('memoryUsageInfo');
+
+        if (memory && memory.available) {
+          const initialMB = (memory.initialMemory / 1024 / 1024).toFixed(2);
+          const peakMB = (memory.peakMemory / 1024 / 1024).toFixed(2);
+          const finalMB = (memory.finalMemory / 1024 / 1024).toFixed(2);
+
+          infoDiv.innerHTML = `
+                        <p><strong>Initial Memory:</strong> ${initialMB} MB</p>
+                        <p><strong>Peak Memory:</strong> ${peakMB} MB</p>
+                        <p><strong>Final Memory:</strong> ${finalMB} MB</p>
+                        <p><strong>Memory Leak:</strong> ${memory.memoryLeak ? '❌ YES' : '✅ NO'}</p>
+                    `;
+        } else {
+          infoDiv.innerHTML = `
+                        <p><em>Memory monitoring not available in this environment</em></p>
+                    `;
+        }
+      }
+
+      displaySummary(summary) {
+        const statsGrid = document.getElementById('summaryStats');
+        const recommendationsDiv = document.getElementById('recommendations');
+
+        statsGrid.innerHTML = `
+                    <div class="stat-item">
+                        <div class="stat-value">${summary.totalTests}</div>
+                        <div class="stat-label">Total Tests</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${summary.passRate}</div>
+                        <div class="stat-label">Pass Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${summary.gameIntegrationRate}</div>
+                        <div class="stat-label">Game Integration</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" style="color: ${summary.overallStatus === 'PASS' ? '#00ff00' : '#ff0000'}">
+                            ${summary.overallStatus}
+                        </div>
+                        <div class="stat-label">Overall Status</div>
+                    </div>
+                `;
+
+        recommendationsDiv.innerHTML = `
+                    <h3>💡 Recommendations</h3>
+                    <ul>
+                        ${summary.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                `;
+      }
+
+      showError(error) {
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.style.display = 'block';
+        errorContainer.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Audit Failed</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Stack:</strong></p>
+                        <pre>${error.stack}</pre>
+                    </div>
+                `;
+      }
+    }
+
+    // Initialize the audit UI when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new AuditUI();
+    });
+  </script>
+</body>
+
+</html>

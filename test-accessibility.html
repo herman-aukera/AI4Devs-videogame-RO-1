@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Test de Accesibilidad - Tournament System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tournament-creation.css">
+  <link rel="stylesheet" href="tournament-dashboard.css">
+  <style>
+    .test-section {
+      background: var(--bg-card);
+      border: 2px solid var(--primary-cyan);
+      border-radius: 12px;
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .test-title {
+      color: var(--primary-cyan);
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+    }
+
+    .test-item {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+
+    .test-description {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-2);
+    }
+
+    .test-element {
+      margin-top: var(--space-3);
+    }
+
+    .accessibility-info {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid var(--accent-green);
+      border-radius: 6px;
+      padding: var(--space-3);
+      margin-top: var(--space-3);
+      font-size: var(--text-xs);
+      color: var(--accent-green);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <main class="tournament-creation-container">
+    <header class="tournament-header">
+      <h1 class="neon-title">
+        <span class="title-line-1">TEST DE</span>
+        <span class="title-line-2">ACCESIBILIDAD</span>
+      </h1>
+      <p class="subtitle">🔍 Verificación de características de accesibilidad 🔍</p>
+    </header>
+
+    <!-- Skip Links Test -->
+    <section class="test-section">
+      <h2 class="test-title">🔗 Skip Links</h2>
+      <div class="test-item">
+        <p class="test-description">
+          Presiona Tab para ver los enlaces de salto al inicio de la página.
+        </p>
+        <div class="accessibility-info">
+          ✅ Los skip links permiten a usuarios de lectores de pantalla navegar rápidamente a secciones importantes.
+        </div>
+      </div>
+    </section>
+
+    <!-- Keyboard Navigation Test -->
+    <section class="test-section">
+      <h2 class="test-title">⌨️ Navegación por Teclado</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          Navegación con Tab y Shift+Tab entre elementos focusables:
+        </p>
+        <div class="test-element">
+          <button type="button" class="action-btn primary">Botón 1</button>
+          <button type="button" class="action-btn secondary">Botón 2</button>
+          <button type="button" class="action-btn danger">Botón 3</button>
+        </div>
+        <div class="accessibility-info">
+          ✅ Orden lógico de tabulación, indicadores de foco visibles, navegación circular.
+        </div>
+      </div>
+
+      <div class="test-item">
+        <p class="test-description">
+          Navegación con flechas en grid de juegos (simulado):
+        </p>
+        <div class="test-element">
+          <div class="games-grid" style="grid-template-columns: repeat(3, 1fr); gap: var(--space-2);">
+            <div class="game-option">
+              <input type="checkbox" id="test-game-1" name="testGames" value="game1">
+              <label for="test-game-1" class="game-label snake-theme" tabindex="0">
+                <div class="game-icon">🐍</div>
+                <div class="game-name">SNAKE</div>
+              </label>
+            </div>
+            <div class="game-option">
+              <input type="checkbox" id="test-game-2" name="testGames" value="game2">
+              <label for="test-game-2" class="game-label tetris-theme" tabindex="0">
+                <div class="game-icon">🧩</div>
+                <div class="game-name">TETRIS</div>
+              </label>
+            </div>
+            <div class="game-option">
+              <input type="checkbox" id="test-game-3" name="testGames" value="game3">
+              <label for="test-game-3" class="game-label pacman-theme" tabindex="0">
+                <div class="game-icon">🟡</div>
+                <div class="game-name">PAC-MAN</div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="accessibility-info">
+          ✅ Usa flechas para navegar, Enter/Espacio para seleccionar. Anuncios de estado para lectores de pantalla.
+        </div>
+      </div>
+    </section>
+
+    <!-- ARIA Labels and Roles Test -->
+    <section class="test-section">
+      <h2 class="test-title">🏷️ ARIA Labels y Roles</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          Estadísticas del torneo con roles y live regions:
+        </p>
+        <div class="test-element">
+          <div class="progress-stats" role="group" aria-labelledby="stats-title">
+            <h3 id="stats-title" class="sr-only">Estadísticas del Torneo</h3>
+            <div class="stat-item" role="img" aria-labelledby="participants-label" tabindex="0">
+              <div class="stat-value" aria-live="polite">8</div>
+              <div class="stat-label" id="participants-label">PARTICIPANTES</div>
+            </div>
+            <div class="stat-item" role="img" aria-labelledby="games-label" tabindex="0">
+              <div class="stat-value" aria-live="polite">3</div>
+              <div class="stat-label" id="games-label">JUEGOS</div>
+            </div>
+          </div>
+        </div>
+        <div class="accessibility-info">
+          ✅ Roles semánticos, etiquetas descriptivas, regiones live para actualizaciones dinámicas.
+        </div>
+      </div>
+
+      <div class="test-item">
+        <p class="test-description">
+          Barra de progreso accesible:
+        </p>
+        <div class="test-element">
+          <div class="progress-bar-container" role="progressbar" aria-labelledby="progress-label" aria-valuenow="65"
+            aria-valuemin="0" aria-valuemax="100" aria-describedby="progress-desc">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <div id="progress-label" class="sr-only">Progreso del Torneo</div>
+            <div id="progress-desc" class="sr-only">65% completado</div>
+          </div>
+        </div>
+        <div class="accessibility-info">
+          ✅ Role progressbar con valores aria-valuenow, aria-valuemin, aria-valuemax.
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Accessibility Test -->
+    <section class="test-section">
+      <h2 class="test-title">📝 Accesibilidad de Formularios</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          Campos de formulario con etiquetas y validación accesible:
+        </p>
+        <div class="test-element">
+          <form>
+            <div class="form-group">
+              <label for="test-tournament-name" class="form-label">
+                🎮 NOMBRE DEL TORNEO <span aria-label="obligatorio">*</span>
+              </label>
+              <input type="text" id="test-tournament-name" class="form-input" required aria-required="true"
+                aria-invalid="false" aria-describedby="test-name-help">
+              <div id="test-name-help" class="sr-only">
+                Ingresa un nombre descriptivo para tu torneo
+              </div>
+            </div>
+
+            <fieldset>
+              <legend class="form-label">⚔️ FORMATO DE TORNEO</legend>
+              <div class="format-selection" role="radiogroup">
+                <div class="format-option">
+                  <input type="radio" id="test-format-1" name="testFormat" value="round-robin">
+                  <label for="test-format-1" class="format-label">
+                    <div class="format-icon">🔄</div>
+                    <div class="format-info">
+                      <h3>TODOS CONTRA TODOS</h3>
+                      <p>Cada participante juega contra todos los demás</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="accessibility-info">
+          ✅ Labels asociadas, fieldsets con legends, indicadores de campos requeridos, aria-invalid para validación.
+        </div>
+      </div>
+    </section>
+
+    <!-- High Contrast and Reduced Motion Test -->
+    <section class="test-section">
+      <h2 class="test-title">🎨 Contraste Alto y Movimiento Reducido</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          El sistema detecta automáticamente las preferencias del usuario:
+        </p>
+        <div class="test-element">
+          <div id="contrast-status" class="accessibility-info">
+            Verificando preferencias del sistema...
+          </div>
+          <div id="motion-status" class="accessibility-info">
+            Verificando preferencias de movimiento...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen Reader Test -->
+    <section class="test-section">
+      <h2 class="test-title">🔊 Soporte para Lectores de Pantalla</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          Región live para anuncios dinámicos:
+        </p>
+        <div class="test-element">
+          <button type="button" id="test-announce-btn" class="action-btn primary">
+            Probar Anuncio
+          </button>
+          <div id="test-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+        </div>
+        <div class="accessibility-info">
+          ✅ Los cambios dinámicos se anuncian automáticamente a lectores de pantalla.
+        </div>
+      </div>
+    </section>
+
+    <!-- Touch and Mobile Accessibility -->
+    <section class="test-section">
+      <h2 class="test-title">📱 Accesibilidad Móvil y Táctil</h2>
+
+      <div class="test-item">
+        <p class="test-description">
+          Objetivos táctiles de mínimo 44px y gestos accesibles:
+        </p>
+        <div class="test-element">
+          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+            <button type="button" class="action-btn primary" style="min-height: 44px; min-width: 44px;">
+              ✓ 44px
+            </button>
+            <button type="button" class="action-btn secondary" style="min-height: 44px; min-width: 100px;">
+              Táctil OK
+            </button>
+            <button type="button" class="action-btn danger" style="min-height: 44px; min-width: 120px;">
+              Accesible
+            </button>
+          </div>
+        </div>
+        <div class="accessibility-info">
+          ✅ Objetivos táctiles de tamaño adecuado, retroalimentación háptica en dispositivos compatibles.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Test accessibility features
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check high contrast preference
+      const isHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+      const contrastStatus = document.getElementById('contrast-status');
+      contrastStatus.textContent = isHighContrast ?
+        '✅ Modo de alto contraste detectado y aplicado' :
+        '📱 Modo de contraste normal';
+
+      // Check reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const motionStatus = document.getElementById('motion-status');
+      motionStatus.textContent = prefersReducedMotion ?
+        '✅ Movimiento reducido detectado y aplicado' :
+        '🎬 Animaciones normales habilitadas';
+
+      // Test live region announcements
+      const announceBtn = document.getElementById('test-announce-btn');
+      const liveRegion = document.getElementById('test-live-region');
+      let announceCount = 0;
+
+      announceBtn.addEventListener('click', function () {
+        announceCount++;
+        liveRegion.textContent = `Anuncio de prueba número ${announceCount}. Los lectores de pantalla deberían leer este mensaje.`;
+
+        // Clear after announcement
+        setTimeout(() => {
+          liveRegion.textContent = '';
+        }, 2000);
+      });
+
+      // Add keyboard navigation for game grid
+      const gameLabels = document.querySelectorAll('.game-label[tabindex="0"]');
+      gameLabels.forEach((label, index) => {
+        label.addEventListener('keydown', function (e) {
+          let newIndex = index;
+
+          switch (e.key) {
+            case 'ArrowLeft':
+              e.preventDefault();
+              newIndex = index > 0 ? index - 1 : gameLabels.length - 1;
+              break;
+            case 'ArrowRight':
+              e.preventDefault();
+              newIndex = index < gameLabels.length - 1 ? index + 1 : 0;
+              break;
+            case 'Enter':
+            case ' ':
+              e.preventDefault();
+              const checkbox = label.previousElementSibling;
+              checkbox.checked = !checkbox.checked;
+
+              // Announce state change
+              const gameName = label.querySelector('.game-name').textContent;
+              const state = checkbox.checked ? 'seleccionado' : 'deseleccionado';
+              liveRegion.textContent = `${gameName} ${state}`;
+              setTimeout(() => liveRegion.textContent = '', 1000);
+              break;
+          }
+
+          if (newIndex !== index) {
+            gameLabels[newIndex].focus();
+
+            // Announce game name
+            const gameName = gameLabels[newIndex].querySelector('.game-name').textContent;
+            const checkbox = gameLabels[newIndex].previousElementSibling;
+            const state = checkbox.checked ? 'seleccionado' : 'no seleccionado';
+            liveRegion.textContent = `${gameName}, ${state}`;
+            setTimeout(() => liveRegion.textContent = '', 1000);
+          }
+        });
+      });
+
+      // Create stars background
+      const starsContainer = document.querySelector('.stars-bg');
+      const starCount = 30;
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        starsContainer.appendChild(star);
+      }
+    });
+  </script>
+</body>
+
+</html>

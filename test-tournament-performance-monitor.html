@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament Performance Monitor Test</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #00ff00;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #00ffff;
+      text-align: center;
+      text-shadow: 0 0 10px #00ffff;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .control-button {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      border: none;
+      color: #000;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .control-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff00ff;
+    }
+
+    .control-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-bar {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid #00ffff;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .status-indicator.active {
+      background: #00ff00;
+      animation: pulse 2s infinite;
+    }
+
+    .status-indicator.warning {
+      background: #ffff00;
+    }
+
+    .status-indicator.error {
+      background: #ff0000;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-panel {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #555;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    .dashboard-panel h2 {
+      color: #ff00ff;
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .metric-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #00ffff;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: #ccc;
+      margin-top: 3px;
+    }
+
+    .metric-item.good {
+      border-color: #00ff00;
+    }
+
+    .metric-item.warning {
+      border-color: #ffff00;
+    }
+
+    .metric-item.error {
+      border-color: #ff0000;
+    }
+
+    .chart-container {
+      height: 200px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #333;
+      border-radius: 3px;
+      margin-top: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-line {
+      position: absolute;
+      bottom: 0;
+      width: 2px;
+      background: #00ffff;
+      transition: height 0.3s ease;
+    }
+
+    .log-container {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+
+    .log-entry {
+      margin-bottom: 5px;
+      padding: 3px 0;
+    }
+
+    .log-entry.info {
+      color: #00ffff;
+    }
+
+    .log-entry.warn {
+      color: #ffff00;
+    }
+
+    .log-entry.error {
+      color: #ff0000;
+    }
+
+    .performance-test-controls {
+      background: rgba(255, 0, 255, 0.1);
+      border: 1px solid #ff00ff;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .performance-test-controls h3 {
+      color: #ff00ff;
+      margin-top: 0;
+    }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .test-button {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      padding: 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .test-button:hover {
+      background: rgba(0, 255, 0, 0.3);
+      transform: scale(1.02);
+    }
+
+    .recommendations {
+      background: rgba(255, 255, 0, 0.1);
+      border: 1px solid #ffff00;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .recommendations h3 {
+      color: #ffff00;
+      margin-top: 0;
+    }
+
+    .recommendations ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .recommendations li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🚀 Tournament Performance Monitor</h1>
+
+    <div class="controls">
+      <button id="startMonitoringBtn" class="control-button">Start Monitoring</button>
+      <button id="stopMonitoringBtn" class="control-button" disabled>Stop Monitoring</button>
+      <button id="generateReportBtn" class="control-button">Generate Report</button>
+      <button id="resetDataBtn" class="control-button">Reset Data</button>
+      <button id="exportDataBtn" class="control-button">Export Data</button>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-item">
+        <div id="monitoringStatus" class="status-indicator"></div>
+        <span>Real-time Monitoring</span>
+      </div>
+      <div class="status-item">
+        <div id="memoryStatus" class="status-indicator"></div>
+        <span>Memory Tracking</span>
+      </div>
+      <div class="status-item">
+        <div id="storageStatus" class="status-indicator"></div>
+        <span>Storage Optimization</span>
+      </div>
+      <div class="status-item">
+        <span id="overallHealth">System Health: UNKNOWN</span>
+      </div>
+    </div>
+
+    <div class="performance-test-controls">
+      <h3>🧪 Performance Test Suite</h3>
+      <div class="test-grid">
+        <div class="test-button" onclick="runPerformanceTest('tournamentCreation')">
+          Test Tournament Creation
+        </div>
+        <div class="test-button" onclick="runPerformanceTest('scoreUpdate')">
+          Test Score Updates
+        </div>
+        <div class="test-button" onclick="runPerformanceTest('leaderboardGeneration')">
+          Test Leaderboard Generation
+        </div>
+        <div class="test-button" onclick="runPerformanceTest('storageOperations')">
+          Test Storage Operations
+        </div>
+        <div class="test-button" onclick="runPerformanceTest('memoryStress')">
+          Memory Stress Test
+        </div>
+        <div class="test-button" onclick="runPerformanceTest('fullWorkflow')">
+          Full Tournament Workflow
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <div class="dashboard-panel">
+        <h2>📊 Operation Metrics</h2>
+        <div id="operationMetrics" class="metric-grid"></div>
+        <div id="operationChart" class="chart-container"></div>
+      </div>
+
+      <div class="dashboard-panel">
+        <h2>🧠 Memory Usage</h2>
+        <div id="memoryMetrics" class="metric-grid"></div>
+        <div id="memoryChart" class="chart-container"></div>
+      </div>
+
+      <div class="dashboard-panel">
+        <h2>💾 Storage Analysis</h2>
+        <div id="storageMetrics" class="metric-grid"></div>
+        <div id="storageChart" class="chart-container"></div>
+      </div>
+
+      <div class="dashboard-panel">
+        <h2>⚠️ Issues & Optimizations</h2>
+        <div id="issuesMetrics" class="metric-grid"></div>
+        <div id="optimizationsList"></div>
+      </div>
+    </div>
+
+    <div id="recommendations" class="recommendations" style="display: none;">
+      <h3>💡 Performance Recommendations</h3>
+      <ul id="recommendationsList"></ul>
+    </div>
+
+    <div class="log-container">
+      <div id="performanceLog"></div>
+    </div>
+  </div>
+
+  <!-- Load dependencies -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament-manager.js"></script>
+  <script src="shared-tournament-performance-monitor.js"></script>
+
+  <script>
+    class PerformanceMonitorUI {
+      constructor() {
+        this.performanceMonitor = null;
+        this.tournamentManager = null;
+        this.scoreAggregator = null;
+        this.updateInterval = null;
+        this.logEntries = [];
+
+        this.initializeComponents();
+        this.setupEventListeners();
+        this.setupConsoleCapture();
+      }
+
+      initializeComponents() {
+        try {
+          // Initialize performance monitor
+          this.performanceMonitor = new TournamentPerformanceMonitor({
+            enableRealTimeMonitoring: false, // We'll control this manually
+            enableMemoryTracking: true,
+            enableStorageOptimization: true,
+            reportingInterval: 5000 // 5 seconds for demo
+          });
+
+          // Initialize other components for testing
+          this.tournamentManager = new TournamentManager();
+          this.scoreAggregator = new ScoreAggregator({ debugMode: false });
+
+          this.log('Components initialized successfully', 'info');
+          this.updateStatusIndicators();
+        } catch (error) {
+          this.log(`Failed to initialize components: ${error.message}`, 'error');
+        }
+      }
+
+      setupEventListeners() {
+        document.getElementById('startMonitoringBtn').addEventListener('click', () => this.startMonitoring());
+        document.getElementById('stopMonitoringBtn').addEventListener('click', () => this.stopMonitoring());
+        document.getElementById('generateReportBtn').addEventListener('click', () => this.generateReport());
+        document.getElementById('resetDataBtn').addEventListener('click', () => this.resetData());
+        document.getElementById('exportDataBtn').addEventListener('click', () => this.exportData());
+      }
+
+      setupConsoleCapture() {
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        console.log = (...args) => {
+          this.log(args.join(' '), 'info');
+          originalLog(...args);
+        };
+
+        console.warn = (...args) => {
+          this.log(args.join(' '), 'warn');
+          originalWarn(...args);
+        };
+
+        console.error = (...args) => {
+          this.log(args.join(' '), 'error');
+          originalError(...args);
+        };
+      }
+
+      log(message, level = 'info') {
+        const timestamp = new Date().toLocaleTimeString();
+        const entry = { timestamp, message, level };
+        this.logEntries.push(entry);
+
+        // Maintain log size
+        if (this.logEntries.length > 100) {
+          this.logEntries.shift();
+        }
+
+        this.updateLogDisplay();
+      }
+
+      updateLogDisplay() {
+        const logContainer = document.getElementById('performanceLog');
+        logContainer.innerHTML = this.logEntries
+          .slice(-20) // Show last 20 entries
+          .map(entry => `<div class="log-entry ${entry.level}">[${entry.timestamp}] ${entry.message}</div>`)
+          .join('');
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+
+      startMonitoring() {
+        if (!this.performanceMonitor) return;
+
+        this.performanceMonitor.startRealTimeMonitoring();
+
+        // Start UI updates
+        this.updateInterval = setInterval(() => {
+          this.updateDashboard();
+        }, 2000);
+
+        document.getElementById('startMonitoringBtn').disabled = true;
+        document.getElementById('stopMonitoringBtn').disabled = false;
+
+        this.updateStatusIndicators();
+        this.log('Real-time monitoring started', 'info');
+      }
+
+      stopMonitoring() {
+        if (!this.performanceMonitor) return;
+
+        this.performanceMonitor.stopRealTimeMonitoring();
+
+        if (this.updateInterval) {
+          clearInterval(this.updateInterval);
+          this.updateInterval = null;
+        }
+
+        document.getElementById('startMonitoringBtn').disabled = false;
+        document.getElementById('stopMonitoringBtn').disabled = true;
+
+        this.updateStatusIndicators();
+        this.log('Real-time monitoring stopped', 'info');
+      }
+
+      updateStatusIndicators() {
+        const monitoringStatus = document.getElementById('monitoringStatus');
+        const memoryStatus = document.getElementById('memoryStatus');
+        const storageStatus = document.getElementById('storageStatus');
+
+        monitoringStatus.className = `status-indicator ${this.performanceMonitor?.isMonitoring ? 'active' : ''}`;
+        memoryStatus.className = `status-indicator ${this.performanceMonitor?.isMemoryTrackingAvailable() ? 'active' : ''}`;
+        storageStatus.className = `status-indicator ${this.performanceMonitor?.options.enableStorageOptimization ? 'active' : ''}`;
+      }
+
+      updateDashboard() {
+        if (!this.performanceMonitor) return;
+
+        const report = this.performanceMonitor.generatePerformanceReport();
+
+        this.updateOperationMetrics(report.operations);
+        this.updateMemoryMetrics(report.memory);
+        this.updateStorageMetrics(report.storage);
+        this.updateIssuesMetrics(report);
+        this.updateOverallHealth(report.summary.overallHealth);
+        this.updateRecommendations(report.recommendations);
+      }
+
+      updateOperationMetrics(operations) {
+        const container = document.getElementById('operationMetrics');
+        container.innerHTML = '';
+
+        Object.entries(operations).forEach(([operationType, data]) => {
+          const status = data.exceedsThreshold ? 'error' : data.avgDuration > data.threshold * 0.8 ? 'warning' : 'good';
+
+          const metricItem = document.createElement('div');
+          metricItem.className = `metric-item ${status}`;
+          metricItem.innerHTML = `
+                        <div class="metric-value">${data.avgDuration}ms</div>
+                        <div class="metric-label">${operationType}</div>
+                    `;
+          container.appendChild(metricItem);
+        });
+      }
+
+      updateMemoryMetrics(memory) {
+        const container = document.getElementById('memoryMetrics');
+        container.innerHTML = '';
+
+        if (memory.currentUsage) {
+          const currentMB = (memory.currentUsage / 1024 / 1024).toFixed(1);
+          const avgMB = (memory.averageUsage / 1024 / 1024).toFixed(1);
+          const trendStatus = memory.trend > 0.1 ? 'warning' : 'good';
+
+          container.innerHTML = `
+                        <div class="metric-item good">
+                            <div class="metric-value">${currentMB}MB</div>
+                            <div class="metric-label">Current Usage</div>
+                        </div>
+                        <div class="metric-item good">
+                            <div class="metric-value">${avgMB}MB</div>
+                            <div class="metric-label">Average Usage</div>
+                        </div>
+                        <div class="metric-item ${trendStatus}">
+                            <div class="metric-value">${(memory.trend * 100).toFixed(1)}%</div>
+                            <div class="metric-label">Trend</div>
+                        </div>
+                    `;
+        } else {
+          container.innerHTML = '<div class="metric-item"><div class="metric-label">Memory tracking not available</div></div>';
+        }
+      }
+
+      updateStorageMetrics(storage) {
+        const container = document.getElementById('storageMetrics');
+        container.innerHTML = '';
+
+        if (storage.available) {
+          const usageStatus = storage.usagePercentage > 80 ? 'error' : storage.usagePercentage > 60 ? 'warning' : 'good';
+          const sizeMB = (storage.totalSize / 1024 / 1024).toFixed(2);
+
+          container.innerHTML = `
+                        <div class="metric-item ${usageStatus}">
+                            <div class="metric-value">${storage.usagePercentage.toFixed(1)}%</div>
+                            <div class="metric-label">Usage</div>
+                        </div>
+                        <div class="metric-item good">
+                            <div class="metric-value">${sizeMB}MB</div>
+                            <div class="metric-label">Total Size</div>
+                        </div>
+                        <div class="metric-item good">
+                            <div class="metric-value">${storage.itemCount}</div>
+                            <div class="metric-label">Items</div>
+                        </div>
+                    `;
+        } else {
+          container.innerHTML = '<div class="metric-item"><div class="metric-label">Storage not available</div></div>';
+        }
+      }
+
+      updateIssuesMetrics(report) {
+        const container = document.getElementById('issuesMetrics');
+        const optimizationsList = document.getElementById('optimizationsList');
+
+        const issueStatus = report.issues.length === 0 ? 'good' : report.issues.length < 3 ? 'warning' : 'error';
+
+        container.innerHTML = `
+                    <div class="metric-item ${issueStatus}">
+                        <div class="metric-value">${report.issues.length}</div>
+                        <div class="metric-label">Issues</div>
+                    </div>
+                    <div class="metric-item good">
+                        <div class="metric-value">${this.performanceMonitor.metrics.optimizations.length}</div>
+                        <div class="metric-label">Optimizations</div>
+                    </div>
+                `;
+
+        // Show recent optimizations
+        const recentOptimizations = this.performanceMonitor.metrics.optimizations.slice(-5);
+        optimizationsList.innerHTML = recentOptimizations.length > 0
+          ? recentOptimizations.map(opt => `<div style="font-size: 12px; margin: 5px 0;">• ${opt.type} optimization applied</div>`).join('')
+          : '<div style="font-size: 12px; color: #666;">No recent optimizations</div>';
+      }
+
+      updateOverallHealth(health) {
+        const healthElement = document.getElementById('overallHealth');
+        const healthColor = health === 'GOOD' ? '#00ff00' : health === 'WARNING' ? '#ffff00' : '#ff0000';
+        healthElement.textContent = `System Health: ${health}`;
+        healthElement.style.color = healthColor;
+      }
+
+      updateRecommendations(recommendations) {
+        const recommendationsContainer = document.getElementById('recommendations');
+        const recommendationsList = document.getElementById('recommendationsList');
+
+        if (recommendations.length > 0) {
+          recommendationsContainer.style.display = 'block';
+          recommendationsList.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+        } else {
+          recommendationsContainer.style.display = 'none';
+        }
+      }
+
+      generateReport() {
+        if (!this.performanceMonitor) return;
+
+        const report = this.performanceMonitor.generatePerformanceReport();
+        this.log('Performance report generated', 'info');
+
+        // Display report in console for now
+        console.table(report.operations);
+        console.log('Memory:', report.memory);
+        console.log('Storage:', report.storage);
+        console.log('Issues:', report.issues);
+        console.log('Recommendations:', report.recommendations);
+      }
+
+      resetData() {
+        if (!this.performanceMonitor) return;
+
+        this.performanceMonitor.resetPerformanceData();
+        this.logEntries = [];
+        this.updateLogDisplay();
+        this.updateDashboard();
+        this.log('Performance data reset', 'info');
+      }
+
+      exportData() {
+        if (!this.performanceMonitor) return;
+
+        const data = this.performanceMonitor.exportPerformanceData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `tournament-performance-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        this.log('Performance data exported', 'info');
+      }
+    }
+
+    // Performance test functions
+    function runPerformanceTest(testType) {
+      const ui = window.performanceUI;
+      if (!ui || !ui.performanceMonitor) return;
+
+      ui.log(`Starting ${testType} performance test`, 'info');
+
+      switch (testType) {
+        case 'tournamentCreation':
+          runTournamentCreationTest(ui);
+          break;
+        case 'scoreUpdate':
+          runScoreUpdateTest(ui);
+          break;
+        case 'leaderboardGeneration':
+          runLeaderboardGenerationTest(ui);
+          break;
+        case 'storageOperations':
+          runStorageOperationsTest(ui);
+          break;
+        case 'memoryStress':
+          runMemoryStressTest(ui);
+          break;
+        case 'fullWorkflow':
+          runFullWorkflowTest(ui);
+          break;
+      }
+    }
+
+    function runTournamentCreationTest(ui) {
+      const iterations = 10;
+
+      for (let i = 0; i < iterations; i++) {
+        const endTiming = ui.performanceMonitor.startTiming('tournamentCreation', `test-${i}`);
+
+        const config = {
+          name: `Performance Test Tournament ${i}`,
+          games: ['snake-GG', 'tetris-GG', 'pacman-GG'],
+          format: 'round-robin',
+          settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+        };
+
+        const tournament = ui.tournamentManager.createTournament(config);
+        endTiming({ testIteration: i });
+
+        if (tournament) {
+          ui.tournamentManager.deleteTournament(tournament.id);
+        }
+      }
+
+      ui.log(`Tournament creation test completed (${iterations} iterations)`, 'info');
+    }
+
+    function runScoreUpdateTest(ui) {
+      const iterations = 100;
+      const gameIds = ['snake-GG', 'tetris-GG', 'pacman-GG', 'breakout-GG'];
+
+      for (let i = 0; i < iterations; i++) {
+        const endTiming = ui.performanceMonitor.startTiming('scoreUpdate', `score-test-${i}`);
+
+        const gameId = gameIds[i % gameIds.length];
+        const score = Math.random() * 5000;
+
+        ui.scoreAggregator.normalizeScore(gameId, score);
+        endTiming({ gameId, score, testIteration: i });
+      }
+
+      ui.log(`Score update test completed (${iterations} iterations)`, 'info');
+    }
+
+    function runLeaderboardGenerationTest(ui) {
+      const participants = [];
+      for (let i = 0; i < 50; i++) {
+        participants.push({
+          id: `player${i}`,
+          name: `Player ${i}`,
+          normalizedScores: {
+            'snake-GG': Math.random(),
+            'tetris-GG': Math.random(),
+            'pacman-GG': Math.random()
+          }
+        });
+      }
+
+      const iterations = 10;
+      for (let i = 0; i < iterations; i++) {
+        const endTiming = ui.performanceMonitor.startTiming('leaderboardGeneration', `leaderboard-test-${i}`);
+
+        ui.scoreAggregator.generateLeaderboard(`performance-test-${i}`, participants);
+        endTiming({ participantCount: participants.length, testIteration: i });
+      }
+
+      ui.log(`Leaderboard generation test completed (${iterations} iterations)`, 'info');
+    }
+
+    function runStorageOperationsTest(ui) {
+      const iterations = 20;
+
+      for (let i = 0; i < iterations; i++) {
+        const endTiming = ui.performanceMonitor.startTiming('storageOperation', `storage-test-${i}`);
+
+        const testData = {
+          id: `test-${i}`,
+          data: new Array(100).fill(Math.random()),
+          timestamp: Date.now()
+        };
+
+        const key = `performance-test-${i}`;
+        localStorage.setItem(key, JSON.stringify(testData));
+        const retrieved = localStorage.getItem(key);
+        localStorage.removeItem(key);
+
+        endTiming({ dataSize: JSON.stringify(testData).length, testIteration: i });
+      }
+
+      ui.log(`Storage operations test completed (${iterations} iterations)`, 'info');
+    }
+
+    function runMemoryStressTest(ui) {
+      ui.log('Starting memory stress test', 'info');
+
+      const endTiming = ui.performanceMonitor.startTiming('memoryStress', 'stress-test');
+
+      // Create large arrays to stress memory
+      const largeArrays = [];
+      for (let i = 0; i < 10; i++) {
+        largeArrays.push(new Array(10000).fill(Math.random()));
+      }
+
+      // Simulate tournament operations
+      const tournaments = [];
+      for (let i = 0; i < 5; i++) {
+        const config = {
+          name: `Memory Test Tournament ${i}`,
+          games: ['snake-GG', 'tetris-GG', 'pacman-GG', 'breakout-GG'],
+          format: 'round-robin',
+          settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+        };
+
+        const tournament = ui.tournamentManager.createTournament(config);
+        if (tournament) {
+          tournaments.push(tournament.id);
+        }
+      }
+
+      // Cleanup
+      tournaments.forEach(id => ui.tournamentManager.deleteTournament(id));
+      largeArrays.length = 0;
+
+      endTiming({ arrayCount: 10, tournamentCount: tournaments.length });
+      ui.log('Memory stress test completed', 'info');
+    }
+
+    function runFullWorkflowTest(ui) {
+      ui.log('Starting full tournament workflow test', 'info');
+
+      const endTiming = ui.performanceMonitor.startTiming('fullWorkflow', 'workflow-test');
+
+      // Create tournament
+      const config = {
+        name: 'Full Workflow Test Tournament',
+        games: ['snake-GG', 'tetris-GG', 'pacman-GG'],
+        format: 'round-robin',
+        settings: { maxParticipants: 6, scoreNormalization: true, autoAdvance: true }
+      };
+
+      const tournament = ui.tournamentManager.createTournament(config);
+      if (!tournament) {
+        ui.log('Failed to create tournament for workflow test', 'error');
+        return;
+      }
+
+      // Add participants
+      for (let i = 1; i <= 4; i++) {
+        ui.tournamentManager.joinTournament(tournament.id, `player${i}`, `Player ${i}`);
+      }
+
+      // Start tournament
+      ui.tournamentManager.startTournament(tournament.id);
+
+      // Simulate game completions and score updates
+      const participants = ui.tournamentManager.getTournament(tournament.id).participants;
+      participants.forEach(participant => {
+        config.games.forEach(gameId => {
+          const score = Math.random() * 5000;
+          const normalized = ui.scoreAggregator.normalizeScore(gameId, score);
+          participant.normalizedScores[gameId] = normalized;
+        });
+      });
+
+      // Generate leaderboard
+      ui.scoreAggregator.generateLeaderboard(tournament.id, participants);
+
+      // Complete tournament
+      ui.tournamentManager.completeTournament(tournament.id);
+
+      // Cleanup
+      ui.tournamentManager.deleteTournament(tournament.id);
+
+      endTiming({ participantCount: participants.length, gameCount: config.games.length });
+      ui.log('Full tournament workflow test completed', 'info');
+    }
+
+    // Initialize the UI when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      window.performanceUI = new PerformanceMonitorUI();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1777 @@
+/* ===================================================================
+   🏆 TOURNAMENT CREATION INTERFACE - CSS
+   ===================================================================
+
+   Archivo: tournament-creation.css
+   Proyecto: AI4Devs Cross-Game Tournament System
+
+   Descripción:
+   Estilos específicos para la interfaz de creación de torneos.
+   Implementa la estética retro-neón con la paleta establecida:
+   - Cyan (#00ffff), Magenta (#ff00ff), Yellow (#ffff00), Green (#00ff00)
+   - Fuentes monospace consistentes con los juegos existentes
+   - Efectos de brillo neón y estética CRT sin gradientes
+
+================================================================== */
+
+/* Import established design tokens */
+@import url('./css-tokens.css');
+@import url('./shared-styles.css');
+
+/* ===================================================================
+   1. LAYOUT PRINCIPAL
+================================================================== */
+
+.tournament-creation-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+
+.tournament-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+  animation: fadeInDown 1s ease-out;
+}
+
+/* ===================================================================
+   2. RETRO NEON TITLE STYLING
+================================================================== */
+
+.neon-title {
+  font-family: var(--font-retro);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  margin-bottom: var(--space-6);
+  line-height: var(--line-height-tight);
+}
+
+.title-line-1 {
+  display: block;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-1);
+}
+
+.title-line-2 {
+  display: block;
+  color: var(--neon-magenta);
+  text-shadow: var(--glow-magenta);
+  font-size: var(--font-size-4xl);
+}
+
+.subtitle {
+  font-family: var(--font-retro);
+  font-size: var(--font-size-lg);
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+  margin-top: var(--space-6);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* ===================================================================
+   3. FORMULARIO PRINCIPAL CON ESTÉTICA CRT
+================================================================== */
+
+.tournament-form-section {
+  background: var(--bg-secondary);
+  border: var(--border-width-thick) solid var(--neon-cyan);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 20px var(--neon-cyan),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: borderPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes borderPulse {
+  0% {
+    box-shadow:
+      0 0 20px var(--neon-cyan),
+      inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+
+  100% {
+    box-shadow:
+      0 0 30px var(--neon-cyan),
+      inset 0 0 30px rgba(0, 255, 255, 0.15);
+  }
+}
+
+.tournament-form-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 255, 0.03) 2px,
+      rgba(0, 255, 255, 0.03) 4px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tournament-form {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===================================================================
+   4. GRUPOS DE FORMULARIO CON EFECTOS NEÓN
+================================================================== */
+
+.form-group {
+  margin-bottom: var(--space-8);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.form-group:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-retro);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+legend.form-label {
+  padding: 0;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ===================================================================
+   5. CAMPOS DE ENTRADA CON ESTILO RETRO
+================================================================== */
+
+.form-input {
+  width: 100%;
+  background: var(--bg-primary);
+  border: var(--border-width-base) solid var(--neon-cyan);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  font-family: var(--font-retro);
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  position: relative;
+  transition: var(--transition-all);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 20px var(--neon-cyan),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+  background: var(--bg-primary);
+  text-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-retro);
+}
+
+.input-glow {
+  display: none;
+  /* Remove complex gradient effects for sharp retro look */
+}
+
+/* ===================================================================
+   5. SELECCIÓN DE FORMATO
+================================================================== */
+
+.format-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.format-option {
+  position: relative;
+}
+
+.format-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.format-label {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: var(--space-6);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  min-height: 120px;
+}
+
+.format-label:hover {
+  border-color: var(--primary-cyan);
+  background: rgba(0, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.format-option input[type="radio"]:checked+.format-label {
+  border-color: var(--primary-cyan);
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.format-icon {
+  font-size: var(--text-4xl);
+  margin-right: var(--space-4);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.format-info h3 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+  color: var(--primary-cyan);
+  text-shadow: 0 0 5px var(--primary-cyan);
+}
+
+.format-info p {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+/* ===================================================================
+   6. SELECCIÓN DE JUEGOS
+================================================================== */
+
+.games-counter {
+  font-size: var(--text-sm);
+  color: var(--primary-yellow);
+  font-weight: normal;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.game-option {
+  position: relative;
+}
+
+.game-option input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-primary);
+  border: var(--border-width-base) solid var(--text-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  transition: var(--transition-all);
+  min-height: 100px;
+  justify-content: center;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-label:hover {
+  transform: translateY(-2px);
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 10px var(--neon-cyan),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.game-option input[type="checkbox"]:checked+.game-label {
+  border-color: currentColor;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.game-icon {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.game-name {
+  font-family: var(--font-retro);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--text-primary);
+}
+
+/* ===================================================================
+   7. TEMAS DE JUEGOS CON PALETA NEÓN ESTABLECIDA
+================================================================== */
+
+/* Snake - Verde neón */
+.snake-theme {
+  border-color: var(--neon-green);
+}
+
+.snake-theme .game-icon {
+  color: var(--neon-green);
+  text-shadow: var(--glow-green);
+}
+
+.snake-theme input:checked+.game-label {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-green);
+  background: rgba(0, 255, 0, 0.1);
+}
+
+/* Breakout - Naranja neón */
+.breakout-theme {
+  border-color: var(--neon-orange);
+}
+
+.breakout-theme .game-icon {
+  color: var(--neon-orange);
+  text-shadow: 0 0 10px var(--neon-orange);
+}
+
+.breakout-theme input:checked+.game-label {
+  border-color: var(--neon-orange);
+  box-shadow: 0 0 15px var(--neon-orange);
+  background: rgba(255, 184, 82, 0.1);
+}
+
+/* Fruit Catcher - Rojo neón */
+.fruit-catcher-theme {
+  border-color: var(--neon-red);
+}
+
+.fruit-catcher-theme .game-icon {
+  color: var(--neon-red);
+  text-shadow: var(--glow-red);
+}
+
+.fruit-catcher-theme input:checked+.game-label {
+  border-color: var(--neon-red);
+  box-shadow: 0 0 15px var(--neon-red);
+  background: rgba(255, 0, 64, 0.1);
+}
+
+/* Asteroids - Cyan neón */
+.asteroids-theme {
+  border-color: var(--neon-cyan);
+}
+
+.asteroids-theme .game-icon {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.asteroids-theme input:checked+.game-label {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px var(--neon-cyan);
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* Space Invaders - Verde neón */
+.space-invaders-theme {
+  border-color: var(--neon-green);
+}
+
+.space-invaders-theme .game-icon {
+  color: var(--neon-green);
+  text-shadow: var(--glow-green);
+}
+
+.space-invaders-theme input:checked+.game-label {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-green);
+  background: rgba(0, 255, 0, 0.1);
+}
+
+/* Pac-Man - Amarillo neón */
+.pacman-theme {
+  border-color: var(--neon-yellow);
+}
+
+.pacman-theme .game-icon {
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+}
+
+.pacman-theme input:checked+.game-label {
+  border-color: var(--neon-yellow);
+  box-shadow: 0 0 15px var(--neon-yellow);
+  background: rgba(255, 255, 0, 0.1);
+}
+
+/* Ms. Pac-Man - Rosa neón */
+.mspacman-theme {
+  border-color: var(--neon-pink);
+}
+
+.mspacman-theme .game-icon {
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.mspacman-theme input:checked+.game-label {
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 15px var(--neon-pink);
+  background: rgba(255, 184, 255, 0.1);
+}
+
+/* Tetris - Magenta neón */
+.tetris-theme {
+  border-color: var(--neon-magenta);
+}
+
+.tetris-theme .game-icon {
+  color: var(--neon-magenta);
+  text-shadow: var(--glow-magenta);
+}
+
+.tetris-theme input:checked+.game-label {
+  border-color: var(--neon-magenta);
+  box-shadow: 0 0 15px var(--neon-magenta);
+  background: rgba(255, 0, 255, 0.1);
+}
+
+/* Pong - Cyan neón */
+.pong-theme {
+  border-color: var(--neon-cyan);
+}
+
+.pong-theme .game-icon {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.pong-theme input:checked+.game-label {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px var(--neon-cyan);
+  background: rgba(0, 255, 255, 0.1);
+}
+
+/* Galaga - Verde neón */
+.galaga-theme {
+  border-color: var(--neon-green);
+}
+
+.galaga-theme .game-icon {
+  color: var(--neon-green);
+  text-shadow: var(--glow-green);
+}
+
+.galaga-theme input:checked+.game-label {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-green);
+  background: rgba(0, 255, 0, 0.1);
+}
+
+/* ===================================================================
+   7. CONFIGURACIÓN
+================================================================== */
+
+.settings-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.setting-item {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: var(--space-4);
+}
+
+.setting-label {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-cyan);
+  margin-bottom: var(--space-2);
+  cursor: pointer;
+}
+
+.setting-label input[type="checkbox"] {
+  margin-right: var(--space-3);
+  transform: scale(1.2);
+  accent-color: var(--primary-cyan);
+}
+
+.setting-select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: var(--space-3);
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+  color: white;
+  cursor: pointer;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.setting-description {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: var(--space-2);
+  line-height: 1.4;
+}
+
+/* ===================================================================
+   8. GESTIÓN DE PARTICIPANTES
+================================================================== */
+
+.participants-counter {
+  font-size: var(--text-sm);
+  color: var(--primary-yellow);
+  font-weight: normal;
+}
+
+.participants-section {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: var(--space-6);
+}
+
+.add-participant {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.participant-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: var(--space-3);
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+  color: white;
+}
+
+.participant-input:focus {
+  outline: none;
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.add-participant-btn {
+  background: var(--gradient-neon);
+  border: none;
+  border-radius: 6px;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-sm);
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 120px;
+}
+
+.add-participant-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+}
+
+.add-participant-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.participants-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.participant-name {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-cyan);
+}
+
+.remove-participant-btn {
+  background: rgba(255, 0, 64, 0.2);
+  border: 1px solid var(--accent-red);
+  border-radius: 4px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--accent-red);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.remove-participant-btn:hover {
+  background: rgba(255, 0, 64, 0.4);
+  transform: scale(1.05);
+}
+
+/* ===================================================================
+   8. ACCIONES DEL FORMULARIO CON ESTILO RETRO
+================================================================== */
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-lg);
+  border-top: var(--border-width-thin) solid var(--neon-cyan);
+}
+
+.cancel-btn,
+.create-tournament-btn {
+  padding: var(--spacing-md) var(--spacing-2xl);
+  border: var(--border-width-base) solid;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-retro);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  cursor: pointer;
+  transition: var(--transition-all);
+  min-width: 180px;
+  background: var(--bg-primary);
+}
+
+.cancel-btn {
+  color: var(--text-secondary);
+  border-color: var(--text-secondary);
+}
+
+.cancel-btn:hover {
+  color: var(--neon-red);
+  border-color: var(--neon-red);
+  box-shadow: 0 0 15px var(--neon-red);
+  text-shadow: var(--glow-red);
+  transform: translateY(-2px);
+}
+
+.create-tournament-btn {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+.create-tournament-btn:hover {
+  box-shadow: 0 0 25px var(--neon-cyan);
+  transform: translateY(-2px);
+}
+
+.create-tournament-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* ===================================================================
+   9. ANIMACIONES RETRO
+================================================================== */
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ===================================================================
+   10. EFECTOS VISUALES ESPECÍFICOS DEL TORNEO
+================================================================== */
+
+/* Tournament progress animations */
+@keyframes tournamentProgress {
+  0% {
+    transform: scaleX(0);
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes participantJoin {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotateY(-90deg);
+  }
+
+  50% {
+    transform: scale(1.05) rotateY(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+@keyframes gameSelection {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0, 255, 255, 0);
+  }
+
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes neonFlicker {
+
+  0%,
+  100% {
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 15px currentColor;
+  }
+
+  50% {
+    text-shadow:
+      0 0 2px currentColor,
+      0 0 5px currentColor,
+      0 0 8px currentColor;
+  }
+}
+
+@keyframes borderScan {
+  0% {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+  }
+
+  25% {
+    border-color: var(--neon-magenta);
+    box-shadow: 0 0 10px var(--neon-magenta);
+  }
+
+  50% {
+    border-color: var(--neon-yellow);
+    box-shadow: 0 0 10px var(--neon-yellow);
+  }
+
+  75% {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+  }
+
+  100% {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+  }
+}
+
+/* Loading states with arcade aesthetics */
+@keyframes arcadeLoading {
+  0% {
+    content: "LOADING";
+  }
+
+  25% {
+    content: "LOADING.";
+  }
+
+  50% {
+    content: "LOADING..";
+  }
+
+  75% {
+    content: "LOADING...";
+  }
+
+  100% {
+    content: "LOADING";
+  }
+}
+
+@keyframes dataStream {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Particle effects for achievements */
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes achievementPop {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Tournament milestone effects */
+@keyframes milestoneGlow {
+  0% {
+    box-shadow: 0 0 10px var(--neon-yellow);
+  }
+
+  50% {
+    box-shadow:
+      0 0 20px var(--neon-yellow),
+      0 0 30px var(--neon-yellow),
+      0 0 40px var(--neon-yellow);
+  }
+
+  100% {
+    box-shadow: 0 0 10px var(--neon-yellow);
+  }
+}
+
+/* Visual effects classes */
+.tournament-creating {
+  animation: borderScan 3s infinite;
+}
+
+.participant-joining {
+  animation: participantJoin 0.8s ease-out;
+}
+
+.game-selecting {
+  animation: gameSelection 0.6s ease-out;
+}
+
+.milestone-achieved {
+  animation: milestoneGlow 2s ease-in-out;
+}
+
+.loading-state::after {
+  content: "LOADING";
+  animation: arcadeLoading 1.5s infinite;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.data-processing {
+  position: relative;
+  overflow: hidden;
+}
+
+.data-processing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--neon-green);
+  animation: dataStream 2s infinite;
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+.particle-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--neon-yellow);
+  border-radius: 50%;
+  animation: particleFloat 3s infinite;
+  box-shadow: 0 0 6px var(--neon-yellow);
+}
+
+.particle:nth-child(2) {
+  animation-delay: 0.5s;
+  left: 20%;
+}
+
+.particle:nth-child(3) {
+  animation-delay: 1s;
+  left: 40%;
+}
+
+.particle:nth-child(4) {
+  animation-delay: 1.5s;
+  left: 60%;
+}
+
+.particle:nth-child(5) {
+  animation-delay: 2s;
+  left: 80%;
+}
+
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-secondary);
+  border: var(--border-width-base) solid var(--neon-yellow);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+  font-family: var(--font-retro);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  animation: achievementPop 0.8s ease-out;
+  z-index: 1000;
+  box-shadow: 0 0 20px var(--neon-yellow);
+}
+
+/* ===================================================================
+   11. RESPONSIVE DESIGN & MOBILE OPTIMIZATION
+================================================================== */
+
+/* Tablet and small desktop */
+@media (max-width: 1024px) {
+  .tournament-creation-container {
+    max-width: 800px;
+    padding: var(--space-6) var(--space-3);
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+  }
+}
+
+/* Mobile landscape and tablet portrait */
+@media (max-width: 768px) {
+  .tournament-creation-container {
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .tournament-form-section {
+    padding: var(--space-6);
+    border-radius: 12px;
+  }
+
+  .format-selection {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .format-label {
+    min-height: 100px;
+    padding: var(--space-5);
+    border-radius: 10px;
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .game-label {
+    min-height: 90px;
+    padding: var(--space-3);
+    border-radius: 10px;
+  }
+
+  .game-icon {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .game-name {
+    font-size: var(--text-xs);
+  }
+
+  .settings-grid {
+    gap: var(--space-4);
+  }
+
+  .setting-item {
+    padding: var(--space-5);
+    border-radius: 10px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .cancel-btn,
+  .create-tournament-btn {
+    width: 100%;
+    max-width: 320px;
+    min-height: 50px;
+    font-size: var(--text-lg);
+  }
+
+  .participants-section {
+    padding: var(--space-5);
+  }
+
+  .add-participant {
+    gap: var(--space-3);
+  }
+
+  .participant-input {
+    min-height: 48px;
+    font-size: var(--text-base);
+  }
+
+  .add-participant-btn {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-5);
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .tournament-creation-container {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .tournament-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .neon-title {
+    font-size: var(--text-3xl);
+  }
+
+  .title-line-1 {
+    font-size: var(--text-2xl);
+  }
+
+  .title-line-2 {
+    font-size: var(--text-3xl);
+  }
+
+  .tournament-form-section {
+    padding: var(--space-4);
+    border-radius: 10px;
+  }
+
+  .form-group {
+    margin-bottom: var(--space-6);
+  }
+
+  .form-label {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-3);
+  }
+
+  .format-selection {
+    gap: var(--space-3);
+  }
+
+  .format-label {
+    min-height: 88px;
+    padding: var(--space-4);
+    border-radius: 8px;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .format-icon {
+    font-size: var(--text-2xl);
+    margin-right: var(--space-3);
+  }
+
+  .format-info h3 {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .format-info p {
+    font-size: var(--text-xs);
+    line-height: 1.3;
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .game-label {
+    min-height: 88px;
+    padding: var(--space-3);
+    border-radius: 8px;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .game-icon {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .game-name {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+
+  .settings-grid {
+    gap: var(--space-3);
+  }
+
+  .setting-item {
+    padding: var(--space-4);
+    border-radius: 8px;
+  }
+
+  .setting-label {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-2);
+  }
+
+  .setting-select {
+    min-height: 48px;
+    font-size: var(--text-base);
+    padding: var(--space-3);
+    border-radius: 6px;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .form-input,
+  .participant-input {
+    min-height: 48px;
+    font-size: var(--text-base);
+    padding: var(--space-4);
+    border-radius: 6px;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .participants-section {
+    padding: var(--space-4);
+    border-radius: 8px;
+  }
+
+  .add-participant {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .add-participant-btn {
+    min-width: auto;
+    min-height: 48px;
+    padding: var(--space-4);
+    border-radius: 6px;
+    font-size: var(--text-base);
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .participant-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-radius: 6px;
+  }
+
+  .remove-participant-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: 4px;
+    align-self: flex-end;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+
+  .form-actions {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+  }
+
+  .cancel-btn,
+  .create-tournament-btn {
+    width: 100%;
+    max-width: none;
+    min-height: 52px;
+    font-size: var(--text-base);
+    padding: var(--space-4) var(--space-6);
+    border-radius: 8px;
+    /* Optimized for touch */
+    touch-action: manipulation;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 360px) {
+  .tournament-creation-container {
+    padding: var(--space-2) var(--space-1);
+  }
+
+  .tournament-form-section {
+    padding: var(--space-3);
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .game-label {
+    min-height: 80px;
+    padding: var(--space-2);
+  }
+
+  .game-icon {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .game-name {
+    font-size: 0.6rem;
+  }
+
+  .format-label {
+    min-height: 80px;
+    padding: var(--space-3);
+  }
+
+  .format-icon {
+    font-size: var(--text-xl);
+  }
+
+  .format-info h3 {
+    font-size: var(--text-sm);
+  }
+
+  .format-info p {
+    font-size: 0.7rem;
+  }
+}
+
+/* Touch-specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+
+  /* Touch devices */
+  .game-label,
+  .format-label {
+    /* Increase touch targets */
+    min-height: 88px;
+    padding: var(--space-4);
+  }
+
+  .game-label:hover,
+  .format-label:hover {
+    /* Remove hover effects on touch devices */
+    transform: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .add-participant-btn,
+  .remove-participant-btn,
+  .cancel-btn,
+  .create-tournament-btn {
+    /* Ensure minimum touch target size */
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover animations on touch devices */
+  .add-participant-btn:hover,
+  .cancel-btn:hover,
+  .create-tournament-btn:hover {
+    transform: none;
+  }
+
+  /* Add active states for better touch feedback */
+  .game-label:active,
+  .format-label:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .add-participant-btn:active,
+  .cancel-btn:active,
+  .create-tournament-btn:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .tournament-creation-container {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .tournament-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .neon-title {
+    font-size: var(--text-2xl);
+  }
+
+  .title-line-1 {
+    font-size: var(--text-xl);
+  }
+
+  .title-line-2 {
+    font-size: var(--text-2xl);
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--space-2);
+  }
+
+  .game-label {
+    min-height: 70px;
+    padding: var(--space-2);
+  }
+
+  .game-icon {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .game-name {
+    font-size: 0.6rem;
+  }
+
+  .format-selection {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .format-label {
+    min-height: 70px;
+    padding: var(--space-3);
+  }
+
+  .format-icon {
+    font-size: var(--text-lg);
+    margin-right: var(--space-2);
+  }
+
+  .format-info h3 {
+    font-size: var(--text-sm);
+  }
+
+  .format-info p {
+    font-size: 0.7rem;
+  }
+}
+
+/* ===================================================================
+   12. ACCESIBILIDAD
+================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Error summary for screen readers */
+.error-summary {
+  background: rgba(255, 0, 64, 0.1);
+  border: 2px solid var(--accent-red);
+  border-radius: 8px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+  color: var(--accent-red);
+}
+
+.error-summary h2 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+  color: var(--accent-red);
+}
+
+.error-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-summary li {
+  padding: var(--space-1) 0;
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.error-summary li::before {
+  content: '⚠️';
+  position: absolute;
+  left: 0;
+  top: var(--space-1);
+}
+
+/* Required field indicators */
+[aria-required="true"]+label::after,
+label[for] [aria-label="obligatorio"] {
+  color: var(--accent-red);
+  font-weight: bold;
+  margin-left: var(--space-1);
+}
+
+/* ARIA live region styling */
+[aria-live] {
+  position: relative;
+}
+
+/* High contrast mode enhancements */
+@media (prefers-contrast: high) {
+  .error-summary {
+    border-width: 3px;
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .error-message {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: var(--space-2);
+    border-radius: 4px;
+  }
+}
+
+/* Focus management for dynamic content */
+.participant-item:focus-within {
+  outline: 2px solid var(--primary-cyan);
+  outline-offset: 2px;
+}
+
+/* Keyboard navigation hints */
+.keyboard-hint {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+/* Screen reader instructions */
+.form-instructions {
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.form-instructions h2 {
+  font-size: var(--text-lg);
+  color: var(--primary-cyan);
+  margin-bottom: var(--space-3);
+}
+
+.form-instructions p {
+  margin-bottom: var(--space-2);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--text-sm);
+}
+
+/* Improved error styling for accessibility */
+.form-input[aria-invalid="true"],
+.setting-select[aria-invalid="true"] {
+  border-color: var(--accent-red) !important;
+  box-shadow: 0 0 0 2px rgba(255, 0, 64, 0.3) !important;
+}
+
+/* Success indicators */
+.form-input[aria-invalid="false"]:valid,
+.setting-select[aria-invalid="false"]:valid {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.3);
+}
+
+/* Loading and status indicators */
+.loading-indicator {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-top: 2px solid var(--primary-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: var(--space-2);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.game-option input[type="checkbox"]:focus+.game-label,
+.format-option input[type="radio"]:focus+.format-label {
+  outline: 2px solid var(--primary-cyan);
+  outline-offset: 2px;
+}
+
+.form-input:focus,
+.setting-select:focus,
+.participant-input:focus {
+  outline: 2px solid var(--primary-cyan);
+  outline-offset: 2px;
+}
+
+.tournament-btn:focus,
+.add-participant-btn:focus,
+.remove-participant-btn:focus,
+.cancel-btn:focus,
+.create-tournament-btn:focus {
+  outline: 2px solid var(--primary-cyan);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+
+  .game-label,
+  .format-label {
+    border-width: 3px;
+  }
+
+  .form-input,
+  .setting-select,
+  .participant-input {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  .tournament-form-section,
+  .form-group,
+  .participant-item {
+    animation: none;
+  }
+
+  .tournament-btn:hover,
+  .add-participant-btn:hover,
+  .game-label:hover,
+  .format-label:hover {
+    transform: none;
+  }
+}
+
+/* ===================================================================
+   13. ESTADOS DE VALIDACIÓN
+================================================================== */
+
+.form-input.error {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 10px rgba(255, 0, 64, 0.3);
+}
+
+.error-message {
+  color: var(--accent-red);
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.error-message::before {
+  content: '⚠️';
+}
+
+.success-message {
+  color: var(--accent-green);
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.success-message::before {
+  content: '✅';
+}
+
+/* Validation indicators for form sections */
+.validation-success {
+  color: var(--accent-green) !important;
+  text-shadow: 0 0 10px var(--accent-green) !important;
+}
+
+.validation-error {
+  color: var(--accent-red) !important;
+  text-shadow: 0 0 10px var(--accent-red) !important;
+}
+
+.format-selection.validation-error {
+  border: 2px solid var(--accent-red);
+  border-radius: 8px;
+  padding: var(--space-2);
+}
+
+.create-tournament-btn.validation-error {
+  background: rgba(255, 0, 64, 0.3) !important;
+  cursor: not-allowed !important;
+}
+
+.create-tournament-btn.validation-error:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}

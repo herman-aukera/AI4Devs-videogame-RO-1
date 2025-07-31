@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Dashboard de Torneo - AI4Devs Retro Games</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tournament-dashboard.css">
+</head>
+
+<body>
+  <div class="stars-bg"></div>
+
+  <main class="tournament-dashboard-container">
+    <!-- Navigation -->
+    <nav class="tournament-nav">
+      <a href="index.html" class="nav-link back-link">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">INICIO</span>
+      </a>
+      <div class="nav-links">
+        <a href="tournament-creation.html" class="nav-link">CREAR</a>
+        <a href="tournament-dashboard.html" class="nav-link active">DASHBOARD</a>
+        <a href="tournament-history.html" class="nav-link">HISTORIAL</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="tournament-header">
+      <h1 class="neon-title">
+        <span class="title-line-1">DASHBOARD</span>
+        <span class="title-line-2">TORNEO</span>
+      </h1>
+      <div class="tournament-info" id="tournament-info">
+        <div class="tournament-name" id="tournament-name">Cargando torneo...</div>
+        <div class="tournament-status" id="tournament-status">
+          <span class="status-indicator" id="status-indicator">⏳</span>
+          <span class="status-text" id="status-text">Preparando...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tournament Progress -->
+    <section class="tournament-progress-section" aria-labelledby="progress-title">
+      <div class="progress-card">
+        <h2 class="section-title" id="progress-title">📊 PROGRESO DEL TORNEO</h2>
+        <div class="progress-stats" role="group" aria-labelledby="progress-title">
+          <div class="stat-item" role="img" aria-labelledby="participants-label" aria-describedby="participants-count">
+            <div class="stat-value" id="participants-count" aria-live="polite">0</div>
+            <div class="stat-label" id="participants-label">PARTICIPANTES</div>
+          </div>
+          <div class="stat-item" role="img" aria-labelledby="completed-label" aria-describedby="games-completed">
+            <div class="stat-value" id="games-completed" aria-live="polite">0</div>
+            <div class="stat-label" id="completed-label">JUEGOS COMPLETADOS</div>
+          </div>
+          <div class="stat-item" role="img" aria-labelledby="remaining-label" aria-describedby="games-remaining">
+            <div class="stat-value" id="games-remaining" aria-live="polite">0</div>
+            <div class="stat-label" id="remaining-label">JUEGOS RESTANTES</div>
+          </div>
+          <div class="stat-item" role="img" aria-labelledby="progress-label" aria-describedby="tournament-progress">
+            <div class="stat-value" id="tournament-progress" aria-live="polite">0%</div>
+            <div class="stat-label" id="progress-label">PROGRESO TOTAL</div>
+          </div>
+        </div>
+        <div class="progress-bar-container" role="progressbar" aria-labelledby="progress-label" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" aria-describedby="progress-description">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+          <div id="progress-description" class="sr-only">Barra de progreso del torneo mostrando el porcentaje de
+            finalización</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-time Leaderboard -->
+    <section class="leaderboard-section" aria-labelledby="leaderboard-title">
+      <div class="leaderboard-card">
+        <h2 class="section-title" id="leaderboard-title">🏆 CLASIFICACIÓN EN VIVO</h2>
+        <div class="leaderboard-controls" role="toolbar" aria-label="Controles de clasificación">
+          <button type="button" class="refresh-btn" id="refresh-leaderboard" aria-label="Actualizar clasificación"
+            aria-describedby="refresh-help">
+            🔄 ACTUALIZAR
+          </button>
+          <div id="refresh-help" class="sr-only">Actualiza la clasificación con los datos más recientes del torneo</div>
+          <div class="view-toggle" role="tablist" aria-label="Vistas de clasificación">
+            <button type="button" class="toggle-btn active" data-view="overall" id="overall-view" role="tab"
+              aria-selected="true" aria-controls="leaderboard-container" tabindex="0">
+              GENERAL
+            </button>
+            <button type="button" class="toggle-btn" data-view="current-round" id="round-view" role="tab"
+              aria-selected="false" aria-controls="leaderboard-container" tabindex="-1">
+              RONDA ACTUAL
+            </button>
+          </div>
+        </div>
+        <div class="leaderboard-container" id="leaderboard-container" role="tabpanel" aria-labelledby="overall-view"
+          aria-live="polite" aria-busy="false">
+          <div class="leaderboard-loading" aria-hidden="true">
+            <div class="loading-spinner" role="status" aria-label="Cargando"></div>
+            <div>Cargando clasificación...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Status Grid -->
+    <section class="games-status-section" aria-labelledby="games-title">
+      <div class="games-card">
+        <h2 class="section-title" id="games-title">🎮 ESTADO DE JUEGOS</h2>
+        <div class="games-grid" id="games-grid" role="grid" aria-labelledby="games-title" aria-live="polite">
+          <!-- Games will be populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Tournament Timeline -->
+    <section class="timeline-section" aria-labelledby="timeline-title">
+      <div class="timeline-card">
+        <h2 class="section-title" id="timeline-title">⏰ CRONOLOGÍA DEL TORNEO</h2>
+        <div class="timeline-container" id="timeline-container" role="log" aria-labelledby="timeline-title"
+          aria-live="polite" aria-describedby="timeline-help">
+          <!-- Timeline events will be populated dynamically -->
+        </div>
+        <div id="timeline-help" class="sr-only">Cronología de eventos del torneo ordenados por tiempo, desde el más
+          reciente al más antiguo</div>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="actions-section" aria-labelledby="actions-title">
+      <div class="actions-card">
+        <h2 class="sr-only" id="actions-title">Acciones del Torneo</h2>
+        <div class="action-buttons" role="group" aria-labelledby="actions-title">
+          <button type="button" class="action-btn primary" id="join-tournament-btn" aria-describedby="join-help">
+            ➕ UNIRSE AL TORNEO
+          </button>
+          <div id="join-help" class="sr-only">Únete como participante en este torneo</div>
+
+          <button type="button" class="action-btn secondary" id="view-rules-btn" aria-describedby="rules-help">
+            📋 VER REGLAS
+          </button>
+          <div id="rules-help" class="sr-only">Consulta las reglas y formato del torneo</div>
+
+          <button type="button" class="action-btn secondary" id="export-results-btn" aria-describedby="export-help">
+            📊 EXPORTAR RESULTADOS
+          </button>
+          <div id="export-help" class="sr-only">Descarga los resultados del torneo en formato CSV</div>
+
+          <button type="button" class="action-btn danger" id="leave-tournament-btn" style="display: none;"
+            aria-describedby="leave-help">
+            ❌ ABANDONAR TORNEO
+          </button>
+          <div id="leave-help" class="sr-only">Abandona tu participación en este torneo</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="modal-overlay" style="display: none;">
+    <div class="modal" id="tournament-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Modal Title</h3>
+        <button class="modal-close" id="modal-close" aria-label="Cerrar modal">❌</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Modal content will be populated dynamically -->
+      </div>
+      <div class="modal-footer" id="modal-footer">
+        <!-- Modal actions will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-manager.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament.js"></script>
+  <script src="tournament-dashboard.js"></script>
+</body>
+
+</html>

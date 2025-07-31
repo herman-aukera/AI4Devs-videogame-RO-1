@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScoreAggregator Test Runner</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #1a1a1a;
+      color: #00ff00;
+      padding: 20px;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #00ff00;
+      padding-bottom: 20px;
+    }
+
+    .header h1 {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+      margin: 0;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    button {
+      background: linear-gradient(135deg, #00ff00, #00cc00);
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #00cc00, #009900);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: #333;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ffff;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .test-output {
+      background: #000;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      padding: 20px;
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 13px;
+      margin: 20px 0;
+    }
+
+    .demo-section {
+      background: #2a2a2a;
+      border: 1px solid #ff00ff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .demo-section h3 {
+      color: #ff00ff;
+      margin-top: 0;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+
+    .demo-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .demo-controls input,
+    .demo-controls select {
+      background: #444;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      padding: 8px;
+      border-radius: 3px;
+      font-family: inherit;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    .results-table th,
+    .results-table td {
+      border: 1px solid #00ff00;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .results-table th {
+      background: #333;
+      color: #00ffff;
+    }
+
+    .results-table tr:nth-child(even) {
+      background: #2a2a2a;
+    }
+
+    .performance-chart {
+      background: #333;
+      border: 1px solid #ffff00;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .chart-bar {
+      background: linear-gradient(90deg, #ffff00, #ff8800);
+      height: 20px;
+      margin: 5px 0;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .chart-label {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #000;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .error {
+      color: #ff0000;
+    }
+
+    .success {
+      color: #00ff00;
+    }
+
+    .warning {
+      color: #ffff00;
+    }
+
+    .info {
+      color: #00ffff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏆 ScoreAggregator Test Suite</h1>
+      <p>Cross-Game Tournament Score Normalization & Ranking System</p>
+    </div>
+
+    <div class="controls">
+      <button onclick="runAllTests()">🧪 Run All Tests</button>
+      <button onclick="runPerformanceTests()">⚡ Performance Tests</button>
+      <button onclick="runGameSpecificTests()">🎮 Game-Specific Tests</button>
+      <button onclick="clearOutput()">🗑️ Clear Output</button>
+      <button onclick="showSystemInfo()">📊 System Info</button>
+      <button onclick="exportResults()">💾 Export Results</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="tests-passed">0</div>
+        <div class="stat-label">Tests Passed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="tests-failed">0</div>
+        <div class="stat-label">Tests Failed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avg-normalization-time">0ms</div>
+        <div class="stat-label">Avg Normalization Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="supported-games">10</div>
+        <div class="stat-label">Supported Games</div>
+      </div>
+    </div>
+
+    <div class="test-output" id="output"></div>
+
+    <div class="demo-section">
+      <h3>🎯 Interactive Score Normalization Demo</h3>
+      <div class="demo-controls">
+        <select id="demo-game">
+          <option value="snake-GG">🐍 Snake</option>
+          <option value="tetris-GG">🧩 Tetris</option>
+          <option value="pacman-GG">🟡 Pac-Man</option>
+          <option value="breakout-GG">🧱 Breakout</option>
+          <option value="asteroids-GG">🚀 Asteroids</option>
+          <option value="space-invaders-GG">👾 Space Invaders</option>
+          <option value="galaga-GG">🚀 Galaga</option>
+          <option value="pong-GG">🏓 Pong</option>
+          <option value="fruit-catcher-GG">🍎 Fruit Catcher</option>
+          <option value="mspacman-GG">💗 Ms. Pac-Man</option>
+        </select>
+        <input type="number" id="demo-score" placeholder="Raw Score" value="1000">
+        <input type="number" id="demo-level" placeholder="Level" value="1">
+        <button onclick="demonstrateNormalization()">Normalize Score</button>
+      </div>
+      <div id="demo-results"></div>
+    </div>
+
+    <div class="demo-section">
+      <h3>🏆 Tournament Ranking Demo</h3>
+      <button onclick="generateSampleTournament()">Generate Sample Tournament</button>
+      <button onclick="addRandomParticipant()">Add Random Participant</button>
+      <button onclick="clearTournament()">Clear Tournament</button>
+      <div id="tournament-results"></div>
+    </div>
+
+    <div class="performance-chart" id="performance-chart" style="display: none;">
+      <h3 style="color: #ffff00;">⚡ Performance Metrics</h3>
+      <div id="performance-bars"></div>
+    </div>
+  </div>
+
+  <!-- Load ScoreAggregator and Tests -->
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="test-score-aggregator.js"></script>
+
+  <script>
+    let globalAggregator = new ScoreAggregator({ debugMode: true });
+    let outputElement = document.getElementById('output');
+    let testResults = { passed: 0, failed: 0 };
+    let sampleTournament = [];
+
+    // Override console methods to capture output
+    const originalConsole = {
+      log: console.log,
+      error: console.error,
+      warn: console.warn,
+      info: console.info
+    };
+
+    function captureConsole() {
+      ['log', 'error', 'warn', 'info'].forEach(method => {
+        console[method] = function (...args) {
+          const message = args.map(arg =>
+            typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+          ).join(' ');
+
+          // Add styling based on log level
+          let className = '';
+          if (method === 'error') className = 'error';
+          else if (method === 'warn') className = 'warning';
+          else if (method === 'info') className = 'info';
+
+          const logLine = document.createElement('div');
+          logLine.className = className;
+          logLine.textContent = message;
+          outputElement.appendChild(logLine);
+          outputElement.scrollTop = outputElement.scrollHeight;
+
+          // Also call original console method
+          originalConsole[method].apply(console, args);
+        };
+      });
+    }
+
+    function restoreConsole() {
+      Object.assign(console, originalConsole);
+    }
+
+    async function runAllTests() {
+      clearOutput();
+      captureConsole();
+
+      try {
+        const success = await testRunner.run();
+        updateTestStats();
+        updatePerformanceMetrics();
+
+        if (success) {
+          console.log('\n🎉 All tests passed! ScoreAggregator is ready for production.');
+        } else {
+          console.error('\n❌ Some tests failed. Check the output above.');
+        }
+      } catch (error) {
+        console.error('Test execution failed:', error);
+      }
+
+      restoreConsole();
+    }
+
+    async function runPerformanceTests() {
+      clearOutput();
+      captureConsole();
+
+      console.log('⚡ Running Performance Benchmarks...\n');
+
+      // Score normalization benchmark
+      const normalizationStart = performance.now();
+      for (let i = 0; i < 10000; i++) {
+        globalAggregator.normalizeScore('snake-GG', Math.random() * 5000);
+      }
+      const normalizationTime = performance.now() - normalizationStart;
+
+      console.log(`📊 Score Normalization: 10,000 operations in ${normalizationTime.toFixed(2)}ms`);
+      console.log(`   Average: ${(normalizationTime / 10000).toFixed(4)}ms per operation`);
+
+      // Ranking benchmark
+      const participants = [];
+      for (let i = 0; i < 1000; i++) {
+        participants.push({
+          id: `player${i}`,
+          name: `Player ${i}`,
+          normalizedScores: {
+            'snake-GG': Math.random(),
+            'tetris-GG': Math.random(),
+            'pacman-GG': Math.random()
+          }
+        });
+      }
+
+      const rankingStart = performance.now();
+      const rankings = globalAggregator.calculateRanking(participants);
+      const rankingTime = performance.now() - rankingStart;
+
+      console.log(`🏆 Ranking Calculation: 1,000 participants in ${rankingTime.toFixed(2)}ms`);
+
+      // Leaderboard generation benchmark
+      const leaderboardStart = performance.now();
+      const leaderboard = globalAggregator.generateLeaderboard('perf-test', participants);
+      const leaderboardTime = performance.now() - leaderboardStart;
+
+      console.log(`📋 Leaderboard Generation: ${leaderboardTime.toFixed(2)}ms`);
+
+      // Performance assessment
+      const avgNormalization = normalizationTime / 10000;
+      if (avgNormalization < 0.01) {
+        console.log('✅ Performance: Excellent (< 0.01ms per normalization)');
+      } else if (avgNormalization < 0.1) {
+        console.log('⚠️ Performance: Good (< 0.1ms per normalization)');
+      } else {
+        console.log('❌ Performance: Needs optimization (> 0.1ms per normalization)');
+      }
+
+      updatePerformanceChart({
+        normalization: avgNormalization,
+        ranking: rankingTime,
+        leaderboard: leaderboardTime
+      });
+
+      restoreConsole();
+    }
+
+    async function runGameSpecificTests() {
+      clearOutput();
+      captureConsole();
+
+      console.log('🎮 Testing Game-Specific Score Normalization...\n');
+
+      const games = globalAggregator.getSupportedGames();
+      const testScores = [100, 500, 1000, 5000, 10000];
+
+      games.forEach(game => {
+        console.log(`\n${game.name} (${game.id}):`);
+        testScores.forEach(score => {
+          try {
+            const normalized = globalAggregator.normalizeScore(game.id, score);
+            console.log(`  Score ${score} → ${normalized.toFixed(4)}`);
+          } catch (error) {
+            console.error(`  Score ${score} → ERROR: ${error.message}`);
+          }
+        });
+      });
+
+      // Test with metadata
+      console.log('\n🔧 Testing with Metadata:');
+      const snakeWithMetadata = globalAggregator.normalizeScore('snake-GG', 1000, {
+        level: 5,
+        snakeLength: 25,
+        duration: 120000
+      });
+      console.log(`Snake with metadata: ${snakeWithMetadata.toFixed(4)}`);
+
+      const tetrisWithMetadata = globalAggregator.normalizeScore('tetris-GG', 15000, {
+        level: 8,
+        linesCleared: 50,
+        totalPieces: 100
+      });
+      console.log(`Tetris with metadata: ${tetrisWithMetadata.toFixed(4)}`);
+
+      restoreConsole();
+    }
+
+    function demonstrateNormalization() {
+      const gameId = document.getElementById('demo-game').value;
+      const score = parseInt(document.getElementById('demo-score').value) || 0;
+      const level = parseInt(document.getElementById('demo-level').value) || 1;
+
+      try {
+        const normalized = globalAggregator.normalizeScore(gameId, score, { level });
+        const gameProfile = GAME_SCORING_PROFILES[gameId];
+
+        const resultsHtml = `
+          <table class="results-table">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Game</td><td>${gameProfile.name}</td></tr>
+            <tr><td>Category</td><td>${gameProfile.category}</td></tr>
+            <tr><td>Raw Score</td><td>${score}</td></tr>
+            <tr><td>Level</td><td>${level}</td></tr>
+            <tr><td>Normalized Score</td><td class="success">${normalized.toFixed(6)}</td></tr>
+            <tr><td>Percentage</td><td>${(normalized * 100).toFixed(2)}%</td></tr>
+            <tr><td>Max Reasonable Score</td><td>${gameProfile.maxReasonableScore}</td></tr>
+            <tr><td>Difficulty Multiplier</td><td>${gameProfile.difficultyMultiplier}</td></tr>
+          </table>
+        `;
+
+        document.getElementById('demo-results').innerHTML = resultsHtml;
+      } catch (error) {
+        document.getElementById('demo-results').innerHTML = `
+          <div class="error">Error: ${error.message}</div>
+        `;
+      }
+    }
+
+    function generateSampleTournament() {
+      sampleTournament = [];
+      const names = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank'];
+      const games = ['snake-GG', 'tetris-GG', 'pacman-GG', 'breakout-GG'];
+
+      names.forEach((name, index) => {
+        const participant = {
+          id: `player${index}`,
+          name: name,
+          normalizedScores: {}
+        };
+
+        games.forEach(gameId => {
+          const rawScore = Math.random() * GAME_SCORING_PROFILES[gameId].maxReasonableScore;
+          participant.normalizedScores[gameId] = globalAggregator.normalizeScore(gameId, rawScore);
+        });
+
+        sampleTournament.push(participant);
+      });
+
+      updateTournamentDisplay();
+    }
+
+    function addRandomParticipant() {
+      const randomNames = ['Grace', 'Henry', 'Ivy', 'Jack', 'Kate', 'Leo', 'Mia', 'Noah'];
+      const name = randomNames[Math.floor(Math.random() * randomNames.length)];
+      const games = ['snake-GG', 'tetris-GG', 'pacman-GG'];
+
+      const participant = {
+        id: `player${sampleTournament.length}`,
+        name: `${name} ${sampleTournament.length}`,
+        normalizedScores: {}
+      };
+
+      games.forEach(gameId => {
+        const rawScore = Math.random() * GAME_SCORING_PROFILES[gameId].maxReasonableScore;
+        participant.normalizedScores[gameId] = globalAggregator.normalizeScore(gameId, rawScore);
+      });
+
+      sampleTournament.push(participant);
+      updateTournamentDisplay();
+    }
+
+    function clearTournament() {
+      sampleTournament = [];
+      updateTournamentDisplay();
+    }
+
+    function updateTournamentDisplay() {
+      if (sampleTournament.length === 0) {
+        document.getElementById('tournament-results').innerHTML = '<p>No participants yet. Generate a sample tournament!</p>';
+        return;
+      }
+
+      const leaderboard = globalAggregator.generateLeaderboard('demo-tournament', sampleTournament);
+
+      let html = `
+        <h4>🏆 Tournament Leaderboard (${leaderboard.totalParticipants} participants)</h4>
+        <table class="results-table">
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Total Score</th>
+            <th>Games Completed</th>
+            <th>Best Game</th>
+          </tr>
+      `;
+
+      leaderboard.rankings.forEach(participant => {
+        const gamesCompleted = Object.keys(participant.normalizedScores).length;
+        const bestGame = Object.entries(participant.normalizedScores)
+          .reduce((best, [game, score]) => score > best.score ? { game, score } : best, { game: 'None', score: 0 });
+
+        html += `
+          <tr>
+            <td>${participant.rank}</td>
+            <td>${participant.name}</td>
+            <td>${participant.totalNormalizedScore.toFixed(4)}</td>
+            <td>${gamesCompleted}</td>
+            <td>${GAME_SCORING_PROFILES[bestGame.game]?.name || 'N/A'} (${bestGame.score.toFixed(3)})</td>
+          </tr>
+        `;
+      });
+
+      html += '</table>';
+
+      // Add statistics
+      const stats = leaderboard.statistics;
+      html += `
+        <h4>📊 Tournament Statistics</h4>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">${stats.averageScore.toFixed(3)}</div>
+            <div class="stat-label">Average Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${stats.medianScore.toFixed(3)}</div>
+            <div class="stat-label">Median Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${(stats.completionRate * 100).toFixed(1)}%</div>
+            <div class="stat-label">Completion Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${stats.scoreRange.max.toFixed(3)}</div>
+            <div class="stat-label">Highest Score</div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('tournament-results').innerHTML = html;
+    }
+
+    function updateTestStats() {
+      document.getElementById('tests-passed').textContent = testRunner.passed;
+      document.getElementById('tests-failed').textContent = testRunner.failed;
+    }
+
+    function updatePerformanceMetrics() {
+      const metrics = globalAggregator.getPerformanceMetrics();
+      const avgNormalization = metrics.normalization.avg || 0;
+      document.getElementById('avg-normalization-time').textContent = avgNormalization.toFixed(3) + 'ms';
+    }
+
+    function updatePerformanceChart(metrics) {
+      const chartElement = document.getElementById('performance-chart');
+      const barsElement = document.getElementById('performance-bars');
+
+      const maxTime = Math.max(metrics.normalization * 1000, metrics.ranking, metrics.leaderboard);
+
+      barsElement.innerHTML = `
+        <div class="chart-bar" style="width: ${(metrics.normalization * 1000 / maxTime) * 100}%">
+          <span class="chart-label">Normalization: ${(metrics.normalization * 1000).toFixed(3)}ms</span>
+        </div>
+        <div class="chart-bar" style="width: ${(metrics.ranking / maxTime) * 100}%">
+          <span class="chart-label">Ranking: ${metrics.ranking.toFixed(2)}ms</span>
+        </div>
+        <div class="chart-bar" style="width: ${(metrics.leaderboard / maxTime) * 100}%">
+          <span class="chart-label">Leaderboard: ${metrics.leaderboard.toFixed(2)}ms</span>
+        </div>
+      `;
+
+      chartElement.style.display = 'block';
+    }
+
+    function clearOutput() {
+      outputElement.innerHTML = '';
+    }
+
+    function showSystemInfo() {
+      clearOutput();
+      captureConsole();
+
+      console.log('📊 ScoreAggregator System Information\n');
+      console.log('='.repeat(50));
+
+      const supportedGames = globalAggregator.getSupportedGames();
+      console.log(`Supported Games: ${supportedGames.length}`);
+      supportedGames.forEach(game => {
+        console.log(`  • ${game.name} (${game.id}) - ${game.category}`);
+      });
+
+      console.log('\nGame Scoring Profiles:');
+      Object.entries(GAME_SCORING_PROFILES).forEach(([gameId, profile]) => {
+        console.log(`  ${profile.name}:`);
+        console.log(`    Max Score: ${profile.maxReasonableScore}`);
+        console.log(`    Difficulty: ${profile.difficultyMultiplier}x`);
+        console.log(`    Score Type: ${profile.scoreType}`);
+      });
+
+      const metrics = globalAggregator.getPerformanceMetrics();
+      console.log('\nPerformance Metrics:');
+      console.log(`  Normalizations: ${metrics.normalization.count} (avg: ${metrics.normalization.avg.toFixed(3)}ms)`);
+      console.log(`  Rankings: ${metrics.ranking.count} (avg: ${metrics.ranking.avg.toFixed(3)}ms)`);
+      console.log(`  Leaderboards: ${metrics.leaderboard.count} (avg: ${metrics.leaderboard.avg.toFixed(3)}ms)`);
+
+      console.log('\nBrowser Information:');
+      console.log(`  User Agent: ${navigator.userAgent}`);
+      console.log(`  Platform: ${navigator.platform}`);
+      console.log(`  Language: ${navigator.language}`);
+
+      restoreConsole();
+    }
+
+    function exportResults() {
+      const data = {
+        timestamp: new Date().toISOString(),
+        testResults: {
+          passed: testRunner.passed,
+          failed: testRunner.failed,
+          total: testRunner.tests.length
+        },
+        performanceMetrics: globalAggregator.getPerformanceMetrics(),
+        supportedGames: globalAggregator.getSupportedGames(),
+        sampleTournament: sampleTournament.length > 0 ? {
+          participants: sampleTournament.length,
+          leaderboard: globalAggregator.generateLeaderboard('export-test', sampleTournament)
+        } : null
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `score-aggregator-test-results-${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      console.log('📁 Test results exported successfully');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🏆 ScoreAggregator Test Runner Ready');
+      console.log('Click "Run All Tests" to validate the score aggregation system');
+      updateTestStats();
+      updatePerformanceMetrics();
+    });
+  </script>
+</body>
+
+</html>

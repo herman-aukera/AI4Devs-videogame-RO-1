@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventBus Test Runner</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #1a1a1a;
+      color: #00ff00;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #00ff00;
+      padding-bottom: 20px;
+    }
+
+    .test-output {
+      background: #000;
+      border: 1px solid #00ff00;
+      padding: 20px;
+      border-radius: 5px;
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    .controls {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    button {
+      background: #00ff00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #00cc00;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: #333;
+      border: 1px solid #00ff00;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ffff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧪 EventBus Test Runner</h1>
+      <p>Cross-Game Tournament Event System Validation</p>
+    </div>
+
+    <div class="controls">
+      <button onclick="runTests()">Run All Tests</button>
+      <button onclick="runPerformanceTest()">Performance Test</button>
+      <button onclick="clearOutput()">Clear Output</button>
+      <button onclick="showEventBusStats()">Show Stats</button>
+    </div>
+
+    <div class="stats" id="stats-container">
+      <div class="stat-card">
+        <div class="stat-value" id="total-listeners">0</div>
+        <div class="stat-label">Total Listeners</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="event-types">0</div>
+        <div class="stat-label">Event Types</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="events-published">0</div>
+        <div class="stat-label">Events Published</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="test-status">Ready</div>
+        <div class="stat-label">Test Status</div>
+      </div>
+    </div>
+
+    <div class="test-output" id="output"></div>
+  </div>
+
+  <!-- Load EventBus and Tests -->
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="test-eventbus.js"></script>
+
+  <script>
+    let globalEventBus = new EventBus();
+    let outputElement = document.getElementById('output');
+
+    // Override console methods to capture output
+    const originalConsole = {
+      log: console.log,
+      error: console.error,
+      warn: console.warn,
+      info: console.info
+    };
+
+    function captureConsole() {
+      ['log', 'error', 'warn', 'info'].forEach(method => {
+        console[method] = function (...args) {
+          const message = args.map(arg =>
+            typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+          ).join(' ');
+
+          outputElement.textContent += message + '\n';
+          outputElement.scrollTop = outputElement.scrollHeight;
+
+          // Also call original console method
+          originalConsole[method].apply(console, args);
+        };
+      });
+    }
+
+    function restoreConsole() {
+      Object.assign(console, originalConsole);
+    }
+
+    async function runTests() {
+      clearOutput();
+      captureConsole();
+
+      document.getElementById('test-status').textContent = 'Running...';
+
+      try {
+        const success = await testRunner.run();
+        document.getElementById('test-status').textContent = success ? 'Passed' : 'Failed';
+        document.getElementById('test-status').style.color = success ? '#00ff00' : '#ff0000';
+
+        updateStats();
+      } catch (error) {
+        console.error('Test execution failed:', error);
+        document.getElementById('test-status').textContent = 'Error';
+        document.getElementById('test-status').style.color = '#ff0000';
+      }
+
+      restoreConsole();
+    }
+
+    function runPerformanceTest() {
+      clearOutput();
+      captureConsole();
+
+      console.log('🚀 Running Performance Test...\n');
+
+      const eventBus = new EventBus();
+      const iterations = 10000;
+      let callbackCount = 0;
+
+      // Add multiple listeners
+      for (let i = 0; i < 100; i++) {
+        eventBus.subscribe('perf-test', () => {
+          callbackCount++;
+        });
+      }
+
+      const startTime = performance.now();
+
+      // Publish many events
+      for (let i = 0; i < iterations; i++) {
+        eventBus.publish('perf-test', { iteration: i });
+      }
+
+      const endTime = performance.now();
+      const totalTime = endTime - startTime;
+      const eventsPerSecond = Math.round(iterations / (totalTime / 1000));
+
+      console.log(`📊 Performance Results:`);
+      console.log(`   Events Published: ${iterations}`);
+      console.log(`   Total Callbacks: ${callbackCount}`);
+      console.log(`   Execution Time: ${totalTime.toFixed(2)}ms`);
+      console.log(`   Events/Second: ${eventsPerSecond}`);
+      console.log(`   Avg Time/Event: ${(totalTime / iterations).toFixed(4)}ms`);
+
+      if (totalTime < 1000) {
+        console.log('✅ Performance: Excellent');
+      } else if (totalTime < 5000) {
+        console.log('⚠️ Performance: Good');
+      } else {
+        console.log('❌ Performance: Needs Optimization');
+      }
+
+      restoreConsole();
+      updateStats();
+    }
+
+    function clearOutput() {
+      outputElement.textContent = '';
+    }
+
+    function showEventBusStats() {
+      clearOutput();
+      captureConsole();
+
+      const stats = globalEventBus.getStats();
+      const history = globalEventBus.getHistory(5);
+
+      console.log('📊 EventBus Statistics:');
+      console.log('========================');
+      console.log(`Total Listeners: ${stats.totalListeners}`);
+      console.log(`Event Types: ${stats.eventTypes}`);
+      console.log(`History Size: ${stats.historySize}`);
+      console.log('');
+
+      if (Object.keys(stats.eventStats).length > 0) {
+        console.log('Event Counts:');
+        Object.entries(stats.eventStats).forEach(([event, count]) => {
+          console.log(`  ${event}: ${count}`);
+        });
+        console.log('');
+      }
+
+      if (Object.keys(stats.listenerCounts).length > 0) {
+        console.log('Listener Counts:');
+        Object.entries(stats.listenerCounts).forEach(([event, count]) => {
+          console.log(`  ${event}: ${count} listeners`);
+        });
+        console.log('');
+      }
+
+      if (history.length > 0) {
+        console.log('Recent Events:');
+        history.forEach(event => {
+          const time = new Date(event.timestamp).toLocaleTimeString();
+          console.log(`  [${time}] ${event.type} (${event.listeners} listeners)`);
+        });
+      }
+
+      restoreConsole();
+      updateStats();
+    }
+
+    function updateStats() {
+      const stats = globalEventBus.getStats();
+      document.getElementById('total-listeners').textContent = stats.totalListeners;
+      document.getElementById('event-types').textContent = stats.eventTypes;
+
+      const totalEvents = Object.values(stats.eventStats).reduce((sum, count) => sum + count, 0);
+      document.getElementById('events-published').textContent = totalEvents;
+    }
+
+    // Demo event system
+    function setupDemo() {
+      // Add some demo listeners
+      globalEventBus.subscribe('demo:click', (event) => {
+        console.log('Demo click event received:', event.data);
+      });
+
+      globalEventBus.subscribe('demo:hover', (event) => {
+        console.log('Demo hover event received:', event.data);
+      });
+
+      // Simulate some events
+      setInterval(() => {
+        if (Math.random() > 0.8) {
+          globalEventBus.publish('demo:background', {
+            timestamp: Date.now(),
+            random: Math.random()
+          });
+        }
+      }, 2000);
+
+      updateStats();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      setupDemo();
+      console.log('🎮 EventBus Test Runner Ready');
+      console.log('Click "Run All Tests" to validate the event system');
+    });
+
+    // Add click handlers for demo
+    document.addEventListener('click', (e) => {
+      globalEventBus.publish('demo:click', {
+        x: e.clientX,
+        y: e.clientY,
+        target: e.target.tagName
+      });
+      updateStats();
+    });
+  </script>
+</body>
+
+</html>

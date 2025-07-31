@@ -1,338 +1,364 @@
 <!-- © GG, MIT License -->
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="GG" />
-    <meta
-      name="description"
-      content="AI4Devs Retro Web Games - Colección de juegos arcade clásicos desarrollados con HTML5, CSS3 y JavaScript ES6+"
-    />
-    <meta
-      name="keywords"
-      content="retro games, arcade, html5, javascript, snake, breakout, ai4devs"
-    />
-    <meta name="author" content="AI4Devs Students - Retro Game Collection" />
-    <meta name="theme-color" content="#00FFFF" />
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="AI4Devs Retro Web Games" />
-    <meta
-      property="og:description"
-      content="Colección de juegos arcade retro desarrollados por estudiantes de AI4Devs"
-    />
-    <meta property="og:type" content="website" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="GG" />
+  <meta name="description"
+    content="AI4Devs Retro Web Games - Colección de juegos arcade clásicos desarrollados con HTML5, CSS3 y JavaScript ES6+" />
+  <meta name="keywords" content="retro games, arcade, html5, javascript, snake, breakout, ai4devs" />
+  <meta name="author" content="AI4Devs Students - Retro Game Collection" />
+  <meta name="theme-color" content="#00FFFF" />
 
-    <title>🎮 AI4Devs Retro Games - Arcade Collection</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="stars-bg"></div>
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="AI4Devs Retro Web Games" />
+  <meta property="og:description" content="Colección de juegos arcade retro desarrollados por estudiantes de AI4Devs" />
+  <meta property="og:type" content="website" />
 
-    <main class="game-arcade">
-      <!-- Header Section -->
-      <header class="arcade-header">
-        <h1 class="neon-title">
-          <span class="title-line-1">AI4DEVS</span>
-          <span class="title-line-2">RETRO GAMES</span>
-        </h1>
-        <p class="subtitle">🕹️ Arcade Collection - Choose Your Adventure 🕹️</p>
-      </header>
+  <title>🎮 AI4Devs Retro Games - Arcade Collection</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-      <!-- Game Selection Grid -->
-      <section class="games-grid">
-        <!-- Snake Game -->
-        <article class="game-card snake-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🐍 SNAKE</h2>
-            <p class="game-description">
-              Classic grid-based snake game with progressive difficulty
-            </p>
-            <div class="game-stats">
-              <span class="stat">Grid Movement</span>
-              <span class="stat">Progressive Speed</span>
-              <span class="stat">High Score</span>
-            </div>
-            <a href="snake-GG/index.html" class="play-button">
-              <span class="button-text">PLAY SNAKE</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern snake-pattern"></div>
-        </article>
+<body>
+  <div class="stars-bg"></div>
 
-        <!-- Breakout Game -->
-        <article class="game-card breakout-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🧱 BREAKOUT</h2>
-            <p class="game-description">
-              Destroy all bricks with precise ball physics and power-ups
-            </p>
-            <div class="game-stats">
-              <span class="stat">Ball Physics</span>
-              <span class="stat">Multiple Levels</span>
-              <span class="stat">Power-ups</span>
-            </div>
-            <a href="breakout-GG/index.html" class="play-button">
-              <span class="button-text">PLAY BREAKOUT</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern breakout-pattern"></div>
-        </article>
+  <main class="game-arcade">
+    <!-- Header Section -->
+    <header class="arcade-header">
+      <h1 class="neon-title">
+        <span class="title-line-1">AI4DEVS</span>
+        <span class="title-line-2">RETRO GAMES</span>
+      </h1>
+      <p class="subtitle">🕹️ Arcade Collection - Choose Your Adventure 🕹️</p>
+    </header>
 
-        <!-- Fruit Catcher Game -->
-        <article class="game-card fruit-catcher-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🍎 FRUIT CATCHER</h2>
-            <p class="game-description">
-              Catch falling fruits in this fast-paced arcade challenge with
-              increasing speed and addictive gameplay
-            </p>
-            <div class="game-stats">
-              <span class="stat">Reflex Challenge</span>
-              <span class="stat">Progressive Speed</span>
-              <span class="stat">High Score System</span>
-            </div>
-            <a href="fruit-catcher-GG/index.html" class="play-button">
-              <span class="button-text">PLAY FRUIT CATCHER</span>
-              <div class="button-glow"></div>
-            </a>
+    <!-- Game Selection Grid -->
+    <section class="games-grid">
+      <!-- Snake Game -->
+      <article class="game-card snake-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🐍 SNAKE</h2>
+          <p class="game-description">
+            Classic grid-based snake game with progressive difficulty
+          </p>
+          <div class="game-stats">
+            <span class="stat">Grid Movement</span>
+            <span class="stat">Progressive Speed</span>
+            <span class="stat">High Score</span>
           </div>
-          <div class="card-pattern fruit-pattern"></div>
-        </article>
-
-        <!-- Asteroids Game -->
-        <article class="game-card asteroids-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🚀 ASTEROIDS</h2>
-            <p class="game-description">
-              Authentic vector graphics space combat with realistic physics, progressive difficulty, and classic arcade feel
-            </p>
-            <div class="game-stats">
-              <span class="stat">Vector Graphics</span>
-              <span class="stat">Space Physics</span>
-              <span class="stat">Progressive Waves</span>
-            </div>
-            <a href="asteroids-GG/index.html" class="play-button">
-              <span class="button-text">PLAY ASTEROIDS</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern asteroids-pattern"></div>
-        </article>
-
-        <!-- Space Invaders Game -->
-        <article class="game-card space-invaders-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🚀 SPACE INVADERS</h2>
-            <p class="game-description">
-              Defend Earth from alien invasion with authentic sprite graphics, destructible barriers, and classic arcade action
-            </p>
-            <div class="game-stats">
-              <span class="stat">Pixel-Perfect Sprites</span>
-              <span class="stat">Destructible Barriers</span>
-              <span class="stat">UFO Bonus Rounds</span>
-            </div>
-            <a href="space-invaders-GG/index.html" class="play-button">
-              <span class="button-text">PLAY SPACE INVADERS</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern space-invaders-pattern"></div>
-        </article>
-
-        <!-- PAC-MAN Game -->
-        <article class="game-card pacman-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🟡 PAC-MAN</h2>
-            <p class="game-description">
-              Classic arcade experience with advanced 4-ghost AI system, authentic maze layout, 
-              power pellets, fruit bonuses, and responsive controls
-            </p>
-            <div class="game-stats">
-              <span class="stat">4 Ghost AI Types</span>
-              <span class="stat">Classic Maze</span>
-              <span class="stat">Fruit Bonuses</span>
-            </div>
-            <a href="pacman-GG/index.html" class="play-button">
-              <span class="button-text">PLAY PAC-MAN</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern pacman-pattern"></div>
-        </article>
-
-        <!-- MS. PAC-MAN Game -->
-        <article class="game-card mspacman-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">💗 MS. PAC-MAN</h2>
-            <p class="game-description">
-              Enhanced sequel with 4 unique mazes, moving fruit system, 
-              unpredictable ghost AI, and progressive difficulty
-            </p>
-            <div class="game-stats">
-              <span class="stat">4 Unique Mazes</span>
-              <span class="stat">Moving Fruit</span>
-              <span class="stat">Enhanced AI</span>
-            </div>
-            <a href="mspacman-GG/index.html" class="play-button">
-              <span class="button-text">PLAY MS. PAC-MAN</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern mspacman-pattern"></div>
-        </article>
-
-        <!-- Tetris Game -->
-        <article class="game-card tetris-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🧩 TETRIS</h2>
-            <p class="game-description">
-              Classic puzzle gameplay with authentic tetromino physics, line clearing mechanics, and progressive difficulty
-            </p>
-            <div class="game-stats">
-              <span class="stat">Tetromino Physics</span>
-              <span class="stat">Line Clearing</span>
-              <span class="stat">Progressive Speed</span>
-            </div>
-            <a href="tetris-GG/index.html" class="play-button">
-              <span class="button-text">PLAY TETRIS</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern tetris-pattern"></div>
-        </article>
-
-        <!-- Pong Game -->
-        <article class="game-card pong-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🏓 PONG</h2>
-            <p class="game-description">
-              Classic paddle game with realistic physics, adaptive AI, and precision controls. 
-              The physics foundation for the entire collection.
-            </p>
-            <div class="game-stats">
-              <span class="stat">Realistic Physics</span>
-              <span class="stat">Adaptive AI</span>
-              <span class="stat">Precision Controls</span>
-            </div>
-            <a href="pong-GG/index.html" class="play-button">
-              <span class="button-text">PLAY PONG</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern pong-pattern"></div>
-        </article>
-
-        <!-- Galaga Game -->
-        <article class="game-card galaga-theme">
-          <div class="card-glow"></div>
-          <div class="card-content">
-            <h2 class="game-title">🚀 GALAGA</h2>
-            <p class="game-description">
-              Formation flying space shooter with enemy capture mechanics, bonus stages, and classic arcade action
-            </p>
-            <div class="game-stats">
-              <span class="stat">Formation Patterns</span>
-              <span class="stat">Enemy Capture</span>
-              <span class="stat">Bonus Stages</span>
-            </div>
-            <a href="galaga-GG/index.html" class="play-button">
-              <span class="button-text">PLAY GALAGA</span>
-              <div class="button-glow"></div>
-            </a>
-          </div>
-          <div class="card-pattern galaga-pattern"></div>
-        </article>
-      </section>
-
-      <!-- Instructions Section -->
-      <section class="instructions">
-        <h3 class="instructions-title">🎯 How to Play</h3>
-        <div class="controls-grid">
-          <div class="control-item">
-            <span class="control-key">↑ ↓ ← →</span>
-            <span class="control-desc">Arrow Keys</span>
-          </div>
-          <div class="control-item">
-            <span class="control-key">WASD</span>
-            <span class="control-desc">Alternative Movement</span>
-          </div>
-          <div class="control-item">
-            <span class="control-key">SPACE</span>
-            <span class="control-desc">Pause/Resume</span>
-          </div>
-          <div class="control-item">
-            <span class="control-key">ENTER</span>
-            <span class="control-desc">Start/Restart</span>
-          </div>
+          <a href="snake-GG/index.html" class="play-button">
+            <span class="button-text">PLAY SNAKE</span>
+            <div class="button-glow"></div>
+          </a>
         </div>
-      </section>
-    </main>
+        <div class="card-pattern snake-pattern"></div>
+      </article>
 
-    <!-- Footer -->
-    <footer class="arcade-footer">
-      <div class="footer-content">
-        <p class="footer-text">
-          🎓 Created by <span class="highlight">AI4Devs Students</span> | 💻
-          Built with
-          <span class="highlight">HTML5 + CSS3 + JavaScript ES6+</span>
-        </p>
-        <p class="footer-year">© 2025 - Retro Gaming Excellence</p>
+      <!-- Breakout Game -->
+      <article class="game-card breakout-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🧱 BREAKOUT</h2>
+          <p class="game-description">
+            Destroy all bricks with precise ball physics and power-ups
+          </p>
+          <div class="game-stats">
+            <span class="stat">Ball Physics</span>
+            <span class="stat">Multiple Levels</span>
+            <span class="stat">Power-ups</span>
+          </div>
+          <a href="breakout-GG/index.html" class="play-button">
+            <span class="button-text">PLAY BREAKOUT</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern breakout-pattern"></div>
+      </article>
+
+      <!-- Fruit Catcher Game -->
+      <article class="game-card fruit-catcher-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🍎 FRUIT CATCHER</h2>
+          <p class="game-description">
+            Catch falling fruits in this fast-paced arcade challenge with
+            increasing speed and addictive gameplay
+          </p>
+          <div class="game-stats">
+            <span class="stat">Reflex Challenge</span>
+            <span class="stat">Progressive Speed</span>
+            <span class="stat">High Score System</span>
+          </div>
+          <a href="fruit-catcher-GG/index.html" class="play-button">
+            <span class="button-text">PLAY FRUIT CATCHER</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern fruit-pattern"></div>
+      </article>
+
+      <!-- Asteroids Game -->
+      <article class="game-card asteroids-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🚀 ASTEROIDS</h2>
+          <p class="game-description">
+            Authentic vector graphics space combat with realistic physics, progressive difficulty, and classic arcade
+            feel
+          </p>
+          <div class="game-stats">
+            <span class="stat">Vector Graphics</span>
+            <span class="stat">Space Physics</span>
+            <span class="stat">Progressive Waves</span>
+          </div>
+          <a href="asteroids-GG/index.html" class="play-button">
+            <span class="button-text">PLAY ASTEROIDS</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern asteroids-pattern"></div>
+      </article>
+
+      <!-- Space Invaders Game -->
+      <article class="game-card space-invaders-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🚀 SPACE INVADERS</h2>
+          <p class="game-description">
+            Defend Earth from alien invasion with authentic sprite graphics, destructible barriers, and classic arcade
+            action
+          </p>
+          <div class="game-stats">
+            <span class="stat">Pixel-Perfect Sprites</span>
+            <span class="stat">Destructible Barriers</span>
+            <span class="stat">UFO Bonus Rounds</span>
+          </div>
+          <a href="space-invaders-GG/index.html" class="play-button">
+            <span class="button-text">PLAY SPACE INVADERS</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern space-invaders-pattern"></div>
+      </article>
+
+      <!-- PAC-MAN Game -->
+      <article class="game-card pacman-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🟡 PAC-MAN</h2>
+          <p class="game-description">
+            Classic arcade experience with advanced 4-ghost AI system, authentic maze layout,
+            power pellets, fruit bonuses, and responsive controls
+          </p>
+          <div class="game-stats">
+            <span class="stat">4 Ghost AI Types</span>
+            <span class="stat">Classic Maze</span>
+            <span class="stat">Fruit Bonuses</span>
+          </div>
+          <a href="pacman-GG/index.html" class="play-button">
+            <span class="button-text">PLAY PAC-MAN</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern pacman-pattern"></div>
+      </article>
+
+      <!-- MS. PAC-MAN Game -->
+      <article class="game-card mspacman-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">💗 MS. PAC-MAN</h2>
+          <p class="game-description">
+            Enhanced sequel with 4 unique mazes, moving fruit system,
+            unpredictable ghost AI, and progressive difficulty
+          </p>
+          <div class="game-stats">
+            <span class="stat">4 Unique Mazes</span>
+            <span class="stat">Moving Fruit</span>
+            <span class="stat">Enhanced AI</span>
+          </div>
+          <a href="mspacman-GG/index.html" class="play-button">
+            <span class="button-text">PLAY MS. PAC-MAN</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern mspacman-pattern"></div>
+      </article>
+
+      <!-- Tetris Game -->
+      <article class="game-card tetris-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🧩 TETRIS</h2>
+          <p class="game-description">
+            Classic puzzle gameplay with authentic tetromino physics, line clearing mechanics, and progressive
+            difficulty
+          </p>
+          <div class="game-stats">
+            <span class="stat">Tetromino Physics</span>
+            <span class="stat">Line Clearing</span>
+            <span class="stat">Progressive Speed</span>
+          </div>
+          <a href="tetris-GG/index.html" class="play-button">
+            <span class="button-text">PLAY TETRIS</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern tetris-pattern"></div>
+      </article>
+
+      <!-- Pong Game -->
+      <article class="game-card pong-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🏓 PONG</h2>
+          <p class="game-description">
+            Classic paddle game with realistic physics, adaptive AI, and precision controls.
+            The physics foundation for the entire collection.
+          </p>
+          <div class="game-stats">
+            <span class="stat">Realistic Physics</span>
+            <span class="stat">Adaptive AI</span>
+            <span class="stat">Precision Controls</span>
+          </div>
+          <a href="pong-GG/index.html" class="play-button">
+            <span class="button-text">PLAY PONG</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern pong-pattern"></div>
+      </article>
+
+      <!-- Galaga Game -->
+      <article class="game-card galaga-theme">
+        <div class="card-glow"></div>
+        <div class="card-content">
+          <h2 class="game-title">🚀 GALAGA</h2>
+          <p class="game-description">
+            Formation flying space shooter with enemy capture mechanics, bonus stages, and classic arcade action
+          </p>
+          <div class="game-stats">
+            <span class="stat">Formation Patterns</span>
+            <span class="stat">Enemy Capture</span>
+            <span class="stat">Bonus Stages</span>
+          </div>
+          <a href="galaga-GG/index.html" class="play-button">
+            <span class="button-text">PLAY GALAGA</span>
+            <div class="button-glow"></div>
+          </a>
+        </div>
+        <div class="card-pattern galaga-pattern"></div>
+      </article>
+    </section>
+
+    <!-- Tournament Section -->
+    <section class="tournament-section">
+      <h3 class="tournament-title">🏆 Modo Torneo</h3>
+      <p class="tournament-description">
+        Compite en torneos personalizados con múltiples juegos y formatos de competición
+      </p>
+      <div class="tournament-actions">
+        <a href="tournament-creation.html" class="tournament-btn create-tournament">
+          <span class="btn-icon">🏆</span>
+          <span class="btn-text">CREAR TORNEO</span>
+          <div class="btn-glow"></div>
+        </a>
+        <a href="tournament-dashboard.html" class="tournament-btn view-tournaments">
+          <span class="btn-icon">📊</span>
+          <span class="btn-text">DASHBOARD</span>
+          <div class="btn-glow"></div>
+        </a>
+        <a href="tournament-history.html" class="tournament-btn view-history">
+          <span class="btn-icon">📈</span>
+          <span class="btn-text">HISTORIAL</span>
+          <div class="btn-glow"></div>
+        </a>
       </div>
-      <div class="footer-pattern"></div>
-    </footer>
+    </section>
 
-    <script>
-      // Particle background animation
-      document.addEventListener('DOMContentLoaded', function () {
-        createStars();
-        animateCards();
+    <!-- Instructions Section -->
+    <section class="instructions">
+      <h3 class="instructions-title">🎯 How to Play</h3>
+      <div class="controls-grid">
+        <div class="control-item">
+          <span class="control-key">↑ ↓ ← →</span>
+          <span class="control-desc">Arrow Keys</span>
+        </div>
+        <div class="control-item">
+          <span class="control-key">WASD</span>
+          <span class="control-desc">Alternative Movement</span>
+        </div>
+        <div class="control-item">
+          <span class="control-key">SPACE</span>
+          <span class="control-desc">Pause/Resume</span>
+        </div>
+        <div class="control-item">
+          <span class="control-key">ENTER</span>
+          <span class="control-desc">Start/Restart</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="arcade-footer">
+    <div class="footer-content">
+      <p class="footer-text">
+        🎓 Created by <span class="highlight">AI4Devs Students</span> | 💻
+        Built with
+        <span class="highlight">HTML5 + CSS3 + JavaScript ES6+</span>
+      </p>
+      <p class="footer-year">© 2025 - Retro Gaming Excellence</p>
+    </div>
+    <div class="footer-pattern"></div>
+  </footer>
+
+  <script>
+    // Particle background animation
+    document.addEventListener('DOMContentLoaded', function () {
+      createStars();
+      animateCards();
+    });
+
+    function createStars() {
+      const starsContainer = document.querySelector('.stars-bg');
+      const starCount = 50;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+
+    function animateCards() {
+      const cards = document.querySelectorAll('.game-card');
+      cards.forEach((card, index) => {
+        card.style.animationDelay = index * 0.2 + 's';
+        card.classList.add('fade-in');
+      });
+    }
+
+    // Card hover effects
+    document.querySelectorAll('.game-card').forEach((card) => {
+      card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-10px) scale(1.05)';
       });
 
-      function createStars() {
-        const starsContainer = document.querySelector('.stars-bg');
-        const starCount = 50;
-
-        for (let i = 0; i < starCount; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.left = Math.random() * 100 + '%';
-          star.style.top = Math.random() * 100 + '%';
-          star.style.animationDelay = Math.random() * 3 + 's';
-          starsContainer.appendChild(star);
-        }
-      }
-
-      function animateCards() {
-        const cards = document.querySelectorAll('.game-card');
-        cards.forEach((card, index) => {
-          card.style.animationDelay = index * 0.2 + 's';
-          card.classList.add('fade-in');
-        });
-      }
-
-      // Card hover effects
-      document.querySelectorAll('.game-card').forEach((card) => {
-        card.addEventListener('mouseenter', function () {
-          this.style.transform = 'translateY(-10px) scale(1.05)';
-        });
-
-        card.addEventListener('mouseleave', function () {
-          this.style.transform = 'translateY(0) scale(1)';
-        });
+      card.addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0) scale(1)';
       });
-    </script>
-  </body>
+    });
+
+    // Tournament navigation - all handled by anchor links now
+    // Enhanced tournament integration with proper navigation
+  </script>
+</body>
+
 </html>

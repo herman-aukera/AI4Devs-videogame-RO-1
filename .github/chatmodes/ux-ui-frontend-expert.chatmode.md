@@ -261,3 +261,5 @@ Before any UI/UX work is considered complete:
 ---
 
 **Ready to enhance the AI4Devs Retro Games collection with pixel-perfect design consistency and world-class accessibility. Which game should we start with?**
+
+Any modification to this instruction should be approved manually  by the user. If you want to change this instruction, please ask the user to do it.

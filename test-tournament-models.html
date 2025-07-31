@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament Models Test Suite</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .test-container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .test-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #5a6fd8;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .test-output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      max-height: 500px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .test-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .summary-card h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    .summary-card .number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .passed {
+      color: #28a745;
+    }
+
+    .failed {
+      color: #dc3545;
+    }
+
+    .validation-demo {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .demo-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+
+    .demo-output {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>🏆 Tournament Data Models Test Suite</h1>
+    <p>Comprehensive testing for tournament data validation, sanitization, and storage management</p>
+  </div>
+
+  <div class="test-summary" id="testSummary">
+    <div class="summary-card">
+      <h3>Total Tests</h3>
+      <div class="number" id="totalTests">-</div>
+    </div>
+    <div class="summary-card">
+      <h3>Passed</h3>
+      <div class="number passed" id="passedTests">-</div>
+    </div>
+    <div class="summary-card">
+      <h3>Failed</h3>
+      <div class="number failed" id="failedTests">-</div>
+    </div>
+    <div class="summary-card">
+      <h3>Success Rate</h3>
+      <div class="number" id="successRate">-</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test Execution</h2>
+    <div class="test-controls">
+      <button onclick="runTests()" id="runButton">Run All Tests</button>
+      <button onclick="clearOutput()" id="clearButton">Clear Output</button>
+      <button onclick="runValidationDemo()" id="demoButton">Run Validation Demo</button>
+    </div>
+    <div class="test-output" id="testOutput">Click "Run All Tests" to execute the test suite...</div>
+  </div>
+
+  <div class="test-container">
+    <h2>Interactive Validation Demo</h2>
+    <p>Test the validation functions with your own input:</p>
+
+    <div class="validation-demo">
+      <h4>Tournament Configuration Validator</h4>
+      <textarea class="demo-input" id="tournamentInput" rows="8" placeholder="Enter tournament configuration JSON...">
+{
+  "name": "Test Tournament",
+  "games": ["snake-GG", "tetris-GG"],
+  "format": "round-robin",
+  "settings": {
+    "maxParticipants": 8,
+    "scoreNormalization": true,
+    "autoAdvance": true
+  }
+}</textarea>
+      <button onclick="validateTournamentDemo()">Validate Tournament Config</button>
+      <div class="demo-output" id="tournamentOutput"></div>
+    </div>
+
+    <div class="validation-demo">
+      <h4>Participant Validator</h4>
+      <textarea class="demo-input" id="participantInput" rows="6" placeholder="Enter participant JSON...">
+{
+  "id": "player1",
+  "name": "Test Player",
+  "scores": {"snake-GG": 1000},
+  "totalScore": 1000,
+  "rank": 1
+}</textarea>
+      <button onclick="validateParticipantDemo()">Validate Participant</button>
+      <div class="demo-output" id="participantOutput"></div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Storage Information</h2>
+    <div id="storageInfo">
+      <button onclick="showStorageInfo()">Show Storage Info</button>
+      <div class="demo-output" id="storageOutput"></div>
+    </div>
+  </div>
+
+  <!-- Include the tournament models -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="test-tournament-models.js"></script>
+
+  <script>
+    // Debug script loading
+    console.log('Scripts loaded. Checking globals...');
+    console.log('TOURNAMENT_CONSTANTS available:', typeof TOURNAMENT_CONSTANTS !== 'undefined');
+    console.log('validateTournamentConfig available:', typeof validateTournamentConfig !== 'undefined');
+    console.log('TournamentModelTests available:', typeof TournamentModelTests !== 'undefined');
+    console.log('window.TournamentModelTests available:', typeof window.TournamentModelTests !== 'undefined');
+  </script>
+
+  <script>
+    let testRunner = null;
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      // Wait a bit for scripts to load
+      setTimeout(() => {
+        if (typeof window.TournamentModelTests !== 'undefined') {
+          testRunner = window.TournamentModelTests;
+          updateTestSummary(0, 0, 0);
+          document.getElementById('testOutput').textContent = 'Test runner loaded successfully. Click "Run All Tests" to execute the test suite...';
+        } else {
+          document.getElementById('testOutput').textContent = 'Error: Test runner not available. Please check that all scripts loaded correctly.';
+          console.error('Available globals:', Object.keys(window));
+          console.error('TournamentModelTests type:', typeof window.TournamentModelTests);
+        }
+      }, 100);
+    });
+
+    async function runTests() {
+      if (!testRunner) {
+        document.getElementById('testOutput').textContent = 'Error: Test runner not available';
+        return;
+      }
+
+      const runButton = document.getElementById('runButton');
+      const output = document.getElementById('testOutput');
+
+      runButton.disabled = true;
+      runButton.textContent = 'Running Tests...';
+      output.textContent = 'Initializing test suite...\n';
+
+      // Capture console output
+      const originalLog = console.log;
+      const originalError = console.error;
+      let capturedOutput = '';
+
+      console.log = (...args) => {
+        capturedOutput += args.join(' ') + '\n';
+        output.textContent = capturedOutput;
+        output.scrollTop = output.scrollHeight;
+      };
+
+      console.error = (...args) => {
+        capturedOutput += 'ERROR: ' + args.join(' ') + '\n';
+        output.textContent = capturedOutput;
+        output.scrollTop = output.scrollHeight;
+      };
+
+      try {
+        const success = await testRunner.run();
+        updateTestSummary(testRunner.tests.length, testRunner.passed, testRunner.failed);
+
+        if (success) {
+          capturedOutput += '\n🎉 All tests passed!';
+        } else {
+          capturedOutput += '\n⚠️ Some tests failed. Check the output above for details.';
+        }
+
+        output.textContent = capturedOutput;
+      } catch (error) {
+        capturedOutput += '\nFatal error running tests: ' + error.message;
+        output.textContent = capturedOutput;
+      } finally {
+        // Restore console
+        console.log = originalLog;
+        console.error = originalError;
+
+        runButton.disabled = false;
+        runButton.textContent = 'Run All Tests';
+      }
+    }
+
+    function clearOutput() {
+      document.getElementById('testOutput').textContent = 'Output cleared. Click "Run All Tests" to execute the test suite...';
+      updateTestSummary(0, 0, 0);
+    }
+
+    function updateTestSummary(total, passed, failed) {
+      document.getElementById('totalTests').textContent = total;
+      document.getElementById('passedTests').textContent = passed;
+      document.getElementById('failedTests').textContent = failed;
+
+      const successRate = total > 0 ? Math.round((passed / total) * 100) : 0;
+      document.getElementById('successRate').textContent = successRate + '%';
+    }
+
+    function validateTournamentDemo() {
+      const input = document.getElementById('tournamentInput').value;
+      const output = document.getElementById('tournamentOutput');
+
+      try {
+        const config = JSON.parse(input);
+        const result = validateTournamentConfig(config);
+
+        output.innerHTML = `
+                    <strong>Validation Result:</strong><br>
+                    Valid: ${result.isValid}<br>
+                    Errors: ${result.errors.length}<br>
+                    ${result.errors.length > 0 ? '<br><strong>Error Details:</strong><br>' + result.errors.join('<br>') : ''}
+                `;
+      } catch (error) {
+        output.innerHTML = `<strong>JSON Parse Error:</strong><br>${error.message}`;
+      }
+    }
+
+    function validateParticipantDemo() {
+      const input = document.getElementById('participantInput').value;
+      const output = document.getElementById('participantOutput');
+
+      try {
+        const participant = JSON.parse(input);
+        const result = validateParticipant(participant);
+
+        output.innerHTML = `
+                    <strong>Validation Result:</strong><br>
+                    Valid: ${result.isValid}<br>
+                    Errors: ${result.errors.length}<br>
+                    ${result.errors.length > 0 ? '<br><strong>Error Details:</strong><br>' + result.errors.join('<br>') : ''}
+                `;
+      } catch (error) {
+        output.innerHTML = `<strong>JSON Parse Error:</strong><br>${error.message}`;
+      }
+    }
+
+    function showStorageInfo() {
+      const output = document.getElementById('storageOutput');
+
+      try {
+        const info = tournamentStorage.getStorageInfo();
+        output.innerHTML = `
+                    <strong>Storage Information:</strong><br>
+                    Total Tournaments: ${info.totalTournaments}<br>
+                    Active Tournaments: ${info.activeTournaments}<br>
+                    Completed Tournaments: ${info.completedTournaments}<br>
+                    Estimated Size: ${info.estimatedSizeBytes} bytes<br>
+                    Schema Version: ${info.version}<br>
+                    Last Cleanup: ${info.lastCleanup || 'Never'}<br>
+                    ${info.error ? '<br><strong>Error:</strong> ' + info.error : ''}
+                `;
+      } catch (error) {
+        output.innerHTML = `<strong>Error:</strong><br>${error.message}`;
+      }
+    }
+
+    function runValidationDemo() {
+      validateTournamentDemo();
+      validateParticipantDemo();
+      showStorageInfo();
+    }
+  </script>
+</body>
+
+</html>

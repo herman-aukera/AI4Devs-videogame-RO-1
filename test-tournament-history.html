@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Tournament History System</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #00ffff;
+      padding: 20px;
+    }
+
+    .test-section {
+      border: 2px solid #00ffff;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .test-result {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .test-pass {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+    }
+
+    .test-fail {
+      background: rgba(255, 0, 0, 0.2);
+      border: 1px solid #ff0000;
+      color: #ff0000;
+    }
+
+    .btn {
+      background: transparent;
+      border: 2px solid #00ffff;
+      color: #00ffff;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background: #00ffff;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🏆 Tournament History System Test</h1>
+
+  <div class="test-section">
+    <h2>Test Controls</h2>
+    <button class="btn" onclick="runAllTests()">Run All Tests</button>
+    <button class="btn" onclick="createTestData()">Create Test Data</button>
+    <button class="btn" onclick="clearTestData()">Clear Test Data</button>
+    <button class="btn" onclick="testExportImport()">Test Export/Import</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Results</h2>
+    <div id="testResults"></div>
+  </div>
+
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-history.js"></script>
+  </invoke>
+  <script>
+    let historyManager;
+    let testResults = [];
+
+    // Initialize test environment
+    function initializeTests() {
+      try {
+        historyManager = new TournamentHistoryManager();
+        addTestResult('Initialization', 'Tournament History Manager initialized successfully', true);
+      } catch (error) {
+        addTestResult('Initialization', `Failed to initialize: ${error.message}`, false);
+      }
+    }
+
+    // Run all tests
+    function runAllTests() {
+      testResults = [];
+      document.getElementById('testResults').innerHTML = '';
+
+      initializeTests();
+      testHistoryPersistence();
+      testFiltering();
+      testSorting();
+      testAnalytics();
+      testArchiving();
+
+      displayTestSummary();
+    }
+
+    // Test history persistence
+    function testHistoryPersistence() {
+      try {
+        // Create mock tournament data
+        const mockTournament = {
+          id: 'test-tournament-001',
+          name: 'Test Tournament',
+          games: ['snake-GG', 'tetris-GG'],
+          format: 'round-robin',
+          participants: [
+            { id: 'player1', name: 'Player 1', rank: 1, totalScore: 100, scores: {}, normalizedScores: {}, gamesCompleted: [] },
+            { id: 'player2', name: 'Player 2', rank: 2, totalScore: 80, scores: {}, normalizedScores: {}, gamesCompleted: [] }
+          ],
+          status: 'completed',
+          startDate: new Date(Date.now() - 3600000).toISOString(),
+          endDate: new Date().toISOString(),
+          settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+        };
+
+        // Test tournament completion handling
+        historyManager.onTournamentCompleted(mockTournament);
+
+        // Verify tournament is in history
+        const retrievedTournament = historyManager.getTournamentFromHistory('test-tournament-001');
+        const isStored = retrievedTournament && retrievedTournament.id === 'test-tournament-001';
+
+        addTestResult('History Persistence', 'Tournament stored and retrieved successfully', isStored);
+
+        // Test history retrieval
+        const history = historyManager.getTournamentHistory();
+        const hasHistory = Array.isArray(history) && history.length > 0;
+
+        addTestResult('History Retrieval', 'Tournament history retrieved successfully', hasHistory);
+
+      } catch (error) {
+        addTestResult('History Persistence', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test filtering functionality
+    function testFiltering() {
+      try {
+        // Test format filter
+        const roundRobinTournaments = historyManager.getTournamentHistory({ format: 'round-robin' });
+        const formatFilterWorks = Array.isArray(roundRobinTournaments);
+
+        addTestResult('Format Filtering', 'Format filter works correctly', formatFilterWorks);
+
+        // Test game filter
+        const snakeTournaments = historyManager.getTournamentHistory({ gameId: 'snake-GG' });
+        const gameFilterWorks = Array.isArray(snakeTournaments);
+
+        addTestResult('Game Filtering', 'Game filter works correctly', gameFilterWorks);
+
+        // Test search functionality
+        const searchResults = historyManager.getTournamentHistory({ search: 'Test' });
+        const searchWorks = Array.isArray(searchResults);
+
+        addTestResult('Search Functionality', 'Search filter works correctly', searchWorks);
+
+      } catch (error) {
+        addTestResult('Filtering', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test sorting functionality
+    function testSorting() {
+      try {
+        // Test date sorting
+        const sortedByDate = historyManager.getTournamentHistory({ sortBy: 'endDate', sortOrder: 'desc' });
+        const dateSortWorks = Array.isArray(sortedByDate);
+
+        addTestResult('Date Sorting', 'Date sorting works correctly', dateSortWorks);
+
+        // Test name sorting
+        const sortedByName = historyManager.getTournamentHistory({ sortBy: 'name', sortOrder: 'asc' });
+        const nameSortWorks = Array.isArray(sortedByName);
+
+        addTestResult('Name Sorting', 'Name sorting works correctly', nameSortWorks);
+
+      } catch (error) {
+        addTestResult('Sorting', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test analytics functionality
+    function testAnalytics() {
+      try {
+        const analytics = historyManager.getAnalyticsSummary();
+        const hasAnalytics = analytics && typeof analytics.totalTournaments === 'number';
+
+        addTestResult('Analytics Summary', 'Analytics generated successfully', hasAnalytics);
+
+        // Test storage quota info
+        const quotaInfo = historyManager.getStorageQuotaInfo();
+        const hasQuotaInfo = quotaInfo && typeof quotaInfo.quotaUsagePercent === 'number';
+
+        addTestResult('Storage Quota', 'Storage quota info retrieved successfully', hasQuotaInfo);
+
+      } catch (error) {
+        addTestResult('Analytics', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test archiving functionality
+    function testArchiving() {
+      try {
+        const archiveResults = historyManager.archiveOldData(0); // Archive everything
+        const archiveWorks = archiveResults && typeof archiveResults.archivedCount === 'number';
+
+        addTestResult('Data Archiving', 'Data archiving works correctly', archiveWorks);
+
+      } catch (error) {
+        addTestResult('Archiving', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Test export/import functionality
+    function testExportImport() {
+      try {
+        // Create test data first
+        createTestData();
+
+        // Test export
+        const exportData = historyManager.exportTournamentHistory();
+        const exportWorks = exportData && exportData.tournaments && Array.isArray(exportData.tournaments);
+
+        addTestResult('Export Functionality', 'Export works correctly', exportWorks);
+
+        if (exportWorks) {
+          // Test import
+          const importSuccess = historyManager.importTournamentHistory(exportData);
+          addTestResult('Import Functionality', 'Import works correctly', importSuccess);
+        }
+
+      } catch (error) {
+        addTestResult('Export/Import', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Create test tournament data
+    function createTestData() {
+      const testTournaments = [
+        {
+          id: 'test-001',
+          name: 'Snake Championship',
+          games: ['snake-GG'],
+          format: 'elimination',
+          participants: [
+            { id: 'p1', name: 'Alice', rank: 1, totalScore: 150, scores: { 'snake-GG': 1500 }, normalizedScores: {}, gamesCompleted: ['snake-GG'] },
+            { id: 'p2', name: 'Bob', rank: 2, totalScore: 120, scores: { 'snake-GG': 1200 }, normalizedScores: {}, gamesCompleted: ['snake-GG'] }
+          ],
+          status: 'completed',
+          startDate: new Date(Date.now() - 7200000).toISOString(),
+          endDate: new Date(Date.now() - 3600000).toISOString(),
+          settings: { maxParticipants: 4, scoreNormalization: true, autoAdvance: true }
+        },
+        {
+          id: 'test-002',
+          name: 'Multi-Game Tournament',
+          games: ['snake-GG', 'tetris-GG', 'pacman-GG'],
+          format: 'round-robin',
+          participants: [
+            { id: 'p1', name: 'Alice', rank: 1, totalScore: 300, scores: {}, normalizedScores: {}, gamesCompleted: [] },
+            { id: 'p2', name: 'Bob', rank: 2, totalScore: 250, scores: {}, normalizedScores: {}, gamesCompleted: [] },
+            { id: 'p3', name: 'Charlie', rank: 3, totalScore: 200, scores: {}, normalizedScores: {}, gamesCompleted: [] }
+          ],
+          status: 'completed',
+          startDate: new Date(Date.now() - 10800000).toISOString(),
+          endDate: new Date(Date.now() - 1800000).toISOString(),
+          settings: { maxParticipants: 8, scoreNormalization: true, autoAdvance: true }
+        }
+      ];
+
+      testTournaments.forEach(tournament => {
+        historyManager.onTournamentCompleted(tournament);
+      });
+
+      addTestResult('Test Data Creation', `Created ${testTournaments.length} test tournaments`, true);
+    }
+
+    // Clear test data
+    function clearTestData() {
+      try {
+        // Clear history cache
+        historyManager.historyCache.clear();
+
+        // Clear storage
+        historyManager.storage.removeItem('tournament-history');
+        historyManager.storage.initializeStorage();
+
+        addTestResult('Test Data Cleanup', 'Test data cleared successfully', true);
+      } catch (error) {
+        addTestResult('Test Data Cleanup', `Error: ${error.message}`, false);
+      }
+    }
+
+    // Add test result
+    function addTestResult(testName, message, passed) {
+      testResults.push({ testName, message, passed });
+
+      const resultDiv = document.createElement('div');
+      resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+      resultDiv.innerHTML = `<strong>${testName}:</strong> ${message} ${passed ? '✅' : '❌'}`;
+
+      document.getElementById('testResults').appendChild(resultDiv);
+    }
+
+    // Display test summary
+    function displayTestSummary() {
+      const totalTests = testResults.length;
+      const passedTests = testResults.filter(r => r.passed).length;
+      const failedTests = totalTests - passedTests;
+
+      const summaryDiv = document.createElement('div');
+      summaryDiv.className = 'test-result';
+      summaryDiv.style.background = failedTests === 0 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 255, 0, 0.2)';
+      summaryDiv.style.border = failedTests === 0 ? '2px solid #00ff00' : '2px solid #ffff00';
+      summaryDiv.style.color = failedTests === 0 ? '#00ff00' : '#ffff00';
+      summaryDiv.innerHTML = `
+                <strong>Test Summary:</strong><br>
+                Total Tests: ${totalTests}<br>
+                Passed: ${passedTests}<br>
+                Failed: ${failedTests}<br>
+                Success Rate: ${((passedTests / totalTests) * 100).toFixed(1)}%
+            `;
+
+      document.getElementById('testResults').appendChild(summaryDiv);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🏆 Tournament History Test Page Loaded');
+    });
+  </script>
+</body>
+
+</html>

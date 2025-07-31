@@ -1,1675 +1,406 @@
 /* © GG, MIT License */
-/* ==============================================
-   BREAKOUT GG - Game-Specific Styles (Harmonized)
-   Extends unified CSS tokens for consistent retro breakout game
-   ============================================== */
 
-/* Import unified design tokens */
 @import url('../css-tokens.css');
 @import url('../game-shell.css');
 
-/* ===== BREAKOUT-SPECIFIC THEME CUSTOMIZATION ===== */
 :root {
-  /* Override theme colors with Breakout-specific palette */
-  --color-primary: var(--breakout-primary);
-  --color-secondary: var(--breakout-secondary);
-  --current-glow: var(--breakout-glow);
-  
-  /* Game-specific measurements */
-  --canvas-max-width: var(--canvas-width-lg);
-  --canvas-max-height: var(--canvas-height-lg);
+    /* Neon Color Palette */
+    --neon-cyan: #00ffff;
+    --neon-magenta: #ff00ff;
+    --neon-yellow: #ffff00;
+    --neon-green: #00ff00;
+    --neon-red: #ff0040;
+    --neon-blue: #0080ff;
+    --neon-orange: #ff8000;
 
-  /* Legacy variable mapping for compatibility */
-  --primary-cyan: var(--breakout-primary);
-  --primary-orange: var(--neon-orange);
-  --primary-magenta: var(--breakout-brick);
-  --accent-yellow: var(--breakout-secondary);
-  --accent-green: var(--neon-green);
-  --accent-red: var(--neon-red);
-  --bg-primary: var(--bg-primary);
-  --bg-secondary: var(--bg-secondary);
-  --bg-tertiary: var(--bg-tertiary);
-  --bg-glass: var(--bg-glass);
-  --bg-overlay: var(--bg-overlay);
-  --gradient-primary: linear-gradient(135deg, var(--breakout-primary), var(--breakout-brick));
-  --gradient-secondary: linear-gradient(45deg, var(--neon-orange), var(--breakout-secondary));
-  --gradient-background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
-  --font-primary: var(--font-retro);
-  --font-secondary: var(--font-mono);
-  --font-xs: var(--font-size-xs);
-  --font-sm: var(--font-size-sm);
-  --font-base: var(--font-size-base);
-  --font-lg: var(--font-size-lg);
-  --font-xl: var(--font-size-xl);
-  --font-2xl: var(--font-size-2xl);
-  --font-3xl: var(--font-size-3xl);
-  --font-4xl: 2.25rem;
-  --spacing-xs: 0.25rem; /* 4px */
-  --spacing-sm: 0.5rem; /* 8px */
-  --spacing-md: 1rem; /* 16px */
-  --spacing-lg: 1.5rem; /* 24px */
-  --spacing-xl: 2rem; /* 32px */
-  --spacing-2xl: 3rem; /* 48px */
+    /* Background Colors */
+    --bg-space: #000000;
+    --bg-dark: #111111;
+    --bg-darker: #0a0a0a;
 
-  /* === Efectos de Sombra === */
-  --shadow-glow-sm: 0 0 5px currentColor;
-  --shadow-glow-md: 0 0 10px currentColor, 0 0 20px currentColor;
-  --shadow-glow-lg: 0 0 20px currentColor, 0 0 40px currentColor,
-    0 0 60px currentColor;
-  --shadow-depth: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Typography */
+    --font-retro: 'Courier New', 'Monaco', 'Menlo', monospace;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
 
-  /* === Bordes y Radios === */
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
-  --border-width: 2px;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
 
-  /* === Transiciones === */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
-
-  /* === Z-Index Management === */
-  --z-background: -1;
-  --z-content: 1;
-  --z-overlay: 100;
-  --z-modal: 200;
+    /* Effects */
+    --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    --neon-text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
 }
 
-/* ===================================================================
-   2. RESET & BASE STYLES
-================================================================== */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-retro);
-  font-size: var(--font-base);
-  line-height: 1.6;
-  color: var(--primary-cyan);
-  background: var(--gradient-background);
-  background-attachment: fixed;
-  overflow-x: hidden;
-  position: relative;
-
-  /* Prevenir selección de texto durante el juego */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    font-family: var(--font-retro);
+    background: var(--bg-space);
+    color: var(--neon-cyan);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.4;
 }
 
-/* Fondo animado con partículas */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(
-      circle at 20% 80%,
-      rgba(0, 255, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(255, 102, 0, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 40%,
-      rgba(255, 0, 255, 0.05) 0%,
-      transparent 50%
-    );
-  animation: backgroundFloat 20s ease-in-out infinite alternate;
-  z-index: var(--z-background);
+/* Header Styles */
+.game-header {
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--neon-cyan);
+    background: var(--bg-darker);
 }
 
-/* ===================================================================
-   3. LAYOUT PRINCIPAL & GRID
-================================================================== */
+.header-container {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 4px;
+    background: var(--bg-dark);
+    box-shadow: var(--neon-glow);
+    max-width: 100%;
+    overflow: hidden;
+}
 
+.header-container h1 {
+    font-size: var(--font-size-xl);
+    color: var(--neon-cyan);
+    text-shadow: var(--neon-text-shadow);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nav-link {
+    color: var(--neon-magenta);
+    text-decoration: none;
+    font-size: var(--font-size-md);
+    text-shadow: var(--neon-text-shadow);
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--neon-yellow);
+    outline: 1px solid var(--neon-yellow);
+    outline-offset: 2px;
+}
+
+/* Game Container */
 .game-container {
-  display: grid;
-  grid-template-columns: 1fr auto 300px;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    'info info controls'
-    'game game controls';
-  gap: var(--spacing-lg);
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
-  min-height: calc(100vh - 200px);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    min-height: calc(100vh - 80px);
 }
 
-/* ===================================================================
-   4. HEADER & BRANDING
-================================================================== */
-
-.game-header {
-  text-align: center;
-  padding: var(--spacing-xl) var(--spacing-lg);
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  margin-bottom: var(--spacing-lg);
-  position: relative;
-  overflow: hidden;
-}
-
-.game-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    var(--primary-cyan),
-    transparent
-  );
-  animation: headerRotate 10s linear infinite;
-  opacity: 0.1;
-  z-index: var(--z-background);
-}
-
-.header-content {
-  position: relative;
-  z-index: var(--z-content);
-}
-
-.game-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  font-size: var(--font-4xl);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--primary-cyan);
-  text-shadow: var(--shadow-glow-md);
-  margin-bottom: var(--spacing-sm);
-}
-
-.title-icon {
-  font-size: var(--font-3xl);
-  animation: iconPulse 2s ease-in-out infinite;
-}
-
-.title-text {
-  background: var(--gradient-primary);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: none;
-}
-
-.title-subtitle {
-  font-size: var(--font-2xl);
-  color: var(--primary-orange);
-  font-weight: 400;
-}
-
-.developer-tag {
-  font-size: var(--font-lg);
-  color: var(--accent-yellow);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--accent-yellow);
-  animation: tagGlow 3s ease-in-out infinite alternate;
-}
-
-.game-tagline {
-  font-size: var(--font-lg);
-  color: var(--primary-magenta);
-  font-weight: 400;
-  opacity: 0.9;
-  animation: fadeInOut 4s ease-in-out infinite;
-}
-
-/* ===================================================================
-   5. GAME INFO & STATS PANEL
-================================================================== */
-
+/* Game Info */
 .game-info {
-  grid-area: info;
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-orange);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-depth);
+    width: 100%;
+    max-width: 800px;
 }
 
-.stats-panel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: var(--spacing-md);
+.score-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--neon-green);
+    border-radius: 4px;
+    background: var(--bg-dark);
+    font-size: var(--font-size-md);
+    color: var(--neon-green);
+    text-shadow: var(--neon-text-shadow);
+    box-shadow: 0 0 10px var(--neon-green);
 }
 
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--spacing-md);
-  background: var(--bg-secondary);
-  border: 1px solid var(--primary-cyan);
-  border-radius: var(--border-radius-md);
-  transition: all var(--transition-normal);
+.score-display span {
+    font-weight: bold;
 }
 
-.stat-item:hover {
-  border-color: var(--primary-orange);
-  box-shadow: var(--shadow-glow-sm);
-  transform: translateY(-2px);
-}
-
-.stat-label {
-  font-size: var(--font-sm);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-xs);
-}
-
-.stat-value {
-  font-size: var(--font-3xl);
-  color: var(--primary-cyan);
-  font-weight: 900;
-  text-shadow: var(--shadow-glow-sm);
-  font-family: var(--font-retro);
-}
-
-/* ===================================================================
-   6. GAME AREA & CANVAS
-================================================================== */
-
-.game-area {
-  grid-area: game;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Canvas Container */
 .canvas-container {
-  position: relative;
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  background: var(--bg-primary);
-  box-shadow: var(--shadow-depth), inset 0 0 50px rgba(0, 255, 255, 0.1);
-  overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #gameCanvas {
-  display: block;
-  background: transparent;
-  border-radius: var(--border-radius-md);
+    border: 3px solid var(--neon-cyan);
+    border-radius: 8px;
+    background: var(--bg-space);
+    box-shadow: var(--neon-glow);
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
-.canvas-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 800px;
-  height: 600px;
-  color: var(--primary-orange);
-  font-size: var(--font-lg);
-  text-align: center;
-  background: var(--bg-secondary);
+#gameCanvas:focus {
+    outline: 2px solid var(--neon-yellow);
+    outline-offset: 4px;
 }
 
-/* ===================================================================
-   7. GAME OVERLAY & STATES
-================================================================== */
-
+/* Game Overlay */
 .game-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-overlay);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  transition: opacity var(--transition-slow);
-  z-index: var(--z-overlay);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
 }
 
 .game-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
+    display: none;
 }
 
 .overlay-content {
-  text-align: center;
-  max-width: 500px;
-  padding: var(--spacing-2xl);
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-glow-lg);
-}
-
-.overlay-title {
-  font-size: var(--font-3xl);
-  color: var(--primary-cyan);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: var(--spacing-lg);
-  text-shadow: var(--shadow-glow-md);
-}
-
-.overlay-message {
-  font-size: var(--font-lg);
-  color: var(--primary-orange);
-  margin-bottom: var(--spacing-xl);
-  line-height: 1.5;
-}
-
-.overlay-message strong {
-  color: var(--accent-yellow);
-  font-weight: 700;
-}
-
-.overlay-controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
-}
-
-.control-hint {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.control-keys {
-  font-size: var(--font-sm);
-  color: var(--accent-yellow);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--accent-yellow);
-  font-family: var(--font-retro);
-  font-weight: 700;
-}
-
-.control-description {
-  font-size: var(--font-xs);
-  color: var(--primary-magenta);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* ===================================================================
-   8. CONTROLS PANEL & INSTRUCTIONS
-================================================================== */
-
-.controls-panel {
-  grid-area: controls;
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-magenta);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-depth);
-  max-height: fit-content;
-}
-
-.controls-title {
-  font-size: var(--font-xl);
-  color: var(--primary-magenta);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-  text-shadow: var(--shadow-glow-sm);
-}
-
-.control-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.control-item {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid transparent;
-  transition: all var(--transition-fast);
-}
-
-.control-item:hover {
-  border-color: var(--primary-cyan);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.key {
-  background: var(--bg-primary);
-  color: var(--accent-yellow);
-  font-family: var(--font-retro);
-  font-size: var(--font-sm);
-  font-weight: 700;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--accent-yellow);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 0 var(--accent-yellow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
-  min-width: 2.5rem;
-  text-align: center;
-}
-
-.control-desc {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  margin-left: var(--spacing-sm);
-}
-
-/* ===================================================================
-   9. GAME TIPS & HELP
-================================================================== */
-
-.game-tips {
-  border-top: 1px solid var(--primary-orange);
-  padding-top: var(--spacing-lg);
-}
-
-.tips-title {
-  font-size: var(--font-lg);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-md);
-  text-align: center;
-}
-
-.tips-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.tips-list li {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  padding: var(--spacing-sm);
-  background: var(--bg-secondary);
-  border-left: 3px solid var(--primary-orange);
-  border-radius: var(--border-radius-sm);
-  position: relative;
-  opacity: 0.9;
-  transition: opacity var(--transition-fast);
-}
-
-.tips-list li:hover {
-  opacity: 1;
-}
-
-.tips-list li::before {
-  content: '▶';
-  color: var(--primary-orange);
-  font-size: var(--font-xs);
-  margin-right: var(--spacing-sm);
-}
-
-/* ===================================================================
-   10. FOOTER & CREDITS
-================================================================== */
-
-.game-footer {
-  background: var(--bg-glass);
-  border-top: var(--border-width) solid var(--primary-cyan);
-  padding: var(--spacing-lg);
-  margin-top: var(--spacing-2xl);
-}
-
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-lg);
-  align-items: center;
-  text-align: center;
-}
-
-.developer-info,
-.tech-stack,
-.version-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.developer-label,
-.tech-label {
-  font-size: var(--font-sm);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.developer-name {
-  font-size: var(--font-xl);
-  color: var(--accent-yellow);
-  font-weight: 900;
-  text-shadow: var(--shadow-glow-sm);
-}
-
-.project-info {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  opacity: 0.8;
-}
-
-.tech-item {
-  display: inline-block;
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  margin: var(--spacing-xs);
-  border: 1px solid var(--primary-cyan);
-  border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
-}
-
-.tech-item:hover {
-  color: var(--accent-yellow);
-  border-color: var(--accent-yellow);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.version,
-.build-date {
-  font-size: var(--font-sm);
-  color: var(--primary-magenta);
-  font-family: var(--font-retro);
-}
-
-/* ===================================================================
-   11. ANIMATIONS & EFFECTS
-================================================================== */
-
-@keyframes backgroundFloat {
-  0% {
-    transform: translateX(-10px) translateY(-10px);
-  }
-  100% {
-    transform: translateX(10px) translateY(10px);
-  }
-}
-
-@keyframes headerRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes iconPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes tagGlow {
-  0% {
-    box-shadow: 0 0 5px var(--accent-yellow);
-  }
-  100% {
-    box-shadow: 0 0 20px var(--accent-yellow), 0 0 30px var(--accent-yellow);
-  }
-}
-
-@keyframes fadeInOut {
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* Animación de entrada para elementos */
-.fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Efectos de hover globales */
-.glow-on-hover {
-  transition: all var(--transition-normal);
-}
-
-.glow-on-hover:hover {
-  text-shadow: var(--shadow-glow-md);
-  transform: translateY(-2px);
-}
-
-/* ===================================================================
-   12. MEDIA QUERIES & RESPONSIVE DESIGN
-================================================================== */
-
-/* Tablet Landscape (768px - 1024px) */
-@media screen and (max-width: 1024px) {
-  .game-container {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'info'
-      'game'
-      'controls';
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-  }
-
-  .stats-panel {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .controls-panel {
-    max-height: none;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-  }
-}
-
-/* Tablet Portrait (481px - 768px) */
-@media screen and (max-width: 768px) {
-  :root {
-    --font-4xl: 1.75rem;
-    --font-3xl: 1.5rem;
-    --font-2xl: 1.25rem;
-    --spacing-lg: 1rem;
-    --spacing-xl: 1.5rem;
-    --spacing-2xl: 2rem;
-  }
-
-  .game-header {
-    padding: var(--spacing-lg);
-  }
-
-  .game-title {
-    font-size: var(--font-3xl);
-    flex-wrap: wrap;
-  }
-
-  .canvas-container {
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  #gameCanvas {
-    width: 100%;
-    height: auto;
-    max-width: 600px;
-    max-height: 450px;
-  }
-
-  .overlay-content {
-    margin: var(--spacing-md);
-    padding: var(--spacing-lg);
-  }
-
-  .control-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Mobile (320px - 480px) */
-@media screen and (max-width: 480px) {
-  :root {
-    --font-4xl: 1.5rem;
-    --font-3xl: 1.25rem;
-    --font-2xl: 1.125rem;
-    --font-xl: 1.125rem;
-    --spacing-md: 0.75rem;
-    --spacing-lg: 1rem;
-    --spacing-xl: 1.25rem;
-  }
-
-  .game-container {
-    padding: var(--spacing-sm);
-    gap: var(--spacing-sm);
-  }
-
-  .game-header {
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-  }
-
-  .stats-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-item {
-    padding: var(--spacing-sm);
-  }
-
-  .stat-value {
-    font-size: var(--font-2xl);
-  }
-
-  #gameCanvas {
-    max-width: 320px;
-    max-height: 240px;
-  }
-
-  .overlay-content {
-    padding: var(--spacing-md);
-  }
-
-  .overlay-controls {
-    grid-template-columns: 1fr;
-  }
-
-  .control-item {
-    grid-template-columns: 1fr;
     text-align: center;
-    gap: var(--spacing-xs);
-  }
-
-  .tips-list li {
-    font-size: var(--font-xs);
-    padding: var(--spacing-xs);
-  }
-}
-
-/* Ultra-wide screens (> 1400px) */
-@media screen and (min-width: 1400px) {
-  .game-container {
-    grid-template-columns: 350px 1fr 350px;
-  }
-
-  .canvas-container {
-    transform: scale(1.1);
-    margin: var(--spacing-xl);
-  }
-}
-
-/* High DPI / Retina displays */
-@media screen and (-webkit-min-device-pixel-ratio: 2),
-  screen and (min-resolution: 192dpi) {
-  #gameCanvas {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-}
-
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* High contrast preference */
-@media (prefers-contrast: high) {
-  :root {
-    --primary-cyan: var(--text-primary);
-    --primary-orange: var(--neon-yellow);
-    --primary-magenta: var(--neon-magenta);
-    --bg-primary: var(--bg-primary);
-    --bg-secondary: var(--bg-tertiary);
-  }
-}
-
-/* ===================================================================
-   13. PRINT STYLES (Opcional)
-================================================================== */
-
-@media print {
-  .game-container,
-  .game-footer {
-    display: none;
-  }
-
-  .game-header {
-    color: black;
-    background: white;
-    border: 2px solid black;
-  }
-}
-
-/* ===================================================================
-   3. NAVEGACIÓN
-================================================================== */
-
-.game-navigation {
-  position: absolute;
-  top: var(--spacing-md);
-  left: var(--spacing-md);
-  z-index: var(--z-content);
-}
-
-.back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  background: linear-gradient(
-    45deg,
-    var(--primary-cyan),
-    var(--primary-orange)
-  );
-  color: var(--bg-primary);
-  text-decoration: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  font-family: var(--font-retro);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
-  transition: all var(--transition-normal);
-  border: var(--border-width) solid transparent;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
-}
-
-.back-button:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4), 0 0 30px var(--primary-cyan);
-  border-color: var(--primary-cyan);
-}
-
-.back-icon {
-  font-size: 1.2em;
-  animation: bounce-left 2s infinite;
-}
-
-@keyframes bounce-left {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-4px);
-  }
-}
-
-/* ===================================================================
-   4. HEADER & BRANDING
-================================================================== */
-
-.game-header {
-  text-align: center;
-  padding: var(--spacing-xl) var(--spacing-lg);
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  margin-bottom: var(--spacing-lg);
-  position: relative;
-  overflow: hidden;
-}
-
-.game-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    var(--primary-cyan),
-    transparent
-  );
-  animation: headerRotate 10s linear infinite;
-  opacity: 0.1;
-  z-index: var(--z-background);
-}
-
-.header-content {
-  position: relative;
-  z-index: var(--z-content);
-}
-
-.game-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  font-size: var(--font-4xl);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--primary-cyan);
-  text-shadow: var(--shadow-glow-md);
-  margin-bottom: var(--spacing-sm);
-}
-
-.title-icon {
-  font-size: var(--font-3xl);
-  animation: iconPulse 2s ease-in-out infinite;
-}
-
-.title-text {
-  background: var(--gradient-primary);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: none;
-}
-
-.title-subtitle {
-  font-size: var(--font-2xl);
-  color: var(--primary-orange);
-  font-weight: 400;
-}
-
-.developer-tag {
-  font-size: var(--font-lg);
-  color: var(--accent-yellow);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--accent-yellow);
-  animation: tagGlow 3s ease-in-out infinite alternate;
-}
-
-.game-tagline {
-  font-size: var(--font-lg);
-  color: var(--primary-magenta);
-  font-weight: 400;
-  opacity: 0.9;
-  animation: fadeInOut 4s ease-in-out infinite;
-}
-
-/* ===================================================================
-   5. GAME INFO & STATS PANEL
-================================================================== */
-
-.game-info {
-  grid-area: info;
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-orange);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-depth);
-}
-
-.stats-panel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--spacing-md);
-  background: var(--bg-secondary);
-  border: 1px solid var(--primary-cyan);
-  border-radius: var(--border-radius-md);
-  transition: all var(--transition-normal);
-}
-
-.stat-item:hover {
-  border-color: var(--primary-orange);
-  box-shadow: var(--shadow-glow-sm);
-  transform: translateY(-2px);
-}
-
-.stat-label {
-  font-size: var(--font-sm);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-xs);
-}
-
-.stat-value {
-  font-size: var(--font-3xl);
-  color: var(--primary-cyan);
-  font-weight: 900;
-  text-shadow: var(--shadow-glow-sm);
-  font-family: var(--font-retro);
-}
-
-/* ===================================================================
-   6. GAME AREA & CANVAS
-================================================================== */
-
-.game-area {
-  grid-area: game;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.canvas-container {
-  position: relative;
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  background: var(--bg-primary);
-  box-shadow: var(--shadow-depth), inset 0 0 50px rgba(0, 255, 255, 0.1);
-  overflow: hidden;
-}
-
-#gameCanvas {
-  display: block;
-  background: transparent;
-  border-radius: var(--border-radius-md);
-}
-
-.canvas-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 800px;
-  height: 600px;
-  color: var(--primary-orange);
-  font-size: var(--font-lg);
-  text-align: center;
-  background: var(--bg-secondary);
-}
-
-/* ===================================================================
-   7. GAME OVERLAY & STATES
-================================================================== */
-
-.game-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-overlay);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  transition: opacity var(--transition-slow);
-  z-index: var(--z-overlay);
-}
-
-.game-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.overlay-content {
-  text-align: center;
-  max-width: 500px;
-  padding: var(--spacing-2xl);
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-cyan);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-glow-lg);
-}
-
-.overlay-title {
-  font-size: var(--font-3xl);
-  color: var(--primary-cyan);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: var(--spacing-lg);
-  text-shadow: var(--shadow-glow-md);
-}
-
-.overlay-message {
-  font-size: var(--font-lg);
-  color: var(--primary-orange);
-  margin-bottom: var(--spacing-xl);
-  line-height: 1.5;
-}
-
-.overlay-message strong {
-  color: var(--accent-yellow);
-  font-weight: 700;
-}
-
-.overlay-controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
-}
-
-.control-hint {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.control-keys {
-  font-size: var(--font-sm);
-  color: var(--accent-yellow);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--accent-yellow);
-  font-family: var(--font-retro);
-  font-weight: 700;
-}
-
-.control-description {
-  font-size: var(--font-xs);
-  color: var(--primary-magenta);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* ===================================================================
-   8. CONTROLS PANEL & INSTRUCTIONS
-================================================================== */
-
-.controls-panel {
-  grid-area: controls;
-  background: var(--bg-glass);
-  border: var(--border-width) solid var(--primary-magenta);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-depth);
-  max-height: fit-content;
-}
-
-.controls-title {
-  font-size: var(--font-xl);
-  color: var(--primary-magenta);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-  text-shadow: var(--shadow-glow-sm);
-}
-
-.control-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.control-item {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid transparent;
-  transition: all var(--transition-fast);
-}
-
-.control-item:hover {
-  border-color: var(--primary-cyan);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.key {
-  background: var(--bg-primary);
-  color: var(--accent-yellow);
-  font-family: var(--font-retro);
-  font-size: var(--font-sm);
-  font-weight: 700;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--accent-yellow);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 2px 0 var(--accent-yellow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-transform: uppercase;
-  min-width: 2.5rem;
-  text-align: center;
-}
-
-.control-desc {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  margin-left: var(--spacing-sm);
-}
-
-/* ===================================================================
-   9. GAME TIPS & HELP
-================================================================== */
-
-.game-tips {
-  border-top: 1px solid var(--primary-orange);
-  padding-top: var(--spacing-lg);
-}
-
-.tips-title {
-  font-size: var(--font-lg);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-md);
-  text-align: center;
-}
-
-.tips-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.tips-list li {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  padding: var(--spacing-sm);
-  background: var(--bg-secondary);
-  border-left: 3px solid var(--primary-orange);
-  border-radius: var(--border-radius-sm);
-  position: relative;
-  opacity: 0.9;
-  transition: opacity var(--transition-fast);
-}
-
-.tips-list li:hover {
-  opacity: 1;
-}
-
-.tips-list li::before {
-  content: '▶';
-  color: var(--primary-orange);
-  font-size: var(--font-xs);
-  margin-right: var(--spacing-sm);
-}
-
-/* ===================================================================
-   10. FOOTER & CREDITS
-================================================================== */
-
-.game-footer {
-  background: var(--bg-glass);
-  border-top: var(--border-width) solid var(--primary-cyan);
-  padding: var(--spacing-lg);
-  margin-top: var(--spacing-2xl);
-}
-
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-lg);
-  align-items: center;
-  text-align: center;
-}
-
-.developer-info,
-.tech-stack,
-.version-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.developer-label,
-.tech-label {
-  font-size: var(--font-sm);
-  color: var(--primary-orange);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.developer-name {
-  font-size: var(--font-xl);
-  color: var(--accent-yellow);
-  font-weight: 900;
-  text-shadow: var(--shadow-glow-sm);
-}
-
-.project-info {
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  opacity: 0.8;
-}
-
-.tech-item {
-  display: inline-block;
-  font-size: var(--font-sm);
-  color: var(--primary-cyan);
-  background: var(--bg-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  margin: var(--spacing-xs);
-  border: 1px solid var(--primary-cyan);
-  border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
-}
-
-.tech-item:hover {
-  color: var(--accent-yellow);
-  border-color: var(--accent-yellow);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.version,
-.build-date {
-  font-size: var(--font-sm);
-  color: var(--primary-magenta);
-  font-family: var(--font-retro);
-}
-
-/* ===================================================================
-   11. ANIMATIONS & EFFECTS
-================================================================== */
-
-@keyframes backgroundFloat {
-  0% {
-    transform: translateX(-10px) translateY(-10px);
-  }
-  100% {
-    transform: translateX(10px) translateY(10px);
-  }
-}
-
-@keyframes headerRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes iconPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes tagGlow {
-  0% {
-    box-shadow: 0 0 5px var(--accent-yellow);
-  }
-  100% {
-    box-shadow: 0 0 20px var(--accent-yellow), 0 0 30px var(--accent-yellow);
-  }
-}
-
-@keyframes fadeInOut {
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* Animación de entrada para elementos */
-.fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Efectos de hover globales */
-.glow-on-hover {
-  transition: all var(--transition-normal);
-}
-
-.glow-on-hover:hover {
-  text-shadow: var(--shadow-glow-md);
-  transform: translateY(-2px);
-}
-
-/* ===================================================================
-   12. MEDIA QUERIES & RESPONSIVE DESIGN
-================================================================== */
-
-/* Tablet Landscape (768px - 1024px) */
-@media screen and (max-width: 1024px) {
-  .game-container {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'info'
-      'game'
-      'controls';
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-  }
-
-  .stats-panel {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .controls-panel {
-    max-height: none;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-  }
-}
-
-/* Tablet Portrait (481px - 768px) */
-@media screen and (max-width: 768px) {
-  :root {
-    --font-4xl: 1.75rem;
-    --font-3xl: 1.5rem;
-    --font-2xl: 1.25rem;
-    --spacing-lg: 1rem;
-    --spacing-xl: 1.5rem;
-    --spacing-2xl: 2rem;
-  }
-
-  .game-header {
-    padding: var(--spacing-lg);
-  }
-
-  .game-title {
-    font-size: var(--font-3xl);
-    flex-wrap: wrap;
-  }
-
-  .canvas-container {
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  #gameCanvas {
-    width: 100%;
-    height: auto;
-    max-width: 600px;
-    max-height: 450px;
-  }
-
-  .overlay-content {
-    margin: var(--spacing-md);
-    padding: var(--spacing-lg);
-  }
-
-  .control-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Mobile (320px - 480px) */
-@media screen and (max-width: 480px) {
-  :root {
-    --font-4xl: 1.5rem;
-    --font-3xl: 1.25rem;
-    --font-2xl: 1.125rem;
-    --font-xl: 1.125rem;
-    --spacing-md: 0.75rem;
-    --spacing-lg: 1rem;
-    --spacing-xl: 1.25rem;
-  }
-
-  .game-container {
-    padding: var(--spacing-sm);
-    gap: var(--spacing-sm);
-  }
-
-  .game-header {
-    padding: var(--spacing-md);
+    padding: var(--spacing-xl);
+    border: 2px solid var(--neon-magenta);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    box-shadow: 0 0 20px var(--neon-magenta);
+}
+
+.overlay-content h2 {
+    font-size: var(--font-size-2xl);
+    color: var(--neon-magenta);
+    text-shadow: var(--neon-text-shadow);
     margin-bottom: var(--spacing-md);
-  }
-
-  .stats-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-item {
-    padding: var(--spacing-sm);
-  }
-
-  .stat-value {
-    font-size: var(--font-2xl);
-  }
-
-  #gameCanvas {
-    max-width: 320px;
-    max-height: 240px;
-  }
-
-  .overlay-content {
-    padding: var(--spacing-md);
-  }
-
-  .overlay-controls {
-    grid-template-columns: 1fr;
-  }
-
-  .control-item {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: var(--spacing-xs);
-  }
-
-  .tips-list li {
-    font-size: var(--font-xs);
-    padding: var(--spacing-xs);
-  }
 }
 
-/* Ultra-wide screens (> 1400px) */
-@media screen and (min-width: 1400px) {
-  .game-container {
-    grid-template-columns: 350px 1fr 350px;
-  }
-
-  .canvas-container {
-    transform: scale(1.1);
-    margin: var(--spacing-xl);
-  }
+.overlay-content p {
+    font-size: var(--font-size-lg);
+    color: var(--neon-cyan);
+    margin-bottom: var(--spacing-lg);
 }
 
-/* High DPI / Retina displays */
-@media screen and (-webkit-min-device-pixel-ratio: 2),
-  screen and (min-resolution: 192dpi) {
-  #gameCanvas {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
+/* Game Controls */
+.game-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.game-button {
+    font-family: var(--font-retro);
+    font-size: var(--font-size-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: 2px solid var(--neon-yellow);
+    border-radius: 4px;
+    background: var(--bg-dark);
+    color: var(--neon-yellow);
+    text-shadow: var(--neon-text-shadow);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 44px;
+    min-height: 44px;
 }
 
-/* High contrast preference */
-@media (prefers-contrast: high) {
-  :root {
-    --primary-cyan: var(--text-primary);
-    --primary-orange: var(--neon-yellow);
-    --primary-magenta: var(--neon-magenta);
-    --bg-primary: var(--bg-primary);
-    --bg-secondary: var(--bg-tertiary);
-  }
+.game-button:hover,
+.game-button:focus {
+    background: var(--neon-yellow);
+    color: var(--bg-space);
+    box-shadow: 0 0 15px var(--neon-yellow);
+    text-shadow: none;
+    outline: none;
 }
 
-/* ===================================================================
-   13. PRINT STYLES (Opcional)
-================================================================== */
+.game-button:active {
+    transform: scale(0.95);
+}
 
-@media print {
-  .game-container,
-  .game-footer {
+.game-button.hidden {
     display: none;
-  }
+}
 
-  .game-header {
-    color: black;
-    background: white;
-    border: 2px solid black;
-  }
+/* Instructions */
+.instructions {
+    width: 100%;
+    max-width: 800px;
+    border: 2px solid var(--neon-green);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    overflow: hidden;
+}
+
+.instructions summary {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-lg);
+    color: var(--neon-green);
+    text-shadow: var(--neon-text-shadow);
+    cursor: pointer;
+    user-select: none;
+    background: var(--bg-darker);
+    border-bottom: 1px solid var(--neon-green);
+    transition: background-color 0.2s ease;
+}
+
+.instructions summary:hover,
+.instructions summary:focus {
+    background: rgba(0, 255, 0, 0.1);
+    outline: 1px solid var(--neon-green);
+    outline-offset: -1px;
+}
+
+.instructions-content {
+    padding: var(--spacing-lg);
+    color: var(--neon-cyan);
+}
+
+.instructions-content h3 {
+    color: var(--neon-yellow);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: var(--neon-text-shadow);
+}
+
+.instructions-content ul {
+    list-style: none;
+    margin-bottom: var(--spacing-md);
+}
+
+.instructions-content li {
+    padding: var(--spacing-xs) 0;
+    border-left: 2px solid var(--neon-magenta);
+    padding-left: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+.instructions-content strong {
+    color: var(--neon-magenta);
+    text-shadow: var(--neon-text-shadow);
+}
+
+.instructions-content p {
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+
+    .header-container h1 {
+        font-size: var(--font-size-lg);
+    }
+
+    .game-container {
+        padding: var(--spacing-md);
+    }
+
+    .score-display {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        text-align: center;
+    }
+
+    #gameCanvas {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+    }
+
+    .overlay-content {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-md);
+    }
+
+    .overlay-content h2 {
+        font-size: var(--font-size-xl);
+    }
+
+    .game-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container h1 {
+        font-size: var(--font-size-md);
+    }
+
+    .game-container {
+        padding: var(--spacing-sm);
+    }
+
+    #gameCanvas {
+        max-width: 320px;
+        height: 240px;
+    }
+
+    .instructions-content {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --neon-glow: 0 0 2px currentColor;
+        --neon-text-shadow: 0 0 1px currentColor;
+    }
+}
+
+/* Focus Indicators */
+*:focus {
+    outline: 2px solid var(--neon-yellow);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .game-container {
+        display: none;
+    }
+
+    .instructions {
+        border: 1px solid black;
+    }
 }

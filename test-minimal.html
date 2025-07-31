@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Minimal Test Runner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .output {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Minimal Test Runner</h1>
+
+  <button onclick="runTests()" id="runBtn">Run Tests</button>
+  <button onclick="checkExports()">Check Exports</button>
+
+  <div class="output" id="output">Loading...</div>
+
+  <script src="shared-tournament-models.js"></script>
+  <script src="test-minimal-runner.js"></script>
+
+  <script>
+    function log(message) {
+      const output = document.getElementById('output');
+      output.textContent += message + '\n';
+    }
+
+    function checkExports() {
+      const output = document.getElementById('output');
+      output.textContent = 'Checking exports...\n';
+
+      log('Tournament Functions:');
+      log('- validateTournamentConfig: ' + typeof validateTournamentConfig);
+      log('- TournamentStorageManager: ' + typeof TournamentStorageManager);
+      log('- TOURNAMENT_CONSTANTS: ' + typeof TOURNAMENT_CONSTANTS);
+
+      log('\nTest Runner Exports:');
+      log('- window.SimpleTestRunner: ' + typeof window.SimpleTestRunner);
+      log('- window.simpleRunner: ' + typeof window.simpleRunner);
+      log('- window.testRunner: ' + typeof window.testRunner);
+      log('- window.TournamentModelTests: ' + typeof window.TournamentModelTests);
+
+      if (window.testRunner) {
+        log('\nTest Runner Details:');
+        log('- Type: ' + typeof window.testRunner);
+        log('- Has run method: ' + (typeof window.testRunner.run === 'function'));
+        log('- Number of tests: ' + window.testRunner.tests.length);
+      }
+    }
+
+    async function runTests() {
+      if (!window.testRunner) {
+        log('❌ Test runner not available');
+        return;
+      }
+
+      const output = document.getElementById('output');
+      output.textContent = 'Running tests...\n';
+
+      const originalLog = console.log;
+      const originalError = console.error;
+
+      console.log = (...args) => {
+        log(args.join(' '));
+      };
+
+      console.error = (...args) => {
+        log('ERROR: ' + args.join(' '));
+      };
+
+      try {
+        const success = await window.testRunner.run();
+        log(success ? '\n🎉 All tests passed!' : '\n⚠️ Some tests failed');
+      } catch (error) {
+        log('❌ Fatal error: ' + error.message);
+      } finally {
+        console.log = originalLog;
+        console.error = originalError;
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(() => {
+        checkExports();
+
+        if (window.testRunner) {
+          document.getElementById('runBtn').disabled = false;
+          log('\n✅ Test runner ready!');
+        } else {
+          log('\n❌ Test runner not found');
+        }
+      }, 200);
+    });
+
+    // Listen for test runner ready event
+    window.addEventListener('testRunnerReady', function (event) {
+      log('\n🎉 testRunnerReady event received!');
+      document.getElementById('runBtn').disabled = false;
+    });
+  </script>
+</body>
+
+</html>

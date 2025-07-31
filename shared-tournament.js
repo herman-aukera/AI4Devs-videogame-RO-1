@@ -2,7 +2,7 @@
 
 /**
  * Tournament Mode System for AI4Devs Retro Games
- * 
+ *
  * Cross-game competition system featuring:
  * - Global leaderboards across all games
  * - Tournament scheduling and scoring
@@ -17,7 +17,7 @@ class TournamentManager {
     this.currentTournament = null;
     this.playerStats = this.loadPlayerStats();
     this.leaderboards = this.loadLeaderboards();
-    
+
     // Game registry with scoring weights
     this.gameRegistry = {
       'snake': { name: '🐍 Snake', weight: 1.0, category: 'classic' },
@@ -30,10 +30,10 @@ class TournamentManager {
       'fruit-catcher': { name: '🍎 Fruit Catcher', weight: 1.1, category: 'action' },
       'mspacman': { name: '🟣 Ms. Pac-Man', weight: 1.3, category: 'maze' }
     };
-    
+
     this.initializeTournament();
   }
-  
+
   initializeTournament() {
     // Check for active tournament
     const saved = localStorage.getItem(this.storageKey);
@@ -43,22 +43,22 @@ class TournamentManager {
       this.playerStats = data.playerStats || {};
       this.leaderboards = data.leaderboards || {};
     }
-    
+
     // Auto-start weekly tournament if none active
     if (!this.currentTournament || this.isTournamentExpired()) {
       this.startWeeklyTournament();
     }
-    
+
     console.log('🏆 Tournament Mode initialized');
   }
-  
+
   // ===== TOURNAMENT MANAGEMENT =====
-  
+
   startWeeklyTournament() {
     const now = new Date();
     const startDate = new Date(now);
     const endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days
-    
+
     this.currentTournament = {
       id: `tournament-${Date.now()}`,
       name: 'Weekly Championship',
@@ -70,20 +70,20 @@ class TournamentManager {
       gameRotation: this.generateGameRotation(),
       prizes: {
         first: '🥇 Grand Champion',
-        second: '🥈 Master Player', 
+        second: '🥈 Master Player',
         third: '🥉 Elite Gamer'
       }
     };
-    
+
     this.saveTournamentData();
     this.showTournamentNotification('🏆 New Weekly Tournament Started!');
   }
-  
+
   generateGameRotation() {
     // Select 5 games for weekly rotation
     const games = Object.keys(this.gameRegistry);
     const rotation = [];
-    
+
     // Ensure variety by including one from each category
     const categories = ['classic', 'action', 'puzzle', 'maze', 'space'];
     categories.forEach(category => {
@@ -92,7 +92,7 @@ class TournamentManager {
         rotation.push(categoryGames[Math.floor(Math.random() * categoryGames.length)]);
       }
     });
-    
+
     // Fill remaining slots randomly
     while (rotation.length < 5) {
       const randomGame = games[Math.floor(Math.random() * games.length)];
@@ -100,34 +100,34 @@ class TournamentManager {
         rotation.push(randomGame);
       }
     }
-    
+
     return rotation;
   }
-  
+
   isTournamentExpired() {
     if (!this.currentTournament) return true;
     return new Date() > new Date(this.currentTournament.endDate);
   }
-  
+
   // ===== SCORE SUBMISSION =====
-  
+
   submitScore(gameId, score, level = 1, additionalData = {}) {
     if (!this.currentTournament || this.isTournamentExpired()) {
       console.warn('🏆 No active tournament for score submission');
       return false;
     }
-    
+
     const playerId = this.getPlayerId();
     const gameConfig = this.gameRegistry[gameId];
-    
+
     if (!gameConfig) {
       console.error('🏆 Unknown game:', gameId);
       return false;
     }
-    
+
     // Calculate tournament points
     const tournamentPoints = this.calculateTournamentPoints(score, level, gameConfig.weight);
-    
+
     // Update tournament participation
     if (!this.currentTournament.participants[playerId]) {
       this.currentTournament.participants[playerId] = {
@@ -136,9 +136,9 @@ class TournamentManager {
         joinDate: new Date().toISOString()
       };
     }
-    
+
     const participant = this.currentTournament.participants[playerId];
-    
+
     // Update best score for this game
     if (!participant.gamesPlayed[gameId] || tournamentPoints > participant.gamesPlayed[gameId].points) {
       const oldPoints = participant.gamesPlayed[gameId]?.points || 0;
@@ -149,36 +149,36 @@ class TournamentManager {
         timestamp: new Date().toISOString(),
         ...additionalData
       };
-      
+
       // Update total points
       participant.totalPoints += (tournamentPoints - oldPoints);
     }
-    
+
     // Update global leaderboards
     this.updateLeaderboards(gameId, playerId, score, level);
-    
+
     // Update player statistics
     this.updatePlayerStats(playerId, gameId, score, level);
-    
+
     this.saveTournamentData();
-    
+
     // Show achievement if significant
     this.checkAchievements(playerId, gameId, score, level);
-    
+
     return true;
   }
-  
+
   calculateTournamentPoints(score, level, weight) {
     // Base points = score + (level bonus)
     const levelBonus = Math.pow(level, 1.5) * 100;
     const basePoints = score + levelBonus;
-    
+
     // Apply game weight
     return Math.round(basePoints * weight);
   }
-  
+
   // ===== LEADERBOARDS =====
-  
+
   updateLeaderboards(gameId, playerId, score, level) {
     if (!this.leaderboards[gameId]) {
       this.leaderboards[gameId] = {
@@ -187,30 +187,30 @@ class TournamentManager {
         monthly: []
       };
     }
-    
+
     const entry = {
       playerId,
       score,
       level,
       timestamp: new Date().toISOString()
     };
-    
+
     // Update all-time leaderboard
     this.insertLeaderboardEntry(this.leaderboards[gameId].allTime, entry);
-    
+
     // Update weekly leaderboard (last 7 days)
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     this.leaderboards[gameId].weekly = this.leaderboards[gameId].weekly
       .filter(e => new Date(e.timestamp) > weekAgo);
     this.insertLeaderboardEntry(this.leaderboards[gameId].weekly, entry);
-    
+
     // Update monthly leaderboard (last 30 days)
     const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     this.leaderboards[gameId].monthly = this.leaderboards[gameId].monthly
       .filter(e => new Date(e.timestamp) > monthAgo);
     this.insertLeaderboardEntry(this.leaderboards[gameId].monthly, entry);
   }
-  
+
   insertLeaderboardEntry(leaderboard, entry) {
     // Remove existing entry from same player
     const existingIndex = leaderboard.findIndex(e => e.playerId === entry.playerId);
@@ -219,7 +219,7 @@ class TournamentManager {
     } else if (existingIndex >= 0) {
       return; // Existing score is better
     }
-    
+
     // Insert new entry in correct position
     let inserted = false;
     for (let i = 0; i < leaderboard.length; i++) {
@@ -229,25 +229,25 @@ class TournamentManager {
         break;
       }
     }
-    
+
     if (!inserted) {
       leaderboard.push(entry);
     }
-    
+
     // Keep only top 10
     if (leaderboard.length > 10) {
       leaderboard.splice(10);
     }
   }
-  
+
   // ===== TOURNAMENT DISPLAY =====
-  
+
   getTournamentStatus() {
     if (!this.currentTournament) return null;
-    
+
     const timeLeft = new Date(this.currentTournament.endDate) - new Date();
     const daysLeft = Math.ceil(timeLeft / (24 * 60 * 60 * 1000));
-    
+
     return {
       ...this.currentTournament,
       timeLeft: timeLeft > 0 ? timeLeft : 0,
@@ -255,10 +255,10 @@ class TournamentManager {
       topPlayers: this.getTournamentLeaderboard()
     };
   }
-  
+
   getTournamentLeaderboard() {
     if (!this.currentTournament) return [];
-    
+
     return Object.entries(this.currentTournament.participants)
       .map(([playerId, data]) => ({
         playerId,
@@ -268,7 +268,7 @@ class TournamentManager {
       .sort((a, b) => b.totalPoints - a.totalPoints)
       .slice(0, 10);
   }
-  
+
   showTournamentNotification(message) {
     const notification = document.createElement('div');
     notification.textContent = message;
@@ -288,7 +288,7 @@ class TournamentManager {
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
       animation: tournamentPulse 3s ease-in-out;
     `;
-    
+
     // Add animation if not present
     if (!document.querySelector('#tournament-notification-style')) {
       const style = document.createElement('style');
@@ -302,7 +302,7 @@ class TournamentManager {
       `;
       document.head.appendChild(style);
     }
-    
+
     document.body.appendChild(notification);
     setTimeout(() => {
       if (document.body.contains(notification)) {
@@ -310,9 +310,9 @@ class TournamentManager {
       }
     }, 3000);
   }
-  
+
   // ===== UTILITY METHODS =====
-  
+
   getPlayerId() {
     let playerId = localStorage.getItem('ai4devs-player-id');
     if (!playerId) {
@@ -321,7 +321,7 @@ class TournamentManager {
     }
     return playerId;
   }
-  
+
   updatePlayerStats(playerId, gameId, score, level) {
     if (!this.playerStats[playerId]) {
       this.playerStats[playerId] = {
@@ -332,38 +332,38 @@ class TournamentManager {
         joinDate: new Date().toISOString()
       };
     }
-    
+
     const stats = this.playerStats[playerId];
     stats.totalGames++;
     stats.totalScore += score;
-    
+
     // Track game-specific stats
     if (!stats[gameId]) {
       stats[gameId] = { played: 0, bestScore: 0, bestLevel: 0 };
     }
-    
+
     stats[gameId].played++;
     stats[gameId].bestScore = Math.max(stats[gameId].bestScore, score);
     stats[gameId].bestLevel = Math.max(stats[gameId].bestLevel, level);
-    
+
     // Update favorite game
     const gameStats = Object.keys(this.gameRegistry).map(id => ({
       id,
       played: stats[id]?.played || 0
     }));
-    stats.favoriteGame = gameStats.reduce((prev, curr) => 
+    stats.favoriteGame = gameStats.reduce((prev, curr) =>
       prev.played > curr.played ? prev : curr
     ).id;
   }
-  
+
   checkAchievements(playerId, gameId, score, level) {
     // Achievement system (simplified)
     const achievements = [];
-    
+
     if (score >= 1000) achievements.push('🏆 High Scorer');
     if (level >= 10) achievements.push('🎯 Level Master');
     if (this.playerStats[playerId]?.totalGames >= 50) achievements.push('🎮 Game Veteran');
-    
+
     // Add new achievements
     achievements.forEach(achievement => {
       if (!this.playerStats[playerId].achievements.includes(achievement)) {
@@ -372,22 +372,22 @@ class TournamentManager {
       }
     });
   }
-  
+
   showAchievementNotification(achievement) {
     console.log('🏆 Achievement unlocked:', achievement);
     // Visual notification implementation similar to tournament notifications
   }
-  
+
   loadPlayerStats() {
     const saved = localStorage.getItem(this.storageKey);
     return saved ? JSON.parse(saved).playerStats || {} : {};
   }
-  
+
   loadLeaderboards() {
     const saved = localStorage.getItem(this.storageKey);
     return saved ? JSON.parse(saved).leaderboards || {} : {};
   }
-  
+
   saveTournamentData() {
     const data = {
       currentTournament: this.currentTournament,
@@ -395,22 +395,22 @@ class TournamentManager {
       leaderboards: this.leaderboards,
       lastSaved: new Date().toISOString()
     };
-    
+
     localStorage.setItem(this.storageKey, JSON.stringify(data));
   }
-  
+
   // ===== PUBLIC API =====
-  
+
   getGameLeaderboard(gameId, period = 'allTime') {
     return this.leaderboards[gameId]?.[period] || [];
   }
-  
+
   getPlayerRank(playerId, gameId, period = 'allTime') {
     const leaderboard = this.getGameLeaderboard(gameId, period);
     const index = leaderboard.findIndex(entry => entry.playerId === playerId);
     return index >= 0 ? index + 1 : null;
   }
-  
+
   getPlayerStats(playerId = null) {
     const id = playerId || this.getPlayerId();
     return this.playerStats[id] || null;
@@ -424,11 +424,11 @@ class TournamentUI {
     this.tournament = tournamentManager;
     this.isVisible = false;
   }
-  
+
   createTournamentDisplay() {
     const status = this.tournament.getTournamentStatus();
     if (!status) return null;
-    
+
     const container = document.createElement('div');
     container.id = 'tournament-display';
     container.style.cssText = `
@@ -446,7 +446,7 @@ class TournamentUI {
       min-width: 250px;
       max-width: 300px;
     `;
-    
+
     container.innerHTML = `
       <div style="text-align: center; margin-bottom: 10px;">
         <strong>🏆 ${status.name}</strong>
@@ -460,28 +460,28 @@ class TournamentUI {
       </div>
       <div>
         <strong>🥇 Top Players:</strong><br>
-        ${status.topPlayers.slice(0, 3).map((player, i) => 
-          `${['🥇', '🥈', '🥉'][i]} ${player.totalPoints} pts`
-        ).join('<br>')}
+        ${status.topPlayers.slice(0, 3).map((player, i) =>
+      `${['🥇', '🥈', '🥉'][i]} ${player.totalPoints} pts`
+    ).join('<br>')}
       </div>
     `;
-    
+
     return container;
   }
-  
+
   showTournamentOverlay() {
     if (this.isVisible) return;
-    
+
     const display = this.createTournamentDisplay();
     if (display) {
       document.body.appendChild(display);
       this.isVisible = true;
-      
+
       // Auto-hide after 10 seconds
       setTimeout(() => this.hideTournamentOverlay(), 10000);
     }
   }
-  
+
   hideTournamentOverlay() {
     const display = document.getElementById('tournament-display');
     if (display) {
@@ -489,7 +489,7 @@ class TournamentUI {
       this.isVisible = false;
     }
   }
-  
+
   toggleTournamentOverlay() {
     if (this.isVisible) {
       this.hideTournamentOverlay();
@@ -503,7 +503,7 @@ class TournamentUI {
 if (typeof window !== 'undefined' && !window.globalTournamentManager) {
   window.globalTournamentManager = new TournamentManager();
   window.globalTournamentUI = new TournamentUI(window.globalTournamentManager);
-  
+
   // Add tournament toggle (T key)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'T' || e.key === 't') {
@@ -511,7 +511,7 @@ if (typeof window !== 'undefined' && !window.globalTournamentManager) {
       e.preventDefault();
     }
   });
-  
+
   // Show tournament notification on page load
   document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
@@ -525,4 +525,9 @@ if (typeof window !== 'undefined' && !window.globalTournamentManager) {
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { TournamentManager, TournamentUI };
+}
+
+// Global export for browser
+if (typeof window !== 'undefined') {
+  window.UniversalTournament = new TournamentManager();
 }

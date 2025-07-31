@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Game Integration Test</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000011;
+      color: #00ffff;
+      padding: 20px;
+    }
+
+    .test-section {
+      background: #001122;
+      border: 2px solid #00ffff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .test-result {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #00ffff;
+      border-radius: 4px;
+    }
+
+    .success {
+      border-color: #00ff00;
+      color: #00ff00;
+    }
+
+    .error {
+      border-color: #ff0000;
+      color: #ff0000;
+    }
+
+    .warning {
+      border-color: #ffff00;
+      color: #ffff00;
+    }
+
+    button {
+      background: #ff00ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background: #ff44ff;
+    }
+
+    .game-frame {
+      border: 2px solid #00ffff;
+      border-radius: 8px;
+      margin: 20px 0;
+      height: 600px;
+      overflow: hidden;
+    }
+
+    .log-output {
+      background: #000000;
+      border: 1px solid #333;
+      padding: 15px;
+      height: 200px;
+      overflow-y: auto;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🎮 Real Game Integration Test</h1>
+  <p>Testing tournament integration with actual games</p>
+
+  <div class="test-section">
+    <h2>Tournament System Controls</h2>
+    <button onclick="initializeTournamentSystem()">Initialize Tournament System</button>
+    <button onclick="enableTournamentMode()">Enable Tournament Mode</button>
+    <button onclick="testSnakeIntegration()">Test Snake Integration</button>
+    <button onclick="testAllGames()">Test All Games</button>
+    <button onclick="runFullAudit()">Run Full Audit</button>
+    <div id="systemStatus" class="test-result">System not initialized</div>
+  </div>
+
+  <div class="test-section">
+    <h2>Integration Test Results</h2>
+    <div id="testResults"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Event Log</h2>
+    <div id="eventLog" class="log-output"></div>
+    <button onclick="clearLog()">Clear Log</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Snake Game (for testing)</h2>
+    <p>Use this game to test the integration. Start a game and let it end to test score capture.</p>
+    <iframe id="snakeFrame" class="game-frame" src="snake-GG/index.html" style="width: 100%; height: 500px;"></iframe>
+  </div>
+
+  <!-- Load tournament system dependencies -->
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-score-aggregator.js"></script>
+  <script src="shared-tournament-game-integration.js"></script>
+
+  <script>
+    let eventBus = null;
+    let gameIntegration = null;
+    let testResults = [];
+
+    function log(message, level = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const logElement = document.getElementById('eventLog');
+      const levelIcon = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : level === 'success' ? '✅' : 'ℹ️';
+      logElement.textContent += `[${timestamp}] ${levelIcon} ${message}\n`;
+      logElement.scrollTop = logElement.scrollHeight;
+      console[level](message);
+    }
+
+    function clearLog() {
+      document.getElementById('eventLog').textContent = '';
+    }
+
+    function addTestResult(test, passed, details) {
+      const result = { test, passed, details, timestamp: new Date().toISOString() };
+      testResults.push(result);
+      updateTestResultsDisplay();
+    }
+
+    function updateTestResultsDisplay() {
+      const resultsDiv = document.getElementById('testResults');
+      resultsDiv.innerHTML = '';
+
+      testResults.forEach(result => {
+        const div = document.createElement('div');
+        div.className = `test-result ${result.passed ? 'success' : 'error'}`;
+        div.innerHTML = `
+                    <strong>${result.test}</strong>: ${result.passed ? '✅ PASSED' : '❌ FAILED'}<br>
+                    <small>${result.details}</small><br>
+                    <small>${result.timestamp}</small>
+                `;
+        resultsDiv.appendChild(div);
+      });
+    }
+
+    function updateSystemStatus(message, type = 'info') {
+      const statusElement = document.getElementById('systemStatus');
+      statusElement.textContent = message;
+      statusElement.className = `test-result ${type}`;
+    }
+
+    async function initializeTournamentSystem() {
+      try {
+        log('Initializing tournament system...');
+
+        // Initialize EventBus
+        eventBus = new EventBus();
+        eventBus.setDebugMode(true);
+
+        // Initialize Game Integration
+        gameIntegration = new GameIntegrationEventListener(eventBus, {
+          debugMode: true
+        });
+
+        // Set up event listeners
+        setupEventListeners();
+
+        updateSystemStatus('Tournament system initialized successfully', 'success');
+        addTestResult('System Initialization', true, 'EventBus and GameIntegration initialized');
+        log('✅ Tournament system initialized successfully', 'success');
+
+      } catch (error) {
+        updateSystemStatus(`Initialization failed: ${error.message}`, 'error');
+        addTestResult('System Initialization', false, `Error: ${error.message}`);
+        log(`❌ Initialization failed: ${error.message}`, 'error');
+      }
+    }
+
+    function setupEventListeners() {
+      // Listen for tournament events
+      eventBus.subscribe('tournament:scoreCapture', (event) => {
+        log(`🎯 Score captured: ${event.data.gameId} - ${event.data.score} points`, 'success');
+        addTestResult('Score Capture', true, `${event.data.gameId}: ${event.data.score} points`);
+      });
+
+      eventBus.subscribe('tournament:gameStarted', (event) => {
+        log(`🚀 Game started: ${event.data.gameId}`, 'info');
+      });
+
+      eventBus.subscribe('tournament:scoreUpdate', (event) => {
+        log(`📈 Score update: ${event.data.gameId} - ${event.data.score}`, 'info');
+      });
+
+      eventBus.subscribe('tournament:manualScoreEntry', (event) => {
+        log(`✋ Manual score entry requested for: ${event.data.gameId}`, 'warn');
+      });
+
+      eventBus.subscribe('tournament:modeEnabled', (event) => {
+        log(`🏆 Tournament mode enabled: ${event.data.tournamentId}`, 'success');
+      });
+
+      eventBus.subscribe('tournament:modeDisabled', (event) => {
+        log(`🏁 Tournament mode disabled`, 'info');
+      });
+
+      // Listen for game complete events (including synthetic ones)
+      window.addEventListener('game:complete', (event) => {
+        log(`🎮 Game complete event received: ${JSON.stringify(event.detail)}`, 'success');
+      });
+    }
+
+    async function enableTournamentMode() {
+      if (!gameIntegration) {
+        updateSystemStatus('System not initialized', 'error');
+        return;
+      }
+
+      try {
+        gameIntegration.enableTournamentMode('test-tournament-001', 'test-player-001');
+        updateSystemStatus('Tournament mode enabled', 'success');
+        addTestResult('Tournament Mode', true, 'Tournament mode enabled successfully');
+        log('✅ Tournament mode enabled', 'success');
+      } catch (error) {
+        updateSystemStatus(`Failed to enable tournament mode: ${error.message}`, 'error');
+        addTestResult('Tournament Mode', false, `Error: ${error.message}`);
+        log(`❌ Failed to enable tournament mode: ${error.message}`, 'error');
+      }
+    }
+
+    async function testSnakeIntegration() {
+      if (!gameIntegration || !gameIntegration.isTournamentMode()) {
+        addTestResult('Snake Integration', false, 'Tournament mode not active');
+        return;
+      }
+
+      try {
+        log('Testing Snake game integration...');
+
+        // Wait for iframe to load
+        const iframe = document.getElementById('snakeFrame');
+        await new Promise(resolve => {
+          if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+            resolve();
+          } else {
+            iframe.onload = resolve;
+          }
+        });
+
+        // Set up integration for Snake
+        const success = await gameIntegration.setupGameIntegration('snake-GG');
+
+        if (success) {
+          addTestResult('Snake Integration Setup', true, 'Integration setup successful');
+          log('✅ Snake integration setup successful', 'success');
+
+          // Test element detection
+          const elements = await gameIntegration.checkGameElements('snake-GG');
+          addTestResult('Snake Element Detection', elements.score, `Score element: ${elements.score}, Game over: ${elements.gameOver}`);
+
+        } else {
+          addTestResult('Snake Integration Setup', false, 'Integration setup failed');
+          log('❌ Snake integration setup failed', 'error');
+        }
+
+      } catch (error) {
+        addTestResult('Snake Integration', false, `Error: ${error.message}`);
+        log(`❌ Snake integration test failed: ${error.message}`, 'error');
+      }
+    }
+
+    async function testAllGames() {
+      if (!gameIntegration || !gameIntegration.isTournamentMode()) {
+        addTestResult('All Games Test', false, 'Tournament mode not active');
+        return;
+      }
+
+      try {
+        log('Testing integration with all supported games...');
+
+        const results = await gameIntegration.testGameIntegration(['snake-GG', 'tetris-GG', 'pacman-GG']);
+
+        addTestResult('All Games Integration', results.failed === 0,
+          `${results.successful}/${results.totalGames} games integrated successfully`);
+
+        // Add individual game results
+        Object.entries(results.details).forEach(([gameId, details]) => {
+          addTestResult(`${gameId} Integration`, details.success,
+            `Config: ${details.hasConfig}, Elements: ${JSON.stringify(details.elementsFound)}`);
+        });
+
+        log(`✅ Game integration test completed: ${results.successful}/${results.totalGames} successful`, 'success');
+
+      } catch (error) {
+        addTestResult('All Games Test', false, `Error: ${error.message}`);
+        log(`❌ All games test failed: ${error.message}`, 'error');
+      }
+    }
+
+    async function runFullAudit() {
+      if (!gameIntegration) {
+        addTestResult('Full Audit', false, 'System not initialized');
+        return;
+      }
+
+      try {
+        log('Running full audit of game integration system...');
+
+        const auditResults = gameIntegration.runAuditTasks();
+
+        addTestResult('Full System Audit', auditResults.failed === 0,
+          `${auditResults.passed}/${auditResults.tests.length} tests passed`);
+
+        // Add individual audit results
+        auditResults.tests.forEach(test => {
+          addTestResult(`Audit: ${test.name}`, test.passed, test.details);
+        });
+
+        log(`✅ Full audit completed: ${auditResults.passed}/${auditResults.tests.length} tests passed`, 'success');
+
+      } catch (error) {
+        addTestResult('Full Audit', false, `Error: ${error.message}`);
+        log(`❌ Full audit failed: ${error.message}`, 'error');
+      }
+    }
+
+    // Auto-initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      log('🚀 Real Game Integration Test loaded');
+      log('Click "Initialize Tournament System" to begin testing');
+    });
+
+    // Test synthetic event dispatching
+    function testSyntheticEvent() {
+      const event = new CustomEvent('game:complete', {
+        detail: {
+          gameId: 'snake-GG',
+          score: 1500,
+          level: 3,
+          duration: 120000,
+          timestamp: Date.now(),
+          metadata: { source: 'test' }
+        }
+      });
+      window.dispatchEvent(event);
+      log('🧪 Synthetic game complete event dispatched', 'info');
+    }
+
+    // Add test button for synthetic events
+    setTimeout(() => {
+      const controlsSection = document.querySelector('.test-section');
+      const testButton = document.createElement('button');
+      testButton.textContent = 'Test Synthetic Event';
+      testButton.onclick = testSyntheticEvent;
+      controlsSection.appendChild(testButton);
+    }, 1000);
+  </script>
+</body>
+
+</html>

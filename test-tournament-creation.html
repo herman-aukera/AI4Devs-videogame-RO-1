@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Tournament Creation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tournament-creation.css">
+  <style>
+    body {
+      padding: 20px;
+      background: var(--bg-primary);
+      color: white;
+      font-family: var(--font-main);
+    }
+
+    .test-results {
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid var(--primary-cyan);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .test-pass {
+      color: var(--accent-green);
+    }
+
+    .test-fail {
+      color: var(--accent-red);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🏆 Tournament Creation Interface Test</h1>
+
+  <div class="test-results" id="test-results">
+    <h2>Running Tests...</h2>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <a href="tournament-creation.html" style="color: var(--primary-cyan);">
+      → Open Tournament Creation Interface
+    </a>
+  </div>
+
+  <!-- Load dependencies -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-eventbus.js"></script>
+  <script src="shared-tournament-manager.js"></script>
+  <script src="shared-tournament.js"></script>
+  <script src="tournament-creation.js"></script>
+
+  <script>
+    // Test the tournament creation functionality
+    function runTests() {
+      const results = document.getElementById('test-results');
+      let testResults = [];
+
+      // Test 1: Check if TournamentCreationUI class exists
+      try {
+        const ui = new TournamentCreationUI();
+        testResults.push({ name: 'TournamentCreationUI Class', status: 'pass', message: 'Class instantiated successfully' });
+      } catch (error) {
+        testResults.push({ name: 'TournamentCreationUI Class', status: 'fail', message: error.message });
+      }
+
+      // Test 2: Check if tournament models are loaded
+      try {
+        const isValid = typeof validateTournamentConfig === 'function';
+        testResults.push({
+          name: 'Tournament Models',
+          status: isValid ? 'pass' : 'fail',
+          message: isValid ? 'Validation functions available' : 'Validation functions missing'
+        });
+      } catch (error) {
+        testResults.push({ name: 'Tournament Models', status: 'fail', message: error.message });
+      }
+
+      // Test 3: Check if TournamentManager is available
+      try {
+        const manager = new TournamentManager();
+        testResults.push({ name: 'TournamentManager', status: 'pass', message: 'Manager instantiated successfully' });
+      } catch (error) {
+        testResults.push({ name: 'TournamentManager', status: 'fail', message: error.message });
+      }
+
+      // Test 4: Test tournament configuration validation
+      try {
+        const testConfig = {
+          name: 'Test Tournament',
+          games: ['snake-GG', 'tetris-GG'],
+          format: 'round-robin',
+          settings: {
+            maxParticipants: 8,
+            scoreNormalization: true,
+            autoAdvance: true
+          }
+        };
+
+        const validation = validateTournamentConfig(testConfig);
+        testResults.push({
+          name: 'Configuration Validation',
+          status: validation.isValid ? 'pass' : 'fail',
+          message: validation.isValid ? 'Valid configuration accepted' : validation.errors.join(', ')
+        });
+      } catch (error) {
+        testResults.push({ name: 'Configuration Validation', status: 'fail', message: error.message });
+      }
+
+      // Test 5: Test Spanish localization
+      try {
+        const hasSpanishText = document.documentElement.lang === 'es';
+        testResults.push({
+          name: 'Spanish Localization',
+          status: hasSpanishText ? 'pass' : 'fail',
+          message: hasSpanishText ? 'Document language set to Spanish' : 'Language not set to Spanish'
+        });
+      } catch (error) {
+        testResults.push({ name: 'Spanish Localization', status: 'fail', message: error.message });
+      }
+
+      // Display results
+      let html = '<h2>Test Results</h2>';
+      testResults.forEach(test => {
+        const statusClass = test.status === 'pass' ? 'test-pass' : 'test-fail';
+        const statusIcon = test.status === 'pass' ? '✅' : '❌';
+        html += `<div class="${statusClass}">
+                    ${statusIcon} <strong>${test.name}:</strong> ${test.message}
+                </div>`;
+      });
+
+      const passCount = testResults.filter(t => t.status === 'pass').length;
+      const totalCount = testResults.length;
+
+      html += `<div style="margin-top: 20px; padding: 10px; border-top: 1px solid var(--primary-cyan);">
+                <strong>Summary:</strong> ${passCount}/${totalCount} tests passed
+            </div>`;
+
+      results.innerHTML = html;
+    }
+
+    // Run tests when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(runTests, 1000); // Wait for all scripts to load
+    });
+  </script>
+</body>
+
+</html>

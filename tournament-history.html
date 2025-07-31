@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Torneos - AI4Devs Retro Games</title>
+  <link rel="stylesheet" href="shared-styles.css">
+  <link rel="stylesheet" href="tournament-history.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Navigation -->
+    <nav class="tournament-nav">
+      <a href="index.html" class="nav-link back-link">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">INICIO</span>
+      </a>
+      <div class="nav-links">
+        <a href="tournament-creation.html" class="nav-link">CREAR</a>
+        <a href="tournament-dashboard.html" class="nav-link">DASHBOARD</a>
+        <a href="tournament-history.html" class="nav-link active">HISTORIAL</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="tournament-header">
+      <h1 class="neon-title">
+        <span class="title-line-1">HISTORIAL</span>
+        <span class="title-line-2">TORNEOS</span>
+      </h1>
+      <p class="subtitle">📈 Revisa tus competiciones pasadas 📈</p>
+    </header>
+
+    <!-- Controls Section -->
+    <section class="history-controls">
+      <div class="search-section">
+        <input type="text" id="searchInput" placeholder="Buscar torneos..." class="search-input">
+        <button id="searchBtn" class="btn btn-primary">BUSCAR</button>
+      </div>
+
+      <div class="filter-section">
+        <select id="formatFilter" class="filter-select">
+          <option value="">Todos los formatos</option>
+          <option value="round-robin">Round Robin</option>
+          <option value="elimination">Eliminación</option>
+        </select>
+
+        <select id="gameFilter" class="filter-select">
+          <option value="">Todos los juegos</option>
+          <option value="snake-GG">Snake</option>
+          <option value="tetris-GG">Tetris</option>
+          <option value="pacman-GG">Pac-Man</option>
+          <option value="breakout-GG">Breakout</option>
+          <option value="space-invaders-GG">Space Invaders</option>
+          <option value="asteroids-GG">Asteroids</option>
+          <option value="pong-GG">Pong</option>
+          <option value="galaga-GG">Galaga</option>
+          <option value="mspacman-GG">Ms. Pac-Man</option>
+          <option value="fruit-catcher-GG">Fruit Catcher</option>
+        </select>
+
+        <input type="date" id="startDateFilter" class="filter-input" title="Fecha inicio">
+        <input type="date" id="endDateFilter" class="filter-input" title="Fecha fin">
+
+        <button id="clearFiltersBtn" class="btn btn-secondary">LIMPIAR</button>
+      </div>
+
+      <div class="action-section">
+        <button id="exportBtn" class="btn btn-success">EXPORTAR</button>
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+        <button id="importBtn" class="btn btn-info">IMPORTAR</button>
+        <button id="archiveBtn" class="btn btn-warning">ARCHIVAR</button>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="history-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="totalTournaments">0</div>
+        <div class="stat-label">TORNEOS TOTALES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalParticipants">0</div>
+        <div class="stat-label">PARTICIPANTES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="averageDuration">0</div>
+        <div class="stat-label">DURACIÓN PROMEDIO</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="storageUsage">0%</div>
+        <div class="stat-label">USO DE ALMACENAMIENTO</div>
+      </div>
+    </section>
+
+    <!-- Tournament History List -->
+    <section class="history-list">
+      <div class="list-header">
+        <div class="sort-controls">
+          <label>Ordenar por:</label>
+          <select id="sortBy" class="sort-select">
+            <option value="endDate">Fecha de finalización</option>
+            <option value="startDate">Fecha de inicio</option>
+            <option value="name">Nombre</option>
+            <option value="participants">Participantes</option>
+            <option value="duration">Duración</option>
+          </select>
+          <select id="sortOrder" class="sort-select">
+            <option value="desc">Descendente</option>
+            <option value="asc">Ascendente</option>
+          </select>
+        </div>
+        <div class="pagination-info">
+          <span id="paginationInfo">Mostrando 0 de 0 torneos</span>
+        </div>
+      </div>
+
+      <div id="tournamentList" class="tournament-list">
+        <!-- Tournament items will be populated here -->
+      </div>
+
+      <div class="pagination-controls">
+        <button id="prevPageBtn" class="btn btn-secondary" disabled>ANTERIOR</button>
+        <span id="pageInfo" class="page-info">Página 1 de 1</span>
+        <button id="nextPageBtn" class="btn btn-secondary" disabled>SIGUIENTE</button>
+      </div>
+    </section>
+
+    <!-- Tournament Detail Modal -->
+    <div id="tournamentModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle" class="neon-text">DETALLES DEL TORNEO</h2>
+          <button id="closeModal" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="tournamentDetails">
+            <!-- Tournament details will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-indicator">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Cargando historial...</div>
+    </div>
+
+    <!-- Error Messages -->
+    <div id="errorContainer" class="error-container"></div>
+
+    <!-- Success Messages -->
+    <div id="successContainer" class="success-container"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="shared-tournament-models.js"></script>
+  <script src="shared-tournament-history.js"></script>
+  <script src="tournament-history.js"></script>
+</body>
+
+</html>

@@ -606,3 +606,115 @@
 ::ffff:127.0.0.1 - - [28/Jun/2025 15:36:30] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751117790376 HTTP/1.1" 200 -
 ::ffff:127.0.0.1 - - [28/Jun/2025 15:36:30] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
 ::ffff:127.0.0.1 - - [28/Jun/2025 15:36:30] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:41:28] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751118088632 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:41:29] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:41:29] "GET /fruit-catcher-GG/script.js HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:42:32] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751118152108 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:42:32] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 15:42:32] "GET /fruit-catcher-GG/script.js HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:10:20] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751119820406 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:10:20] "GET /fruit-catcher-GG/style.css HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:10:20] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 16:10:41] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 16:10:45] "GET /fruit-catcher-GG/index.html HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:29:43] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751120983173 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:29:43] "GET /css-tokens.css HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:29:43] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:29:43] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:55:30] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751122530959 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:55:31] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:55:31] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:57:32] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751122652147 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:58:47] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751122727027 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:58:47] "GET /fruit-catcher-GG/emergency-fix.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 16:58:47] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 16:59:27] "GET /fruit-catcher-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 16:59:27] "GET /css-tokens.css HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 16:59:27] "GET /fruit-catcher-GG/emergency-fix.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 16:59:27] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:00:06] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751122806646 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:00:06] "GET /fruit-catcher-GG/emergency-fix.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:00:06] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:04:18] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751123058483 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:04:18] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:04:18] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:05:38] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751123138637 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:05:38] "GET /fruit-catcher-GG/style.css HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:11:50] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751123510986 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:11:51] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:12:31] "GET /fruit-catcher-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:12:35] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:34] "GET /fruit-catcher-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751123614477 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:35] "GET /fruit-catcher-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:35] "GET /fruit-catcher-GG/script.js HTTP/1.1" 304 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:40] "GET /snake-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751123620684 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:41] "GET /snake-GG/style.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [28/Jun/2025 17:13:41] "GET /snake-GG/script.js HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:43] "GET /snake-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:43] "GET /snake-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:43] "GET /snake-GG/script.js HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:47] "GET /breakout-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:50] "GET /breakout-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:50] "GET /breakout-GG/script.js HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:17:55] code 404, message File not found
+::1 - - [28/Jun/2025 17:17:55] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 17:18:00] code 404, message File not found
+::1 - - [28/Jun/2025 17:18:00] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 17:18:14] code 404, message File not found
+::1 - - [28/Jun/2025 17:18:14] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 17:25:55] "GET /breakout-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751124355783 HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:25:56] "GET /breakout-GG/style.css HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 17:25:56] "GET /breakout-GG/script.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 17:25:56] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:25:58] code 404, message File not found
+::1 - - [28/Jun/2025 17:25:58] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 17:26:04] "GET /breakout-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751124364157 HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:26:04] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 17:26:04] code 404, message File not found
+::1 - - [28/Jun/2025 17:26:04] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 21:07:35] "GET /breakout-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751137655908 HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:07:35] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:14] "GET /snake-GG/style.css HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:14] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:14] "GET /shared-audio.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:14] "GET /snake-GG/style.css HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:14] "GET /shared-tournament.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:14] "GET /shared-achievements.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:14] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:31] "GET /index.html HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:31] "GET /styles.css HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:33] "GET /breakout-GG/script.js HTTP/1.1" 304 -
+::1 - - [28/Jun/2025 21:15:33] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:33] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:45] "GET /index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:45] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:46] "GET /styles.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:46] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:46] "GET /index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:46] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:47] "GET /styles.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:47] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:49] "GET /index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:49] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:50] "GET /styles.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:50] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:15:50] "GET /index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:15:50] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:16:06] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:16:06] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:16:09] code 404, message File not found
+::1 - - [28/Jun/2025 21:16:09] "GET /breakout-GG/sw.js HTTP/1.1" 404 -
+::1 - - [28/Jun/2025 21:16:12] "GET /breakout-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:16:12] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:16:14] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:16:14] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:16:14] "GET /css-tokens.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:16:14] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:18:01] "GET /breakout-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751138281237 HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:18:01] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:18:06] "GET /snake-GG/index.html?id=1db125bc-b0de-42d5-9d68-106a93faeb38&vscodeBrowserReqId=1751138286751 HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:18:06] Request timed out: TimeoutError(60, 'Operation timed out')
+::1 - - [28/Jun/2025 21:18:38] "HEAD /breakout-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:18:50] "HEAD /snake-GG/index.html HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:19:03] "HEAD /breakout-GG/style.css HTTP/1.1" 200 -
+::1 - - [28/Jun/2025 21:19:17] "HEAD /css-tokens.css HTTP/1.1" 200 -

@@ -1,26 +1,34 @@
-# 🧱 Breakout
+# 🧱 Breakout - AI4Devs Retro Games
 
-Classic brick-breaking arcade action with authentic retro neon aesthetics.
+## Descripción
+Juego clásico de Breakout con estética retro neón. Destruye todos los ladrillos rebotando la pelota con tu paleta.
 
-## 🎮 Controls
+## Características
+- ✅ Física realista de pelota
+- ✅ 5 niveles de ladrillos con diferentes puntuaciones
+- ✅ Sistema de vidas y niveles progresivos
+- ✅ Controles táctiles para móvil
+- ✅ Estética neón retro auténtica
+- ✅ Rendimiento 60fps
 
-- **Left/Right: Move paddle, Space: Pause**
+## Controles
+- **Flechas ←/→**: Mover paleta
+- **ESPACIO**: Iniciar/Pausar
+- **ENTER**: Reiniciar
+- **Táctil**: Deslizar para mover paleta
 
-## 🎯 Gameplay
+## Puntuación
+- Ladrillo azul: 50 puntos
+- Ladrillo verde: 40 puntos  
+- Ladrillo amarillo: 30 puntos
+- Ladrillo naranja: 20 puntos
+- Ladrillo rojo: 10 puntos
 
-Classic arcade gameplay with modern enhancements:
-- Authentic retro visuals and sound effects
-- Progressive difficulty scaling
-- High score tracking
-- Smooth 60fps performance
+## Tecnologías
+- HTML5 Canvas
+- JavaScript ES6+
+- CSS3 con efectos neón
+- Responsive Design
 
-## 🛠️ Technical Features
-
-- HTML5 Canvas rendering
-- ES6+ JavaScript architecture
-- Responsive mobile design
-- Web Audio API sound system
-- Local storage for high scores
-
----
-**Back to [Main Collection](../index.html)**
+## Licencia
+© GG, MIT License

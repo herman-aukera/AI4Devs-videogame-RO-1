@@ -158,8 +158,12 @@ class DesignSystemRollout {
     await this.enhanceFocusStates(cssFile);
     fixesApplied++;
     
+    // Fix 6: Refined header pattern
+    await this.applyRefinedHeaderPattern(gameName);
+    fixesApplied++;
+    
     this.fixes.applied += fixesApplied;
-    this.fixes.total += 5; // 5 potential fixes per game
+    this.fixes.total += 6; // 6 potential fixes per game
   }
   
   async addCssTokensImport(htmlFile) {
@@ -301,6 +305,129 @@ canvas:focus,
     
     content += focusEnhancements;
     fs.writeFileSync(cssFile, content);
+  }
+  
+  async applyRefinedHeaderPattern(gameName) {
+    const gameDir = path.join(__dirname, gameName);
+    const htmlFile = path.join(gameDir, 'index.html');
+    const cssFile = path.join(gameDir, 'style.css');
+    
+    console.log(`  🎨 Applying refined header pattern to ${gameName}`);
+    
+    // Update HTML structure for header container
+    if (fs.existsSync(htmlFile)) {
+      let htmlContent = fs.readFileSync(htmlFile, 'utf8');
+      
+      // Replace old game-title structure with refined header-container
+      const titleRegex = /<h1 class="game-title">\s*<span class="title-icon">([^<]+)<\/span>\s*([^<]+)\s*<\/h1>/g;
+      htmlContent = htmlContent.replace(titleRegex, (match, icon, title) => {
+        return `<div class="header-container">
+          <span class="icon">${icon}</span>
+          <h1>${title.trim()}</h1>
+        </div>`;
+      });
+      
+      fs.writeFileSync(htmlFile, htmlContent);
+    }
+    
+    // Add refined CSS patterns
+    if (fs.existsSync(cssFile)) {
+      let cssContent = fs.readFileSync(cssFile, 'utf8');
+      
+      // Check if refined header container already exists
+      if (!cssContent.includes('/* Refined Header Container */')) {
+        const refinedHeaderCSS = this.getRefinedHeaderCSS();
+        
+        // Insert after existing :root or at the beginning
+        const rootMatch = cssContent.match(/:root\s*{[^}]*}/);
+        if (rootMatch) {
+          const insertPosition = cssContent.indexOf(rootMatch[0]) + rootMatch[0].length;
+          cssContent = cssContent.slice(0, insertPosition) + '\n\n' + refinedHeaderCSS + cssContent.slice(insertPosition);
+        } else {
+          cssContent = refinedHeaderCSS + '\n\n' + cssContent;
+        }
+        
+        fs.writeFileSync(cssFile, cssContent);
+      }
+    }
+  }
+  
+  getRefinedHeaderCSS() {
+    return `/* ===== REFINED HEADER PATTERN ===== */
+/* Remove any shell border conflicts */
+.game-shell {
+  border: none;
+}
+
+/* Refined Header Container */
+.header-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;                /* tighter icon/text gap */
+  padding: 0.75rem 1.5rem;
+  padding-bottom: 0.5rem;      /* trim bottom space */
+  border: 2px solid var(--neon-cyan);
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  overflow: visible;           /* allow glow to shine */
+  margin-bottom: 1rem;
+}
+
+/* Refined Title Sizing & Glow */
+.header-container h1 {
+  font-family: var(--font-retro);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  color: var(--neon-yellow);
+  text-shadow:
+    0 0 4px var(--neon-yellow),
+    0 0 8px var(--neon-yellow),
+    0 0 16px var(--neon-yellow);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Refined Icon with Optical Centering */
+.header-container .icon {
+  width: 1.25em;
+  height: 1.25em;
+  font-size: 1.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(1px);  /* optical vertical centering */
+}
+
+/* Space before the score panel */
+.header-container + .game-info,
+.header-container + .score-panel {
+  margin-top: 1rem;
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 600px) {
+  .header-container {
+    padding: 0.5rem 1rem;
+    gap: 0.25rem;
+  }
+  
+  .header-container h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+}
+
+@media (max-width: 400px) {
+  .header-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+  }
+  .header-container h1 {
+    font-size: clamp(2rem, 6vw, 2.5rem);
+  }
+}`;
   }
   
   async verifyAllGames() {

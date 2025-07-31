@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Export Debug Test</title>
+</head>
+
+<body>
+  <h1>Export Debug Test</h1>
+  <div id="output"></div>
+
+  <script src="shared-tournament-models.js"></script>
+  <script>
+    console.log('After loading shared-tournament-models.js:');
+    console.log('- validateTournamentConfig:', typeof validateTournamentConfig);
+    console.log('- TournamentStorageManager:', typeof TournamentStorageManager);
+  </script>
+
+  <script src="test-tournament-models.js"></script>
+  <script>
+    console.log('After loading test-tournament-models.js:');
+    console.log('- window.TournamentModelTests:', typeof window.TournamentModelTests);
+    console.log('- window.testRunner:', typeof window.testRunner);
+    console.log('- window.TestRunner:', typeof window.TestRunner);
+
+    const output = document.getElementById('output');
+    let log = '';
+
+    log += 'Tournament Models Functions:\n';
+    log += `- validateTournamentConfig: ${typeof validateTournamentConfig}\n`;
+    log += `- TournamentStorageManager: ${typeof TournamentStorageManager}\n\n`;
+
+    log += 'Test Runner Exports:\n';
+    log += `- window.TournamentModelTests: ${typeof window.TournamentModelTests}\n`;
+    log += `- window.testRunner: ${typeof window.testRunner}\n`;
+    log += `- window.TestRunner: ${typeof window.TestRunner}\n\n`;
+
+    if (window.TournamentModelTests) {
+      log += `Test Runner Details:\n`;
+      log += `- Type: ${typeof window.TournamentModelTests}\n`;
+      log += `- Has run method: ${typeof window.TournamentModelTests.run === 'function'}\n`;
+      log += `- Has tests array: ${Array.isArray(window.TournamentModelTests.tests)}\n`;
+      if (window.TournamentModelTests.tests) {
+        log += `- Number of tests: ${window.TournamentModelTests.tests.length}\n`;
+      }
+    }
+
+    output.innerHTML = '<pre>' + log + '</pre>';
+  </script>
+</body>
+
+</html>
